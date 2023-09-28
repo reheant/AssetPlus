@@ -1,33 +1,32 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-
+package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 
-// line 94 "model.ump"
-// line 183 "model.ump"
-public class FloorLocation extends Location
+// line 93 "../../../../../AssetPlus.ump"
+public class Floor extends Location
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //FloorLocation Attributes
+  //Floor Attributes
   private int floorNumber;
 
-  //FloorLocation Associations
-  private List<RoomLocation> rooms;
+  //Floor Associations
+  private List<Room> rooms;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public FloorLocation(AssetPlus aAssetPlus, int aFloorNumber)
+  public Floor(AssetPlus aAssetPlus, int aFloorNumber)
   {
     super(aAssetPlus);
     floorNumber = aFloorNumber;
-    rooms = new ArrayList<RoomLocation>();
+    rooms = new ArrayList<Room>();
   }
 
   //------------------------
@@ -47,15 +46,15 @@ public class FloorLocation extends Location
     return floorNumber;
   }
   /* Code from template association_GetMany */
-  public RoomLocation getRoom(int index)
+  public Room getRoom(int index)
   {
-    RoomLocation aRoom = rooms.get(index);
+    Room aRoom = rooms.get(index);
     return aRoom;
   }
 
-  public List<RoomLocation> getRooms()
+  public List<Room> getRooms()
   {
-    List<RoomLocation> newRooms = Collections.unmodifiableList(rooms);
+    List<Room> newRooms = Collections.unmodifiableList(rooms);
     return newRooms;
   }
 
@@ -71,7 +70,7 @@ public class FloorLocation extends Location
     return has;
   }
 
-  public int indexOfRoom(RoomLocation aRoom)
+  public int indexOfRoom(Room aRoom)
   {
     int index = rooms.indexOf(aRoom);
     return index;
@@ -82,16 +81,16 @@ public class FloorLocation extends Location
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public RoomLocation addRoom(AssetPlus aAssetPlus, int aRoomNumber)
+  public Room addRoom(AssetPlus aAssetPlus, int aRoomNumber)
   {
-    return new RoomLocation(aAssetPlus, aRoomNumber, this);
+    return new Room(aAssetPlus, aRoomNumber, this);
   }
 
-  public boolean addRoom(RoomLocation aRoom)
+  public boolean addRoom(Room aRoom)
   {
     boolean wasAdded = false;
     if (rooms.contains(aRoom)) { return false; }
-    FloorLocation existingFloor = aRoom.getFloor();
+    Floor existingFloor = aRoom.getFloor();
     boolean isNewFloor = existingFloor != null && !this.equals(existingFloor);
     if (isNewFloor)
     {
@@ -105,7 +104,7 @@ public class FloorLocation extends Location
     return wasAdded;
   }
 
-  public boolean removeRoom(RoomLocation aRoom)
+  public boolean removeRoom(Room aRoom)
   {
     boolean wasRemoved = false;
     //Unable to remove aRoom, as it must always have a floor
@@ -117,7 +116,7 @@ public class FloorLocation extends Location
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addRoomAt(RoomLocation aRoom, int index)
+  public boolean addRoomAt(Room aRoom, int index)
   {  
     boolean wasAdded = false;
     if(addRoom(aRoom))
@@ -131,7 +130,7 @@ public class FloorLocation extends Location
     return wasAdded;
   }
 
-  public boolean addOrMoveRoomAt(RoomLocation aRoom, int index)
+  public boolean addOrMoveRoomAt(Room aRoom, int index)
   {
     boolean wasAdded = false;
     if(rooms.contains(aRoom))
@@ -153,7 +152,7 @@ public class FloorLocation extends Location
   {
     for(int i=rooms.size(); i > 0; i--)
     {
-      RoomLocation aRoom = rooms.get(i - 1);
+      Room aRoom = rooms.get(i - 1);
       aRoom.delete();
     }
     super.delete();

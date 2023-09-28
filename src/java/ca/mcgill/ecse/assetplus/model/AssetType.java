@@ -1,12 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-
+package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 import java.sql.Date;
 
-// line 59 "model.ump"
-// line 153 "model.ump"
+// line 34 "../../../../../AssetPlus.ump"
 public class AssetType
 {
 

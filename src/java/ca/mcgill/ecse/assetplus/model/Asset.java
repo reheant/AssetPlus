@@ -1,20 +1,13 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-
+package ca.mcgill.ecse.assetplus.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 63 "model.ump"
-// line 158 "model.ump"
+// line 38 "../../../../../AssetPlus.ump"
 public class Asset
 {
-
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
-
-  public enum TicketStatus { Open, Resolved, Closed }
 
   //------------------------
   // STATIC VARIABLES
@@ -36,7 +29,7 @@ public class Asset
   //Asset Associations
   private AssetType type;
   private AssetPlus assetPlus;
-  private List<MaintenanceTicket> tickets;
+  private List<MaintenanceTicket> maintenanceTickets;
 
   //------------------------
   // CONSTRUCTOR
@@ -57,7 +50,7 @@ public class Asset
     {
       throw new RuntimeException("Unable to create asset due to assetPlus. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    tickets = new ArrayList<MaintenanceTicket>();
+    maintenanceTickets = new ArrayList<MaintenanceTicket>();
   }
 
   //------------------------
@@ -105,33 +98,33 @@ public class Asset
     return assetPlus;
   }
   /* Code from template association_GetMany */
-  public MaintenanceTicket getTicket(int index)
+  public MaintenanceTicket getMaintenanceTicket(int index)
   {
-    MaintenanceTicket aTicket = tickets.get(index);
-    return aTicket;
+    MaintenanceTicket aMaintenanceTicket = maintenanceTickets.get(index);
+    return aMaintenanceTicket;
   }
 
-  public List<MaintenanceTicket> getTickets()
+  public List<MaintenanceTicket> getMaintenanceTickets()
   {
-    List<MaintenanceTicket> newTickets = Collections.unmodifiableList(tickets);
-    return newTickets;
+    List<MaintenanceTicket> newMaintenanceTickets = Collections.unmodifiableList(maintenanceTickets);
+    return newMaintenanceTickets;
   }
 
-  public int numberOfTickets()
+  public int numberOfMaintenanceTickets()
   {
-    int number = tickets.size();
+    int number = maintenanceTickets.size();
     return number;
   }
 
-  public boolean hasTickets()
+  public boolean hasMaintenanceTickets()
   {
-    boolean has = tickets.size() > 0;
+    boolean has = maintenanceTickets.size() > 0;
     return has;
   }
 
-  public int indexOfTicket(MaintenanceTicket aTicket)
+  public int indexOfMaintenanceTicket(MaintenanceTicket aMaintenanceTicket)
   {
-    int index = tickets.indexOf(aTicket);
+    int index = maintenanceTickets.indexOf(aMaintenanceTicket);
     return index;
   }
   /* Code from template association_SetOneToMany */
@@ -173,73 +166,73 @@ public class Asset
     return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfTickets()
+  public static int minimumNumberOfMaintenanceTickets()
   {
     return 0;
   }
   /* Code from template association_AddManyToOptionalOne */
-  public boolean addTicket(MaintenanceTicket aTicket)
+  public boolean addMaintenanceTicket(MaintenanceTicket aMaintenanceTicket)
   {
     boolean wasAdded = false;
-    if (tickets.contains(aTicket)) { return false; }
-    Asset existingAsset = aTicket.getAsset();
+    if (maintenanceTickets.contains(aMaintenanceTicket)) { return false; }
+    Asset existingAsset = aMaintenanceTicket.getAsset();
     if (existingAsset == null)
     {
-      aTicket.setAsset(this);
+      aMaintenanceTicket.setAsset(this);
     }
     else if (!this.equals(existingAsset))
     {
-      existingAsset.removeTicket(aTicket);
-      addTicket(aTicket);
+      existingAsset.removeMaintenanceTicket(aMaintenanceTicket);
+      addMaintenanceTicket(aMaintenanceTicket);
     }
     else
     {
-      tickets.add(aTicket);
+      maintenanceTickets.add(aMaintenanceTicket);
     }
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeTicket(MaintenanceTicket aTicket)
+  public boolean removeMaintenanceTicket(MaintenanceTicket aMaintenanceTicket)
   {
     boolean wasRemoved = false;
-    if (tickets.contains(aTicket))
+    if (maintenanceTickets.contains(aMaintenanceTicket))
     {
-      tickets.remove(aTicket);
-      aTicket.setAsset(null);
+      maintenanceTickets.remove(aMaintenanceTicket);
+      aMaintenanceTicket.setAsset(null);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addTicketAt(MaintenanceTicket aTicket, int index)
+  public boolean addMaintenanceTicketAt(MaintenanceTicket aMaintenanceTicket, int index)
   {  
     boolean wasAdded = false;
-    if(addTicket(aTicket))
+    if(addMaintenanceTicket(aMaintenanceTicket))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfTickets()) { index = numberOfTickets() - 1; }
-      tickets.remove(aTicket);
-      tickets.add(index, aTicket);
+      if(index > numberOfMaintenanceTickets()) { index = numberOfMaintenanceTickets() - 1; }
+      maintenanceTickets.remove(aMaintenanceTicket);
+      maintenanceTickets.add(index, aMaintenanceTicket);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveTicketAt(MaintenanceTicket aTicket, int index)
+  public boolean addOrMoveMaintenanceTicketAt(MaintenanceTicket aMaintenanceTicket, int index)
   {
     boolean wasAdded = false;
-    if(tickets.contains(aTicket))
+    if(maintenanceTickets.contains(aMaintenanceTicket))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfTickets()) { index = numberOfTickets() - 1; }
-      tickets.remove(aTicket);
-      tickets.add(index, aTicket);
+      if(index > numberOfMaintenanceTickets()) { index = numberOfMaintenanceTickets() - 1; }
+      maintenanceTickets.remove(aMaintenanceTicket);
+      maintenanceTickets.add(index, aMaintenanceTicket);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addTicketAt(aTicket, index);
+      wasAdded = addMaintenanceTicketAt(aMaintenanceTicket, index);
     }
     return wasAdded;
   }
@@ -258,9 +251,9 @@ public class Asset
     {
       placeholderAssetPlus.removeAsset(this);
     }
-    while( !tickets.isEmpty() )
+    while( !maintenanceTickets.isEmpty() )
     {
-      tickets.get(0).setAsset(null);
+      maintenanceTickets.get(0).setAsset(null);
     }
   }
 

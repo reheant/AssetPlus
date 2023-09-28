@@ -1,20 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-
+package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 
-// line 16 "model.ump"
-// line 130 "model.ump"
-public abstract class MaintenanceAccount extends UserAccount
+// line 24 "../../../../../AssetPlus.ump"
+public class MaintenanceAccount extends UserAccount
 {
-
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
-
-  public enum TimeEstimate { LessThanOneDay, BetweenOneAndThreeDays, BetweenOneAndSevenDays, BetweenOneAndThreeWeeks, MoreThanThreeWeeks }
-  public enum TicketPriority { Low, Normal, Urgent }
 
   //------------------------
   // MEMBER VARIABLES
@@ -186,9 +178,9 @@ public abstract class MaintenanceAccount extends UserAccount
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public TicketAssignment addTicketAssignment(boolean aRequiresManagerApproval, TicketPriority aPriority, TimeEstimate aTimeEstimate, MaintenanceTicket aMaintenanceTicket)
+  public TicketAssignment addTicketAssignment(MaintenanceTicket aMaintenanceTicket)
   {
-    return new TicketAssignment(aRequiresManagerApproval, aPriority, aTimeEstimate, aMaintenanceTicket, this);
+    return new TicketAssignment(aMaintenanceTicket, this);
   }
 
   public boolean addTicketAssignment(TicketAssignment aTicketAssignment)

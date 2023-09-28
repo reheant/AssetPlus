@@ -1,11 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-
+package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 
-// line 22 "model.ump"
-// line 136 "model.ump"
+// line 29 "../../../../../AssetPlus.ump"
 public class ManagerAccount extends MaintenanceAccount
 {
 

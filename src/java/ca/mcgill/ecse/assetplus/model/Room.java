@@ -1,28 +1,27 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
+package ca.mcgill.ecse.assetplus.model;
 
-
-// line 101 "model.ump"
-// line 188 "model.ump"
-public class RoomLocation extends Location
+// line 100 "../../../../../AssetPlus.ump"
+public class Room extends Location
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //RoomLocation Attributes
+  //Room Attributes
   private int roomNumber;
 
-  //RoomLocation Associations
-  private FloorLocation floor;
+  //Room Associations
+  private Floor floor;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public RoomLocation(AssetPlus aAssetPlus, int aRoomNumber, FloorLocation aFloor)
+  public Room(AssetPlus aAssetPlus, int aRoomNumber, Floor aFloor)
   {
     super(aAssetPlus);
     roomNumber = aRoomNumber;
@@ -50,12 +49,12 @@ public class RoomLocation extends Location
     return roomNumber;
   }
   /* Code from template association_GetOne */
-  public FloorLocation getFloor()
+  public Floor getFloor()
   {
     return floor;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setFloor(FloorLocation aFloor)
+  public boolean setFloor(Floor aFloor)
   {
     boolean wasSet = false;
     if (aFloor == null)
@@ -63,7 +62,7 @@ public class RoomLocation extends Location
       return wasSet;
     }
 
-    FloorLocation existingFloor = floor;
+    Floor existingFloor = floor;
     floor = aFloor;
     if (existingFloor != null && !existingFloor.equals(aFloor))
     {
@@ -76,7 +75,7 @@ public class RoomLocation extends Location
 
   public void delete()
   {
-    FloorLocation placeholderFloor = floor;
+    Floor placeholderFloor = floor;
     this.floor = null;
     if(placeholderFloor != null)
     {

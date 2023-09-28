@@ -1,28 +1,15 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
+package ca.mcgill.ecse.assetplus.model;
 
-
-// line 106 "model.ump"
-// line 193 "model.ump"
+// line 110 "../../../../../AssetPlus.ump"
 public class TicketAssignment
 {
 
   //------------------------
-  // ENUMERATIONS
-  //------------------------
-
-  public enum TimeEstimate { LessThanOneDay, BetweenOneAndThreeDays, BetweenOneAndSevenDays, BetweenOneAndThreeWeeks, MoreThanThreeWeeks }
-  public enum TicketPriority { Low, Normal, Urgent }
-
-  //------------------------
   // MEMBER VARIABLES
   //------------------------
-
-  //TicketAssignment Attributes
-  private boolean requiresManagerApproval;
-  private TicketPriority priority;
-  private TimeEstimate timeEstimate;
 
   //TicketAssignment Associations
   private MaintenanceTicket maintenanceTicket;
@@ -37,14 +24,11 @@ public class TicketAssignment
   // CONSTRUCTOR
   //------------------------
 
-  public TicketAssignment(boolean aRequiresManagerApproval, TicketPriority aPriority, TimeEstimate aTimeEstimate, MaintenanceTicket aMaintenanceTicket, MaintenanceAccount aMaintenanceAccount)
+  public TicketAssignment(MaintenanceTicket aMaintenanceTicket, MaintenanceAccount aMaintenanceAccount)
   {
     cachedHashCode = -1;
     canSetMaintenanceTicket = true;
     canSetMaintenanceAccount = true;
-    requiresManagerApproval = aRequiresManagerApproval;
-    priority = aPriority;
-    timeEstimate = aTimeEstimate;
     boolean didAddMaintenanceTicket = setMaintenanceTicket(aMaintenanceTicket);
     if (!didAddMaintenanceTicket)
     {
@@ -60,45 +44,6 @@ public class TicketAssignment
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setRequiresManagerApproval(boolean aRequiresManagerApproval)
-  {
-    boolean wasSet = false;
-    requiresManagerApproval = aRequiresManagerApproval;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setPriority(TicketPriority aPriority)
-  {
-    boolean wasSet = false;
-    priority = aPriority;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setTimeEstimate(TimeEstimate aTimeEstimate)
-  {
-    boolean wasSet = false;
-    timeEstimate = aTimeEstimate;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean getRequiresManagerApproval()
-  {
-    return requiresManagerApproval;
-  }
-
-  public TicketPriority getPriority()
-  {
-    return priority;
-  }
-
-  public TimeEstimate getTimeEstimate()
-  {
-    return timeEstimate;
-  }
   /* Code from template association_GetOne */
   public MaintenanceTicket getMaintenanceTicket()
   {
@@ -237,14 +182,4 @@ public class TicketAssignment
     }
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "requiresManagerApproval" + ":" + getRequiresManagerApproval()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "priority" + "=" + (getPriority() != null ? !getPriority().equals(this)  ? getPriority().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "timeEstimate" + "=" + (getTimeEstimate() != null ? !getTimeEstimate().equals(this)  ? getTimeEstimate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "maintenanceTicket = "+(getMaintenanceTicket()!=null?Integer.toHexString(System.identityHashCode(getMaintenanceTicket())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "maintenanceAccount = "+(getMaintenanceAccount()!=null?Integer.toHexString(System.identityHashCode(getMaintenanceAccount())):"null");
-  }
 }

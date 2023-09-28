@@ -1,0 +1,113 @@
+namespace ca.mcgill.ecse.assetplus.model;
+
+class AssetPlus {
+  1 <@>- 1..* UserAccount;
+  1 <@>- * Location;
+  1 <@>- * Asset;
+  1 <@>- * AssetType;
+  1 <@>- * MaintenanceTicket;
+}
+
+class UserAccount {
+  unique String email;
+  String password;
+  lazy String name;
+  lazy String phoneNumber;
+
+}
+
+class MaintenanceAccount {
+  isA UserAccount;
+  * assignedStaff -- * MaintenanceTicket assignedTickets;
+}
+
+class ManagerAccount {
+  isA MaintenanceAccount;
+  String email = "manager@ap.com"; 
+}
+
+class AssetType {
+  String name;
+}
+
+class Asset {
+  Date purchaseDate;
+  Integer expectedLifespanDays;
+  autounique uniqueNumber;
+  
+  * -- 1 AssetType type;
+}
+
+class MaintenanceTicket {
+
+  enum TimeEstimate {
+    LESS_THAN_ONE_DAY,
+    BETWEEN_ONE_TO_THREE_DAYS,
+    BETWEEN_THREE_AND_SEVEN_DAYS,
+    BETWEEN_ONE_AND_THREE_WEEKS,
+    MORE_THAN_ONE_WEEK
+  }
+
+  enum TicketStatus {
+    OPEN,
+    RESOLVED,
+    CLOSED
+  }
+
+  enum TicketPriority {
+    LOW,
+    NORMAL,
+    URGENT 
+  }
+
+  String description;
+  autounique id;
+  TicketStatus status;
+  Date creationDate;
+  boolean requiresManagerApproval;
+  TicketPriority priority;
+  TimeEstimate timeEstimate;
+  
+  * -- 0..1 Asset;
+  1 -- * ImageLink images;
+  1 <@>- * MaintenanceNote progressNotes;
+}
+
+class MaintenanceNote {
+  String content;
+  Date date;
+}
+
+class ImageLink {
+  String url;
+}
+
+class Location {
+}
+
+class Floor {
+  isA Location;
+  Integer floorNumber;
+  
+  1 -- * Room;
+}
+
+class Room {
+  isA Location;
+  Integer roomNumber;
+}
+
+association{
+  1 UserAccount author -- * MaintenanceTicket writtenTickets;
+  1 UserAccount author -- * MaintenanceNote writtenNotes;  
+}
+
+associationClass TicketAssignment {
+  * MaintenanceTicket;
+  * MaintenanceAccount;
+}
+
+
+
+
+

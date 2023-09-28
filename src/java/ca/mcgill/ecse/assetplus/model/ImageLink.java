@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.assetplus.model;
 
-// line 86 "../../../../../AssetPlus.ump"
+// line 81 "../../../../../AssetPlus.ump"
 public class ImageLink
 {
 

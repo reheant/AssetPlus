@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 
-// line 24 "../../../../../AssetPlus.ump"
+// line 19 "../../../../../AssetPlus.ump"
 public class MaintenanceAccount extends UserAccount
 {
 

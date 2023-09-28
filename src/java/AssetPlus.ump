@@ -14,15 +14,6 @@ class UserAccount {
   lazy String name;
   lazy String phoneNumber;
 
-  // Umple breaks when setting 'unique immutable' to email: tries to acces an inexistant 'setEmail' property
-  // below code replaces immutable property, and is encouraged by umple: https://cruise.umple.org/umple/BeforeandAfterStatements.html
-  /* Commented out for now as it's not allowed for iteration 1
-  before setEmail {
-    if (aEmail != null){
-      return false;
-    }
-  }
-  */
 }
 
 class MaintenanceAccount {

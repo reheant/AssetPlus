@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.assetplus.model;
 
-// line 90 "../../../../../AssetPlus.ump"
+// line 85 "../../../../../AssetPlus.ump"
 public class Location
 {
 

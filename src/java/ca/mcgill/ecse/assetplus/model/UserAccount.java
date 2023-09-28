@@ -59,11 +59,6 @@ public class UserAccount
   public boolean setEmail(String aEmail)
   {
     boolean wasSet = false;
-    // line 18 "../../../../../AssetPlus.ump"
-    if (aEmail != null){
-          return false;
-        }
-    // END OF UMPLE BEFORE INJECTION
     String anOldEmail = getEmail();
     if (anOldEmail != null && anOldEmail.equals(aEmail)) {
       return true;

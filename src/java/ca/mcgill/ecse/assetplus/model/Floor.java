@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 
-// line 93 "../../../../../AssetPlus.ump"
+// line 88 "../../../../../AssetPlus.ump"
 public class Floor extends Location
 {
 

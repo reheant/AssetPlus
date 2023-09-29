@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.assetplus.model;
 
-// line 95 "../../../../../AssetPlus.ump"
+// line 96 "../../../../../AssetPlus.ump"
 public class Room extends Location
 {
 

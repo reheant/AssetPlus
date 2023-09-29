@@ -284,10 +284,7 @@ public class AssetPlus
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Location addLocation()
-  {
-    return new Location(this);
-  }
+
 
   public boolean addLocation(Location aLocation)
   {

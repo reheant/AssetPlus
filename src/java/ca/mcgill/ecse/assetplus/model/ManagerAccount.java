@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 
-// line 24 "../../../../../AssetPlus.ump"
+// line 23 "../../../../../AssetPlus.ump"
 public class ManagerAccount extends MaintenanceAccount
 {
 
@@ -14,6 +14,7 @@ public class ManagerAccount extends MaintenanceAccount
 
   //ManagerAccount Attributes
   private String email;
+  private String password;
 
   //------------------------
   // CONSTRUCTOR
@@ -23,6 +24,7 @@ public class ManagerAccount extends MaintenanceAccount
   {
     super(aEmail, aPassword, aAssetPlus);
     email = "manager@ap.com";
+    password = "manager";
   }
 
   //------------------------
@@ -37,9 +39,22 @@ public class ManagerAccount extends MaintenanceAccount
     return wasSet;
   }
 
+  public boolean setPassword(String aPassword)
+  {
+    boolean wasSet = false;
+    password = aPassword;
+    wasSet = true;
+    return wasSet;
+  }
+
   public String getEmail()
   {
     return email;
+  }
+
+  public String getPassword()
+  {
+    return password;
   }
 
   public void delete()
@@ -51,6 +66,7 @@ public class ManagerAccount extends MaintenanceAccount
   public String toString()
   {
     return super.toString() + "["+
-            "email" + ":" + getEmail()+ "]";
+            "email" + ":" + getEmail()+ "," +
+            "password" + ":" + getPassword()+ "]";
   }
 }

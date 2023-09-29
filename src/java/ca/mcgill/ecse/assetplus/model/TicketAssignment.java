@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.assetplus.model;
 
-// line 105 "../../../../../AssetPlus.ump"
+// line 106 "../../../../../AssetPlus.ump"
 public class TicketAssignment
 {
 

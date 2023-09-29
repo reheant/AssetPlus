@@ -18,12 +18,12 @@ class UserAccount {
 
 class MaintenanceAccount {
   isA UserAccount;
-  * assignedStaff -- * MaintenanceTicket assignedTickets;
 }
 
 class ManagerAccount {
   isA MaintenanceAccount;
   String email = "manager@ap.com"; 
+  String password = "manager";
 }
 
 class AssetType {
@@ -69,7 +69,7 @@ class MaintenanceTicket {
   TimeEstimate timeEstimate;
   
   * -- 0..1 Asset;
-  1 -- * ImageLink images;
+  1 <@>- * ImageLink images;
   1 <@>- * MaintenanceNote progressNotes;
 }
 
@@ -83,6 +83,7 @@ class ImageLink {
 }
 
 class Location {
+  abstract;
 }
 
 class Floor {

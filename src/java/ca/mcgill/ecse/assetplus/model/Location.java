@@ -4,7 +4,7 @@
 package ca.mcgill.ecse.assetplus.model;
 
 // line 85 "../../../../../AssetPlus.ump"
-public class Location
+public abstract class Location
 {
 
   //------------------------

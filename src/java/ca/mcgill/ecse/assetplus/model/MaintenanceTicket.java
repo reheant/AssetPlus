@@ -43,7 +43,6 @@ public class MaintenanceTicket
   private List<ImageLink> images;
   private List<MaintenanceNote> progressNotes;
   private AssetPlus assetPlus;
-  private List<MaintenanceAccount> assignedStaff;
   private UserAccount author;
   private List<TicketAssignment> ticketAssignments;
 
@@ -67,7 +66,6 @@ public class MaintenanceTicket
     {
       throw new RuntimeException("Unable to create maintenanceTicket due to assetPlus. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    assignedStaff = new ArrayList<MaintenanceAccount>();
     boolean didAddAuthor = setAuthor(aAuthor);
     if (!didAddAuthor)
     {
@@ -237,36 +235,6 @@ public class MaintenanceTicket
   public AssetPlus getAssetPlus()
   {
     return assetPlus;
-  }
-  /* Code from template association_GetMany */
-  public MaintenanceAccount getAssignedStaff(int index)
-  {
-    MaintenanceAccount aAssignedStaff = assignedStaff.get(index);
-    return aAssignedStaff;
-  }
-
-  public List<MaintenanceAccount> getAssignedStaff()
-  {
-    List<MaintenanceAccount> newAssignedStaff = Collections.unmodifiableList(assignedStaff);
-    return newAssignedStaff;
-  }
-
-  public int numberOfAssignedStaff()
-  {
-    int number = assignedStaff.size();
-    return number;
-  }
-
-  public boolean hasAssignedStaff()
-  {
-    boolean has = assignedStaff.size() > 0;
-    return has;
-  }
-
-  public int indexOfAssignedStaff(MaintenanceAccount aAssignedStaff)
-  {
-    int index = assignedStaff.indexOf(aAssignedStaff);
-    return index;
   }
   /* Code from template association_GetOne */
   public UserAccount getAuthor()
@@ -483,88 +451,6 @@ public class MaintenanceTicket
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAssignedStaff()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addAssignedStaff(MaintenanceAccount aAssignedStaff)
-  {
-    boolean wasAdded = false;
-    if (assignedStaff.contains(aAssignedStaff)) { return false; }
-    assignedStaff.add(aAssignedStaff);
-    if (aAssignedStaff.indexOfAssignedTicket(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aAssignedStaff.addAssignedTicket(this);
-      if (!wasAdded)
-      {
-        assignedStaff.remove(aAssignedStaff);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeAssignedStaff(MaintenanceAccount aAssignedStaff)
-  {
-    boolean wasRemoved = false;
-    if (!assignedStaff.contains(aAssignedStaff))
-    {
-      return wasRemoved;
-    }
-
-    int oldIndex = assignedStaff.indexOf(aAssignedStaff);
-    assignedStaff.remove(oldIndex);
-    if (aAssignedStaff.indexOfAssignedTicket(this) == -1)
-    {
-      wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aAssignedStaff.removeAssignedTicket(this);
-      if (!wasRemoved)
-      {
-        assignedStaff.add(oldIndex,aAssignedStaff);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addAssignedStaffAt(MaintenanceAccount aAssignedStaff, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAssignedStaff(aAssignedStaff))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAssignedStaff()) { index = numberOfAssignedStaff() - 1; }
-      assignedStaff.remove(aAssignedStaff);
-      assignedStaff.add(index, aAssignedStaff);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveAssignedStaffAt(MaintenanceAccount aAssignedStaff, int index)
-  {
-    boolean wasAdded = false;
-    if(assignedStaff.contains(aAssignedStaff))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAssignedStaff()) { index = numberOfAssignedStaff() - 1; }
-      assignedStaff.remove(aAssignedStaff);
-      assignedStaff.add(index, aAssignedStaff);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAssignedStaffAt(aAssignedStaff, index);
-    }
-    return wasAdded;
-  }
   /* Code from template association_SetOneToMany */
   public boolean setAuthor(UserAccount aAuthor)
   {
@@ -665,11 +551,13 @@ public class MaintenanceTicket
       this.asset = null;
       placeholderAsset.removeMaintenanceTicket(this);
     }
-    for(int i=images.size(); i > 0; i--)
+    while (images.size() > 0)
     {
-      ImageLink aImage = images.get(i - 1);
+      ImageLink aImage = images.get(images.size() - 1);
       aImage.delete();
+      images.remove(aImage);
     }
+    
     while (progressNotes.size() > 0)
     {
       MaintenanceNote aProgressNote = progressNotes.get(progressNotes.size() - 1);
@@ -682,12 +570,6 @@ public class MaintenanceTicket
     if(placeholderAssetPlus != null)
     {
       placeholderAssetPlus.removeMaintenanceTicket(this);
-    }
-    ArrayList<MaintenanceAccount> copyOfAssignedStaff = new ArrayList<MaintenanceAccount>(assignedStaff);
-    assignedStaff.clear();
-    for(MaintenanceAccount aAssignedStaff : copyOfAssignedStaff)
-    {
-      aAssignedStaff.removeAssignedTicket(this);
     }
     UserAccount placeholderAuthor = author;
     this.author = null;

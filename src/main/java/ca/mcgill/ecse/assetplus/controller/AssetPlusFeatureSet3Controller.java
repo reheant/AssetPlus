@@ -1,5 +1,6 @@
 package ca.mcgill.ecse.assetplus.controller;
 
+import java.security.InvalidParameterException;
 import java.sql.Date;
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.model.AssetType;
@@ -12,7 +13,7 @@ public class AssetPlusFeatureSet3Controller {
 
   public static String addSpecificAsset(int assetNumber, int floorNumber, int roomNumber,
       Date purchaseDate, String assetTypeName) {     
-          
+
         if (AssetType.hasWithName(assetTypeName) && assetNumber >= 1 && floorNumber >= 0 && roomNumber >= -1){
           try {
             assetPlus.addSpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, AssetType.getWithName(assetTypeName));
@@ -50,7 +51,7 @@ public class AssetPlusFeatureSet3Controller {
         specificAsset.delete();
       }
     } catch (RuntimeException e) {
-      return; //TODO: unsure about the return here as it needs to be void, would like to return the error
+      throw new InvalidParameterException("asset number is invalid");
     }
   }
 

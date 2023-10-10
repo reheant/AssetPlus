@@ -3,15 +3,14 @@ import ca.mcgill.ecse.assetplus.model.*;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 
 public class AssetPlusFeatureSet2Controller {
+	
     private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
+    
     public static String addAssetType(String name, int expectedLifeSpanInDays) {
         var error = "";
-        if (name == null) {
-            error = "A valid name must be inputted to add asset type";
-        }
-        if (expectedLifeSpanInDays <= 0) {
-            error += "Not a valid life span input"
-        }
+        error += nameValidation(name);
+        error += lifeSpanValidation(expectedLifeSpanInDays);
+        
         if (!error.isEmpty()) {
             return error.trim();
         }
@@ -26,12 +25,13 @@ public class AssetPlusFeatureSet2Controller {
 
   public static String updateAssetType(String oldName, String newName, int newExpectedLifeSpanInDays) {
         var error = "";
-        AssetType assetType = AssetType.getWithName(oldName)
+        error += nameValidation(newName);
+        error += nameValidation(oldName);
+        error += lifeSpanValidation(newExpectedLifeSpanInDays);
+        
+        AssetType assetType = AssetType.getWithName(oldName);
         if (assetType == null) {
-            error = "A valid old asset type name must be inputted";
-        }
-        if (expectedLifeSpanInDays <= 0){
-            error+= "Not a valid life span input"
+            error = "Old asset name is not valid. ";
         }
         if (!error.isEmpty()) {
             return error.trim();
@@ -47,11 +47,29 @@ public class AssetPlusFeatureSet2Controller {
   }
 
   public static void deleteAssetType(String name) {
-      AssetType assetType = AssetType.getWithName(name)
+      AssetType assetType = AssetType.getWithName(name);
       if (assetType != null) {
           assetType.delete();
       }
 
   }
+  
+  private static String nameValidation(String name) {
+	  if (name == null || name.isEmpty()) {
+          return "A valid name must be inputted. ";
+      }
+	  else {
+		  return "";
+	  }
+  }
+
+    private static String lifeSpanValidation(int expectedLifeSpan) {
+        if (expectedLifeSpan <= 0) {
+            return "Not a valid life span input. ";
+        }
+        else{
+            return "";
+        }
+    }
 
 }

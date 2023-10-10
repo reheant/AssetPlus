@@ -1,5 +1,6 @@
 package ca.mcgill.ecse.assetplus.controller;
 
+import java.security.InvalidParameterException;
 import java.sql.Date;
 
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
@@ -8,15 +9,26 @@ import ca.mcgill.ecse.assetplus.model.*;
 public class AssetPlusFeatureSet4Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
-  // assetNumber -1 means that no asset is specified
+  final private static int UNSPECIFIED_ASSET_NUMBER = -1;
+
   public static String addMaintenanceTicket(int id, Date raisedOnDate, String description,
       String email, int assetNumber) {
     try {
-      // TODO id positive, id checks
-      // TODO raisedOnDate valid (or already checked)
-      // TODO description valid (not empty or null)
-      // TODO email valid
-      // TODO assetNumber valid
+      if (!isValidTicketId(id)) {
+        return "Error: An invalid ticket ID was provided.";
+      }
+
+      if (!isValidRaisedOnDate(raisedOnDate)) {
+        return "Error: An invalid ticket creation date was provided.";
+      }
+
+      if (!isValidTicketDescription(description)) {
+        return "Error: An invalid ticket description was provided.";
+      }
+
+      if (!isValidAssetNumber(assetNumber)) {
+        return "Error: An invalid asset number was provided.";
+      }
 
       if (assetPlus == null) {
         return "Error: AssetPlus is not initialized.";
@@ -30,7 +42,7 @@ public class AssetPlusFeatureSet4Controller {
       MaintenanceTicket maintenanceTicket =
           new MaintenanceTicket(id, raisedOnDate, description, assetPlus, aTicketRaiser);
 
-      if (assetNumber != -1) {
+      if (assetNumber != UNSPECIFIED_ASSET_NUMBER) {
         SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
         if (aAsset == null) {
           return "Error: An inexisting asset number was provided.";
@@ -49,10 +61,25 @@ public class AssetPlusFeatureSet4Controller {
   // newAssetNumber -1 means that no asset is specified
   public static String updateMaintenanceTicket(int id, Date newRaisedOnDate, String newDescription,
       String newEmail, int newAssetNumber) {
-    // TODO raisedOnDate valid (or already checked)
-    // TODO description valid (not empty or null)
-    // TODO email valid
-    // TODO assetNumber valid
+    if (!isValidTicketId(id)) {
+      return "Error: An invalid ticket ID was provided.";
+    }
+
+    if (!isValidRaisedOnDate(newRaisedOnDate)) {
+      return "Error: An invalid ticket creation date was provided.";
+    }
+
+    if (!isValidTicketDescription(newDescription)) {
+      return "Error: An invalid ticket description was provided.";
+    }
+
+    if (!isValidAssetNumber(newAssetNumber)) {
+      return "Error: An invalid asset number was provided.";
+    }
+
+    if (assetPlus == null) {
+      return "Error: AssetPlus is not initialized.";
+    }
     try {
       MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
       if (existingMaintenanceTicket == null) {
@@ -77,7 +104,7 @@ public class AssetPlusFeatureSet4Controller {
         }
       }
 
-      if (newAssetNumber != -1) {
+      if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
         SpecificAsset newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
         if (newAsset != null) {
           existingMaintenanceTicket.setAsset(newAsset);
@@ -95,12 +122,48 @@ public class AssetPlusFeatureSet4Controller {
     }
 
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(id);
-    if (maintenanceTicket == null){
-      // TODO should throw or just do nothing? Ticket is already not there...
+    if (maintenanceTicket == null) {
+      // TODO update to match gherkin message
+      throw new InvalidParameterException(
+          "Ticket with provided ticket id does not exist in the system");
     }
-    assetPlus.removeMaintenanceTicket(maintenanceTicket);
-    // TODO what if different assetplus? does this count as "in the end it's not there so all is ok"?
+    boolean ret = assetPlus.removeMaintenanceTicket(maintenanceTicket);
+    if (!ret) {
+      // TODO update to match gherkin message
+      throw new RuntimeException(
+          "Error: AssetPlus explicitely rejected deleting maintenance ticket");
+    }
+  }
 
+  
+  private static boolean isValidTicketId(int id) {
+    if (id < 0) {
+      return false;
+    }
+    return true;
+  }
+
+  private static boolean isValidRaisedOnDate(Date date) {
+    if (date == null) {
+      return false;
+    }
+    return true;
+  }
+
+  private static boolean isValidTicketDescription(String description) {
+    if (description == null || description.isEmpty()) {
+      return false;
+    }
+    return true;
+  }
+
+  private static boolean isValidAssetNumber(int assetNumber) {
+    if (assetNumber == UNSPECIFIED_ASSET_NUMBER) {
+      return true;
+    } else if (assetNumber < 1) {
+      return false;
+    }
+    return true;
   }
 
 }

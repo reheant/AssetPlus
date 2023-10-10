@@ -8,11 +8,12 @@ import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 
 public class AssetPlusFeatureSet3Controller {
 
-  private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
+  private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus(); 
+
   public static String addSpecificAsset(int assetNumber, int floorNumber, int roomNumber,
-      Date purchaseDate, String assetTypeName) {
-         
-        if (AssetType.hasWithName(assetTypeName)){
+      Date purchaseDate, String assetTypeName) {     
+          
+        if (AssetType.hasWithName(assetTypeName) && assetNumber >= 1 && floorNumber >= 0 && roomNumber >= -1){
           try {
             assetPlus.addSpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, AssetType.getWithName(assetTypeName));
           } catch (RuntimeException e) {
@@ -20,27 +21,36 @@ public class AssetPlusFeatureSet3Controller {
           }
           return "";
         }
-        return "entered asset type name is incorrect";
+        return "Entered asset information is incorrect";
   }
 
   public static String updateSpecificAsset(int assetNumber, int newFloorNumber, int newRoomNumber,
       Date newPurchaseDate, String newAssetTypeName) {
-        try {
-          SpecificAsset specificAsset = SpecificAsset.getWithAssetNumber(assetNumber);
-          specificAsset.setFloorNumber(newFloorNumber);
-          specificAsset.setRoomNumber(newRoomNumber);
-          specificAsset.setPurchaseDate(newPurchaseDate);
-          specificAsset.setAssetType(AssetType.getWithName(newAssetTypeName)); //TODO: verify error validation, like above with AssetType.hasWithName(assetTypeName
-        } catch (RuntimeException e) {
-          return e.getMessage();
+
+        if (AssetType.hasWithName(newAssetTypeName) && assetNumber >= 1 && newFloorNumber >= 0 && newRoomNumber >= -1){
+          try {
+            SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
+            specificAsset.setFloorNumber(newFloorNumber);
+            specificAsset.setRoomNumber(newRoomNumber);
+            specificAsset.setPurchaseDate(newPurchaseDate);
+            specificAsset.setAssetType(AssetType.getWithName(newAssetTypeName)); 
+          } catch (RuntimeException e) {
+            return e.getMessage();
+          }
+          return "";
         }
-        return "";
+        return "Entered asset information is incorrect";
   }
 
   public static void deleteSpecificAsset(int assetNumber) {
-    SpecificAsset specificAsset = SpecificAsset.getWithAssetNumber(assetNumber);
-    if (specificAsset != null) {
-      specificAsset.delete();
+
+    try {
+      SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
+      if (specificAsset != null) {
+        specificAsset.delete();
+      }
+    } catch (RuntimeException e) {
+      return; //TODO: unsure about the return here as it needs to be void, would like to return the error
     }
   }
 

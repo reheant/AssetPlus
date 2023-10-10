@@ -4,7 +4,6 @@ import ca.mcgill.ecse.assetplus.model.*;
 public class AssetPlusFeatureSet2Controller {
     private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
     public static String addAssetType(String name, int expectedLifeSpanInDays) {
-        //input validation
         var error = "";
         if (name == null) {
             error = "A valid name must be inputted to add asset type";
@@ -16,7 +15,6 @@ public class AssetPlusFeatureSet2Controller {
             return error.trim();
         }
 
-        //call model
         try {
             assetPlus.addAssetType(name, expectedLifeSpanInDays);
         } catch (RuntimeException e) {
@@ -26,7 +24,6 @@ public class AssetPlusFeatureSet2Controller {
     }
 
   public static String updateAssetType(String oldName, String newName, int newExpectedLifeSpanInDays) {
-        //input validation
         var error = "";
         AssetType assetType = AssetType.getWithName(oldName)
         if (assetType == null) {
@@ -39,7 +36,6 @@ public class AssetPlusFeatureSet2Controller {
             return error.trim();
         }
 
-        //call model
         try {
             assetType.setName(newName);
             assetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
@@ -50,7 +46,6 @@ public class AssetPlusFeatureSet2Controller {
   }
 
   public static void deleteAssetType(String name) {
-      //call model
       AssetType assetType = AssetType.getWithName(name)
       if (assetType != null) {
           assetType.delete();

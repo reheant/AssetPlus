@@ -22,27 +22,19 @@ public class AssetPlusFeatureSet4Controller {
    */
   public static String addMaintenanceTicket(int id, Date raisedOnDate, String description,
       String email, int assetNumber) {
+
+    var error = "";
+    error += assertAssetPlusInitialized();
+    error += assertValidTicketId(id);
+    error += assertValidRaisedOnDate(raisedOnDate);
+    error += assertValidTicketDescription(description);
+    error += assertValidAssetNumber(assetNumber);
+
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
+
     try {
-      if (!isValidTicketId(id)) {
-        return "Error: An invalid ticket ID was provided.";
-      }
-
-      if (!isValidRaisedOnDate(raisedOnDate)) {
-        return "Error: An invalid ticket creation date was provided.";
-      }
-
-      if (!isValidTicketDescription(description)) {
-        return "Error: An invalid ticket description was provided.";
-      }
-
-      if (!isValidAssetNumber(assetNumber)) {
-        return "Error: An invalid asset number was provided.";
-      }
-
-      if (assetPlus == null) {
-        return "Error: AssetPlus is not initialized.";
-      }
-
       User aTicketRaiser = User.getWithEmail(email);
       if (aTicketRaiser == null) {
         return "An existing ticket raiser must be specified to create a maintenance ticket.";
@@ -78,25 +70,18 @@ public class AssetPlusFeatureSet4Controller {
    */
   public static String updateMaintenanceTicket(int id, Date newRaisedOnDate, String newDescription,
       String newEmail, int newAssetNumber) {
-    if (!isValidTicketId(id)) {
-      return "Error: An invalid ticket ID was provided.";
-    }
 
-    if (!isValidRaisedOnDate(newRaisedOnDate)) {
-      return "Error: An invalid ticket creation date was provided.";
-    }
+    var error = "";
+    error += assertAssetPlusInitialized();
+    error += assertValidTicketId(id);
+    error += assertValidRaisedOnDate(newRaisedOnDate);
+    error += assertValidTicketDescription(newDescription);
+    error += assertValidAssetNumber(newAssetNumber);
 
-    if (!isValidTicketDescription(newDescription)) {
-      return "Error: An invalid ticket description was provided.";
+    if (!error.isEmpty()) {
+      return error.trim();
     }
-
-    if (!isValidAssetNumber(newAssetNumber)) {
-      return "Error: An invalid asset number was provided.";
-    }
-
-    if (assetPlus == null) {
-      return "Error: AssetPlus is not initialized.";
-    }
+    
     try {
       MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
       if (existingMaintenanceTicket == null) {
@@ -157,34 +142,41 @@ public class AssetPlusFeatureSet4Controller {
   }
 
 
-  private static boolean isValidTicketId(int id) {
+  private static String assertAssetPlusInitialized() {
+    if (assetPlus == null) {
+      return "Error: AssetPlus is not initialized.";
+    }
+    return "";
+  }
+
+  private static String assertValidTicketId(int id) {
     if (id < 0) {
-      return false;
+      return "Error: An invalid ticket ID was provided: provided ticket id is negative. ";
     }
-    return true;
+    return "";
   }
 
-  private static boolean isValidRaisedOnDate(Date date) {
+  private static String assertValidRaisedOnDate(Date date) {
     if (date == null) {
-      return false;
+      return "Error: An invalid ticket creation date was provided: provided date is null. ";
     }
-    return true;
+    return "";
   }
 
-  private static boolean isValidTicketDescription(String description) {
+  private static String assertValidTicketDescription(String description) {
     if (description == null || description.isEmpty()) {
-      return false;
+      return "Error: An invalid ticket description was provided: rovided description is either null or empty. ";
     }
-    return true;
+    return "";
   }
 
-  private static boolean isValidAssetNumber(int assetNumber) {
+  private static String assertValidAssetNumber(int assetNumber) {
     if (assetNumber == UNSPECIFIED_ASSET_NUMBER) {
-      return true;
+      return "";
     } else if (assetNumber < 1) {
-      return false;
+      return "Error: An invalid asset number was provided: assetNumber is < 1";
     }
-    return true;
+    return "";
   }
 
 }

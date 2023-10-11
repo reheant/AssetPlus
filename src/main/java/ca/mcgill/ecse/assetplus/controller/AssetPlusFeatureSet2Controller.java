@@ -14,8 +14,8 @@ public class AssetPlusFeatureSet2Controller {
      */
     public static String addAssetType(String name, int expectedLifeSpanInDays) {
         var error = "";
-        error += nameValidation(name);
-        error += lifeSpanValidation(expectedLifeSpanInDays);
+        error += assertNameValid(name);
+        error += assertLifeSpanValid(expectedLifeSpanInDays);
         
         if (!error.isEmpty()) {
             return error.trim();
@@ -38,13 +38,13 @@ public class AssetPlusFeatureSet2Controller {
      */
   public static String updateAssetType(String oldName, String newName, int newExpectedLifeSpanInDays) {
         var error = "";
-        error += nameValidation(newName);
-        error += nameValidation(oldName);
-        error += lifeSpanValidation(newExpectedLifeSpanInDays);
+        error += assertNameValid(newName);
+        error += assertNameValid(oldName);
+        error += assertLifeSpanValid(newExpectedLifeSpanInDays);
         
         AssetType assetType = AssetType.getWithName(oldName);
         if (assetType == null) {
-            error = "Old asset name is not valid. ";
+            error += "Old asset name is not valid. ";
         }
         if (!error.isEmpty()) {
             return error.trim();
@@ -64,13 +64,15 @@ public class AssetPlusFeatureSet2Controller {
    * @param name The name of the asset type to delete. Must not be empty or null.
    */
   public static void deleteAssetType(String name) {
-      AssetType assetType = AssetType.getWithName(name);
-      if (assetType != null) {
-          assetType.delete();
+      try {
+		  AssetType assetType = AssetType.getWithName(name);
+	      if (assetType != null) {
+	          assetType.delete();
+	      }
       }
-      else{
-    	  throw new NullPointerException("No such asset type");
-      }
+      catch (RuntimeException e) {
+	    	  throw new NullPointerException("No such asset type");
+	      }
 
   }
   
@@ -79,7 +81,7 @@ public class AssetPlusFeatureSet2Controller {
    * @param name The name of the asset type to validate. Must not be empty or null.
    * @return An empty string indicating success. An error message if failure.
    */
-  private static String nameValidation(String name) {
+  private static String assertNameValid(String name) {
 	  if (name == null || name.isEmpty()) {
           return "A valid name must be inputted. ";
       }
@@ -93,7 +95,7 @@ public class AssetPlusFeatureSet2Controller {
    * @param expectedLifeSpan The expected life span in days of the asset type. Must be > 0.
    * @return An empty string indicating success. An error message if failure.
    */
-    private static String lifeSpanValidation(int expectedLifeSpan) {
+    private static String assertLifeSpanValid(int expectedLifeSpan) {
         if (expectedLifeSpan <= 0) {
             return "Not a valid life span input. ";
         }

@@ -13,17 +13,19 @@ public class AssetPlusFeatureSet1Controller {
      * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String updateManager(String password) {
+        var error = "";
+        error = assertManagerAvailable() + validateManagerPassword(password);
+
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
         try {
-            if (!isManagerAvailable() || !isValidPassword(password)) {
-                return "Manager not found or invalid password.";
-            }
             assetPlus.getManager().setPassword(password);
-            return "";
-        } catch (NullPointerException e) {
-            return "Error: AssetPlus or Manager is not initialized.";
         } catch (Exception e) {
             return "An unexpected error occurred: " + e.getMessage();
         }
+        return "";
     }
 
     /**
@@ -37,21 +39,23 @@ public class AssetPlusFeatureSet1Controller {
      * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String addEmployeeOrGuest(String email, String password, String name, String phoneNumber, boolean isEmployee) {
-        try {
-            String validationResult = validateUserInformation(email, password, name, phoneNumber, isEmployee);
-            if (validationResult != null) {
-                return validationResult;
-            }
+        var error = "";
+        error = validateEmployeeOrGuestEmail(email, isEmployee) + validatePassword(password) + validateName(name) + validatePhoneNumber(phoneNumber);
 
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        try {
             if (isEmployee) {
                 assetPlus.addEmployee(email, name, password, phoneNumber);
             } else {
                 assetPlus.addGuest(email, name, password, phoneNumber);
             }
-            return ""; 
         } catch (Exception e) {
             return "An error occurred while adding the user: " + e.getMessage();
         }
+        return "";
     }
 
     /**
@@ -64,12 +68,14 @@ public class AssetPlusFeatureSet1Controller {
      * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String updateEmployeeOrGuest(String email, String newPassword, String newName, String newPhoneNumber) {
-        try {
-            String validationResult = validateUserInformation(email, newPassword, newName, newPhoneNumber, null);
-            if (validationResult != null) {
-                return validationResult;
-            }
+        var error = "";
+        error = validateEmployeeOrGuestEmail(email, null) + validatePassword(newPassword) + validateName(newName) + validatePhoneNumber(newPhoneNumber);
 
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        try {
             User user = User.getWithEmail(email);
             if (user == null) {
                 return "User not found.";
@@ -78,35 +84,84 @@ public class AssetPlusFeatureSet1Controller {
             user.setPassword(newPassword);
             user.setName(newName);
             user.setPhoneNumber(newPhoneNumber);
-            return ""; 
         } catch (Exception e) {
             return "An error occurred while updating the user: " + e.getMessage();
         }
+        return "";
     }
 
-    private static boolean isManagerAvailable() {
-        return assetPlus.getManager() != null;
+    private static String assertManagerAvailable() {
+        return assetPlus.hasManager() ? "" : "Manager not found. ";
     }
 
-    private static boolean isValidPassword(String password) {
-        return password != null && password.length() > 3 && password.matches(".*[!#$].*")
-                && password.matches(".*[A-Z].*") && password.matches(".*[a-z].*");
-    }
-
-    private static String validateUserInformation(String email, String password, String name, String phoneNumber, Boolean isEmployee) {
-        if (email == null || name == null || password == null || phoneNumber == null 
-            || email.contains(" ") || !email.matches("^.+@.+\\..+$") 
-            || password.isEmpty()) {
-            return "Invalid user information.";
+    private static String validateEmployeeOrGuestEmail(String email, Boolean isEmployee) {
+        if (email == null) {
+            return "Email cannot be null. ";
         }
-
+        
+        if (email.contains(" ")) {
+            return "Email must not contain spaces. ";
+        }
+        
+        int atIndex = email.indexOf("@");
+        int lastAtindex = email.lastIndexOf("@");
+        int dotIndex = email.lastIndexOf(".");
+        
+        if (atIndex <= 0 || atIndex != lastAtindex || atIndex >= dotIndex - 1 || dotIndex >= email.length() - 1) {
+            return "Invalid email format. ";
+        }
+    
         if (isEmployee != null) {
             if (isEmployee && !email.endsWith("@ap.com")) {
-                return "Employee email domain must be @ap.com.";
+                return "Employee email domain must be @ap.com. ";
             } else if (!isEmployee && email.endsWith("@ap.com")) {
-                return "Guest email domain cannot be @ap.com.";
+                return "Guest email domain cannot be @ap.com. ";
             }
         }
-        return null;
+
+         if (email.equals("manager@ap.com")) {
+            return "Employee or guest email cannot be equal to manager@ap.com. ";
+        }
+        
+        return "";
+    }
+
+    private static String validatePassword(String password) {
+        if (password == null) {
+            return "Password cannot be null. ";
+        }
+        if (password.isEmpty()) {
+            return "Password cannot be empty. ";
+        }
+        return "";
+    }
+
+    private static String validateManagerPassword(String password) {
+        String error = validatePassword(password);
+
+        if (!error.isEmpty()) {
+            return error;
+        }
+        if (password.length() <= 3) {
+            return "Password must be at least 4 characters long. ";
+        }
+        if (!password.matches(".*[!#$].*")) {
+            return "Password must contain at least one of the special characters: !, #, $. ";
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            return "Password must contain at least one uppercase letter. ";
+        }
+        if (!password.matches(".*[a-z].*")) {
+            return "Password must contain at least one lowercase letter. ";
+        }
+        return "";
+    }
+
+    private static String validateName(String name) {
+        return name != null ? "" : "Name cannot be null. ";
+    }
+
+    private static String validatePhoneNumber(String phoneNumber) {
+        return phoneNumber != null ? "" : "Phone number cannot be null. ";
     }
 }

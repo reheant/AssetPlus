@@ -9,8 +9,8 @@ public class AssetPlusFeatureSet1Controller {
     /**
      * Updates the password of the manager in the system.
      * @author Nicolas Bolouri
-     * @param password The new password for the manager must be >=4 characters, contain !#$, an uppercase, and a lowercase lette.r
-     * @return A string message indicating the success or failure of the operation.
+     * @param password The new password for the manager must be >=4 characters, contain !#$, an uppercase, and a lowercase letter.
+     * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String updateManager(String password) {
         try {
@@ -18,7 +18,7 @@ public class AssetPlusFeatureSet1Controller {
                 return "Manager not found or invalid password.";
             }
             assetPlus.getManager().setPassword(password);
-            return "Manager password updated successfully.";
+            return "";
         } catch (NullPointerException e) {
             return "Error: AssetPlus or Manager is not initialized.";
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class AssetPlusFeatureSet1Controller {
      * @param name The name of the new user, cannot be null.
      * @param phoneNumber The phone number of the new user, cannot be null.
      * @param isEmployee A boolean indicating whether the new user is an Employee (true) or Guest (false).
-     * @return A string message indicating the success or failure of the operation.
+     * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String addEmployeeOrGuest(String email, String password, String name, String phoneNumber, boolean isEmployee) {
         try {
@@ -45,11 +45,10 @@ public class AssetPlusFeatureSet1Controller {
 
             if (isEmployee) {
                 assetPlus.addEmployee(email, name, password, phoneNumber);
-                return "Employee added successfully.";
             } else {
                 assetPlus.addGuest(email, name, password, phoneNumber);
-                return "Guest added successfully.";
             }
+            return ""; 
         } catch (Exception e) {
             return "An error occurred while adding the user: " + e.getMessage();
         }
@@ -62,7 +61,7 @@ public class AssetPlusFeatureSet1Controller {
      * @param newPassword The new password to be set for the user, cannot be null or empty.
      * @param newName The new name to be set for the user, cannot be null.
      * @param newPhoneNumber The new phone number to be set for the user, cannot be null.
-     * @return A string message indicating the success or failure of the operation.
+     * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String updateEmployeeOrGuest(String email, String newPassword, String newName, String newPhoneNumber) {
         try {
@@ -79,7 +78,7 @@ public class AssetPlusFeatureSet1Controller {
             user.setPassword(newPassword);
             user.setName(newName);
             user.setPhoneNumber(newPhoneNumber);
-            return "User updated successfully.";
+            return ""; 
         } catch (Exception e) {
             return "An error occurred while updating the user: " + e.getMessage();
         }

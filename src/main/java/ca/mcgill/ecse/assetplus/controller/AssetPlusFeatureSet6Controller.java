@@ -10,75 +10,56 @@ import ca.mcgill.ecse.assetplus.controller.*;
 public class AssetPlusFeatureSet6Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
-
+  // Method 1
   public static void deleteEmployeeOrGuest(String email) {
-    List<Employee> employees = assetPlus.getEmployees();
+    User user = User.getWithEmail(email);
 
-    List<Guest> guests = assetPlus.getGuests();
+    if (user == null) {
+      throw new NullPointerException("User not found.");
+    }
 
-    try{
-      if (email.endsWith("@ap.com"));
-        for (Employee employee : employees){
-          if (employee.getEmail() == email){
-            employee.delete();
-          }
-        }
-      for (Guest guest : guests){
-        if (guest.getEmail() == email){
-          guest.delete();
-        }
-      }
-    }
-    catch (Exception e) {
-      System.out.println("Employee/Guest could not be deleted.");
-    }
+    user.delete();
   }
-  // returns all tickets
+
+  // Method 2
   public static List<TOMaintenanceTicket> getTickets() {
-    List<MaintenanceTicket> MaintenanceTickets = assetPlus.getMaintenanceTickets();
-    List<TOMaintenanceTicket> TOMaintenanceTickets = new ArrayList<>();
+    List<MaintenanceTicket> maintenanceTickets = assetPlus.getMaintenanceTickets();
+    List<TOMaintenanceTicket> maintenanceTicketsTO = new ArrayList<>();
 
     for (MaintenanceTicket maintenanceTicket : MaintenanceTickets){
-      int Id = maintenanceTicket.getId();
-      var RaisedOnDate = maintenanceTicket.getRaisedOnDate();
-      String Description = maintenanceTicket.getDescription();
-      String RaisedByEmail = maintenanceTicket.getRaisedByEmail(); //Getter?
-      String AssetName = maintenanceTicket.getAssetType().getName(); //GEtter?
-      int ExpectLifeSpanInDays = maintenanceTicket.getAssetType().getExpectLifeSpanInDays(); //Getter?
-      var PurchaseDate = maintenanceTicket.getAsset().getPurchaseDate();
-      int FloorNumber = maintenanceTicket.getAsset().getFloorNumber();
-      int RoomNumber = maintenanceTicket.getAsset().getRoomNumber();
+      int id = maintenanceTicket.getId();
+      Date raisedOnDate = maintenanceTicket.getRaisedOnDate();
+      String description = maintenanceTicket.getDescription();
 
-      List<TicketImage> TicketImages = maintenanceTicket.getTicketImages();
-      List<String> ImageURLs = new ArrayList<>();
+      // INCOMPLETE 
+      String raisedByEmail = maintenanceTicket.getTicketRaiser().getEmail(); 
+      String assetName = maintenanceTicket.getAsset().getAssetType().getName();
+      int expectLifeSpanInDays = maintenanceTicket.getAsset().getExpectLifeSpanInDays(); //Getter?
+      Date purchaseDate = maintenanceTicket.getAsset().getPurchaseDate();
+      int floorNumber = maintenanceTicket.getAsset().getFloorNumber();
+      int roomNumber = maintenanceTicket.getAsset().getRoomNumber();
 
-      for (TicketImage ticketImage : TicketImages){
+      List<TicketImage> ticketImages = maintenanceTicket.getTicketImages();
+      List<String> imageURLs = new ArrayList<>();
+
+      for (TicketImage ticketImage : ticketImages){
         ImageURLs.add(ticketImage.getImageURL());
       }
 
-      List<MaintenanceNote> Notes = maintenanceTicket.getTicketNotes();
-      List<TOMaintenanceNote> TOMaintenanceNotes = new ArrayList<>();
+      List<MaintenanceNote> notes = maintenanceTicket.getTicketNotes();
+      List<TOMaintenanceNote> maintenanceNotesTO = new TOMaintenanceNote[notes.size()];
 
-      for (MaintenanceNote maintenanceNote : Notes){
-        TOMaintenanceNotes.add(maintenanceNote.getDate());
-        TOMaintenanceNotes.add(maintenanceNote.getDescription());
-        TOMaintenanceNotes.add(maintenanceNote.getNoteTaker());
+      int index = 0;
+      for (MaintenanceNote maintenanceNote : notes) {
+        maintenanceNotesTO[index] = new TOMaintenanceNote(maintenanceNote.getDate(), maintenanceNote.getDescription(), maintenanceNote.getNoteTaker());
+        index++;
       }
 
-      TOMaintenanceTicket currTOMaintenanceTicket = new TOMaintenanceTicket(Id, null, Description, RaisedByEmail, AssetName, ExpectLifeSpanInDays, null, FloorNumber, RoomNumber, ImageURLs, null);
-      TOMaintenanceTickets.add(currTOMaintenanceTicket);
-
+      TOMaintenanceTicket currTOMaintenanceTicket = new TOMaintenanceTicket(id, raisedOnDate, description, raisedByEmail, assetName, expectLifeSpanInDays, purchaseDate, floorNumber, roomNumber, imageURLs, maintenanceNotesTO);
+      maintenanceTicketsTO.add(currTOMaintenanceTicket);
     }
+
+    return maintenanceTicketsTO;
     
   }
-  
-
-  private static AssetType assetType;
-  public static AssetType getAssetType(){
-    if (assetType == null) {
-      assetType = new AssetType(null, 0, assetPlus);
-    }
-    return assetType;
-  }
-
 }

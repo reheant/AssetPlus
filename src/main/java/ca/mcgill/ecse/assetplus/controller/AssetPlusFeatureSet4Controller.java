@@ -12,6 +12,7 @@ public class AssetPlusFeatureSet4Controller {
   final private static int UNSPECIFIED_ASSET_NUMBER = -1;
 
   /**
+   * Adds a maintenance ticket to the system.
    * @author Julien Audet
    * @param id The id of the maintenance ticket to create. Must be > 0.
    * @param raisedOnDate The date at which the ticket was raised.
@@ -60,12 +61,13 @@ public class AssetPlusFeatureSet4Controller {
   }
 
   /**
+   * Updates the details of an existing maintenance ticket in the system.
    * @author Julien Audet
-   * @param id The id of the maintenance ticket to create. Must be > 0.
+   * @param id The id of the maintenance ticket to create. Must be >= 0.
    * @param newRaisedOnDate The date at which the ticket was raised.
    * @param newDescription A description of why the ticket is being raised.
    * @param newEmail The email of the user raising the ticket.
-   * @param newAssetNumber The asset number of the asset in need of maintenance. Must be > 1. Can be -1 to avoid specifying asset. 
+   * @param newAssetNumber The asset number of the asset in need of maintenance. Must be >= 1. Can be -1 to avoid specifying asset. 
    * @return An empty string indicating success. An error message if failure.
    */
   public static String updateMaintenanceTicket(int id, Date newRaisedOnDate, String newDescription,
@@ -77,41 +79,38 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidRaisedOnDate(newRaisedOnDate);
     error += assertValidTicketDescription(newDescription);
     error += assertValidAssetNumber(newAssetNumber);
+    
+    User newTicketRaiser = User.getWithEmail(newEmail);
+    if (newTicketRaiser == null) {
+      error += "No account corresponds to the provided email: a valid email must be provided";
+    }
+    
+    MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
+    if (existingMaintenanceTicket == null) {
+      error += "Error: Inexisting maintenance ticket id provided.";
+    }
 
+    SpecificAsset newAsset = null;
+    if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
+      newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
+      if (newAsset == null) {
+        error += "Error: Inexisting asset ID provided.";
+      }
+    }
+    
     if (!error.isEmpty()) {
       return error.trim();
     }
     
     try {
-      MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
-      if (existingMaintenanceTicket == null) {
-        return "Error: Inexisting maintenance ticket id provided.";
-      }
 
-      if (newRaisedOnDate != null
-          && !newRaisedOnDate.equals(existingMaintenanceTicket.getRaisedOnDate())) {
         existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
-      }
-
-      if (newDescription != null
-          && !newDescription.equals(existingMaintenanceTicket.getDescription())) {
         existingMaintenanceTicket.setDescription(newDescription);
-      }
 
-      if (newEmail != null
-          && !newEmail.equals(existingMaintenanceTicket.getTicketRaiser().getEmail())) {
-        User newTicketRaiser = User.getWithEmail(newEmail);
-        if (newTicketRaiser != null) {
-          existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
-        }
-      }
-
-      if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
-        SpecificAsset newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
-        if (newAsset != null) {
+        if (newAsset != null) {  // validity checks already performed, this would come up if asset is correctly unspecified.
           existingMaintenanceTicket.setAsset(newAsset);
         }
-      }
+
     } catch (Exception e) {
       return "An unexpected error occured: " + e.getMessage();
     }
@@ -119,6 +118,7 @@ public class AssetPlusFeatureSet4Controller {
   }
 
   /**
+   * Deletes an existing maintenance ticket from the system.
    * @author Julien Audet
    * @param id The id of the maintenance ticket to create. Must be > 0.
    */
@@ -133,12 +133,7 @@ public class AssetPlusFeatureSet4Controller {
       throw new InvalidParameterException(
           "Ticket with provided ticket id does not exist in the system");
     }
-    boolean ret = assetPlus.removeMaintenanceTicket(maintenanceTicket);
-    if (!ret) {
-      // TODO update to match gherkin message
-      throw new RuntimeException(
-          "Error: AssetPlus explicitely rejected deleting maintenance ticket");
-    }
+    maintenanceTicket.delete();
   }
 
 

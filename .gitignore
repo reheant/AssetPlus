@@ -11,5 +11,3 @@ bin
 */**/__pycache__
 
 **/*.class
-
-.settings

@@ -90,10 +90,22 @@ public class AssetPlusFeatureSet1Controller {
         return "";
     }
 
+     /**
+     * Checks if a manager is available in the AssetPlus system.
+     * @author Nicolas Bolouri
+     * @return An error message if the manager is not found, or an empty string if the manager is available.
+     */
     private static String assertManagerAvailable() {
         return assetPlus.hasManager() ? "" : "Manager not found. ";
     }
 
+    /**
+     * Validates the email of an Employee or Guest according to specific constraints.
+     * @author Nicolas Bolouri
+     * @param email The email to be validated.
+     * @param isEmployee A Boolean indicating whether the email belongs to an Employee (true) or Guest (false); can be null.
+     * @return A specific error message if the email is invalid, or an empty string if the email is valid.
+     */
     private static String validateEmployeeOrGuestEmail(String email, Boolean isEmployee) {
         if (email == null) {
             return "Email cannot be null. ";
@@ -126,6 +138,12 @@ public class AssetPlusFeatureSet1Controller {
         return "";
     }
 
+    /**
+     * Validates the password according to basic constraints.
+     * @author Nicolas Bolouri
+     * @param password The password to be validated.
+     * @return A specific error message if the password is invalid, or an empty string if the password is valid.
+     */
     private static String validatePassword(String password) {
         if (password == null) {
             return "Password cannot be null. ";
@@ -136,6 +154,12 @@ public class AssetPlusFeatureSet1Controller {
         return "";
     }
 
+    /**
+     * Validates the password of the manager according to specific constraints.
+     * @author Nicolas Bolouri
+     * @param password The password to be validated.
+     * @return A specific error message if the password is invalid, or an empty string if the password is valid.
+     */
     private static String validateManagerPassword(String password) {
         String error = validatePassword(password);
 
@@ -157,10 +181,22 @@ public class AssetPlusFeatureSet1Controller {
         return "";
     }
 
+    /**
+     * Validates the name according to basic constraints.
+     * @author Nicolas Bolouri
+     * @param name The name to be validated.
+     * @return A specific error message if the name is invalid, or an empty string if the name is valid.
+     */
     private static String validateName(String name) {
         return name != null ? "" : "Name cannot be null. ";
     }
 
+    /**
+     * Validates the phone number according to basic constraints.
+     * @author Nicolas Bolouri
+     * @param phoneNumber The phone number to be validated.
+     * @return A specific error message if the phone number is invalid, or an empty string if the phone number is valid.
+     */
     private static String validatePhoneNumber(String phoneNumber) {
         return phoneNumber != null ? "" : "Phone number cannot be null. ";
     }

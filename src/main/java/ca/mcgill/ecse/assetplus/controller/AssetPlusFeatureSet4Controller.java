@@ -137,6 +137,10 @@ public class AssetPlusFeatureSet4Controller {
   }
 
 
+  /**
+   * Asserts that the AssetPlus app was initialized
+   * @return an empty string if AssetPlus was initialized, an error string if AssetPlus was not initialized.
+   */
   private static String assertAssetPlusInitialized() {
     if (assetPlus == null) {
       return "Error: AssetPlus is not initialized.";
@@ -144,6 +148,11 @@ public class AssetPlusFeatureSet4Controller {
     return "";
   }
 
+  /**
+   * Asserts that the provided ticket id is valid
+   * @param id the ticket id to validate
+   * @return an empty string if the id is valid, an error string if the id is invalid.
+   */
   private static String assertValidTicketId(int id) {
     if (id < 0) {
       return "Error: An invalid ticket ID was provided: provided ticket id is negative. ";
@@ -151,6 +160,11 @@ public class AssetPlusFeatureSet4Controller {
     return "";
   }
 
+  /**
+   * Asserts that the provided ticket raising date is valid
+   * @param date the date at which the ticket was raised
+   * @return an empty string if the date is valid, an error string if the date is invalid.
+   */
   private static String assertValidRaisedOnDate(Date date) {
     if (date == null) {
       return "Error: An invalid ticket creation date was provided: provided date is null. ";
@@ -158,6 +172,11 @@ public class AssetPlusFeatureSet4Controller {
     return "";
   }
 
+  /**
+   * Asserts that the provided ticket description is valid
+   * @param description the description of the ticket
+   * @return an empty string if the description is valid, an error string if the description is invalid.
+   */
   private static String assertValidTicketDescription(String description) {
     if (description == null || description.isEmpty()) {
       return "Error: An invalid ticket description was provided: rovided description is either null or empty. ";
@@ -165,6 +184,11 @@ public class AssetPlusFeatureSet4Controller {
     return "";
   }
 
+  /**
+   * Asserts that the provided asset number is valid
+   * @param assetNumber the number of the asset to link to the ticket
+   * @return an empty string if the asset number is valid, an error string if the asset number is invalid.
+   */
   private static String assertValidAssetNumber(int assetNumber) {
     if (assetNumber == UNSPECIFIED_ASSET_NUMBER) {
       return "";

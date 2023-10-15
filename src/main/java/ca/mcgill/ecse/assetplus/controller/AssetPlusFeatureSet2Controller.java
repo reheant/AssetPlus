@@ -64,7 +64,7 @@ public class AssetPlusFeatureSet2Controller {
    * @param name The name of the asset type to delete. Must not be empty or null.
    */
   public static void deleteAssetType(String name) {
-	  AssetType assetType = AssetType.getWithName(name);
+      AssetType assetType = AssetType.getWithName(name);
       if (assetType == null) {
     	  throw new NullPointerException("No such asset type");
       }

@@ -13,12 +13,14 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Adds a maintenance ticket to the system.
+   * 
    * @author Julien Audet
    * @param id The id of the maintenance ticket to create. Must be > 0.
    * @param raisedOnDate The date at which the ticket was raised.
    * @param description A description of why the ticket is being raised.
    * @param email The email of the user raising the ticket.
-   * @param assetNumber The asset number of the asset in need of maintenance. Must be > 1. Can be -1 to avoid specifying asset. 
+   * @param assetNumber The asset number of the asset in need of maintenance. Must be > 1. Can be -1
+   *        to avoid specifying asset.
    * @return An empty string indicating success. An error message if failure.
    */
   public static String addMaintenanceTicket(int id, Date raisedOnDate, String description,
@@ -62,12 +64,14 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Updates the details of an existing maintenance ticket in the system.
+   * 
    * @author Julien Audet
    * @param id The id of the maintenance ticket to create. Must be >= 0.
    * @param newRaisedOnDate The date at which the ticket was raised.
    * @param newDescription A description of why the ticket is being raised.
    * @param newEmail The email of the user raising the ticket.
-   * @param newAssetNumber The asset number of the asset in need of maintenance. Must be >= 1. Can be -1 to avoid specifying asset. 
+   * @param newAssetNumber The asset number of the asset in need of maintenance. Must be >= 1. Can
+   *        be -1 to avoid specifying asset.
    * @return An empty string indicating success. An error message if failure.
    */
   public static String updateMaintenanceTicket(int id, Date newRaisedOnDate, String newDescription,
@@ -79,12 +83,12 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidRaisedOnDate(newRaisedOnDate);
     error += assertValidTicketDescription(newDescription);
     error += assertValidAssetNumber(newAssetNumber);
-    
+
     User newTicketRaiser = User.getWithEmail(newEmail);
     if (newTicketRaiser == null) {
       error += "No account corresponds to the provided email: a valid email must be provided";
     }
-    
+
     MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
     if (existingMaintenanceTicket == null) {
       error += "Error: Inexisting maintenance ticket id provided.";
@@ -97,19 +101,20 @@ public class AssetPlusFeatureSet4Controller {
         error += "Error: Inexisting asset ID provided.";
       }
     }
-    
+
     if (!error.isEmpty()) {
       return error.trim();
     }
-    
+
     try {
 
-        existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
-        existingMaintenanceTicket.setDescription(newDescription);
+      existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
+      existingMaintenanceTicket.setDescription(newDescription);
 
-        if (newAsset != null) {  // validity checks already performed, this would come up if asset is correctly unspecified.
-          existingMaintenanceTicket.setAsset(newAsset);
-        }
+      if (newAsset != null) { // validity checks already performed, this would come up if asset is
+                              // correctly unspecified.
+        existingMaintenanceTicket.setAsset(newAsset);
+      }
 
     } catch (Exception e) {
       return "An unexpected error occured: " + e.getMessage();
@@ -119,6 +124,7 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Deletes an existing maintenance ticket from the system.
+   * 
    * @author Julien Audet
    * @param id The id of the maintenance ticket to create. Must be > 0.
    */
@@ -139,7 +145,9 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Asserts that the AssetPlus app was initialized
-   * @return an empty string if AssetPlus was initialized, an error string if AssetPlus was not initialized.
+   * 
+   * @return an empty string if AssetPlus was initialized, an error string if AssetPlus was not
+   *         initialized.
    */
   private static String assertAssetPlusInitialized() {
     if (assetPlus == null) {
@@ -150,6 +158,7 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Asserts that the provided ticket id is valid
+   * 
    * @param id the ticket id to validate
    * @return an empty string if the id is valid, an error string if the id is invalid.
    */
@@ -162,6 +171,7 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Asserts that the provided ticket raising date is valid
+   * 
    * @param date the date at which the ticket was raised
    * @return an empty string if the date is valid, an error string if the date is invalid.
    */
@@ -174,8 +184,10 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Asserts that the provided ticket description is valid
+   * 
    * @param description the description of the ticket
-   * @return an empty string if the description is valid, an error string if the description is invalid.
+   * @return an empty string if the description is valid, an error string if the description is
+   *         invalid.
    */
   private static String assertValidTicketDescription(String description) {
     if (description == null || description.isEmpty()) {
@@ -186,8 +198,10 @@ public class AssetPlusFeatureSet4Controller {
 
   /**
    * Asserts that the provided asset number is valid
+   * 
    * @param assetNumber the number of the asset to link to the ticket
-   * @return an empty string if the asset number is valid, an error string if the asset number is invalid.
+   * @return an empty string if the asset number is valid, an error string if the asset number is
+   *         invalid.
    */
   private static String assertValidAssetNumber(int assetNumber) {
     if (assetNumber == UNSPECIFIED_ASSET_NUMBER) {

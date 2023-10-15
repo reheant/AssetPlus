@@ -11,11 +11,10 @@ public class AssetPlusFeatureSet6Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
   /**
-     * Deletes an Employee or Guest from the AssetPlus system
-     * @author Liam Di Chiro
-     * @param email the email of an Employee or Guest, must be of type String
-     */
-  
+    * Deletes an Employee or Guest from the AssetPlus system
+    * @author Liam Di Chiro
+    * @param email the email of an Employee or Guest, must be of type String
+    */
   public static void deleteEmployeeOrGuest(String email) {
     User user = User.getWithEmail(email);
 
@@ -26,11 +25,11 @@ public class AssetPlusFeatureSet6Controller {
     user.delete();
   }
 
-    /**
-     * Returns a list of maintenance tickets from the AssetPlus system
-     * @author Liam Di Chiro
-     * @return A List of type TOMaintenanceTicket of all of the maintenance tickets 
-     */
+  /**
+    * Returns a list of maintenance tickets from the AssetPlus system
+    * @author Liam Di Chiro
+    * @return A List of type TOMaintenanceTicket of all of the maintenance tickets 
+    */
   public static List<TOMaintenanceTicket> getTickets() {
     List<MaintenanceTicket> maintenanceTickets = assetPlus.getMaintenanceTickets();
     List<TOMaintenanceTicket> maintenanceTicketsTO = new ArrayList<>();

@@ -64,16 +64,11 @@ public class AssetPlusFeatureSet2Controller {
    * @param name The name of the asset type to delete. Must not be empty or null.
    */
   public static void deleteAssetType(String name) {
-      try {
-		  AssetType assetType = AssetType.getWithName(name);
-	      if (assetType != null) {
-	          assetType.delete();
-	      }
+	  AssetType assetType = AssetType.getWithName(name);
+      if (assetType == null) {
+    	  throw new NullPointerException("No such asset type");
       }
-      catch (RuntimeException e) {
-	    	  throw new NullPointerException("No such asset type");
-	      }
-
+      assetType.delete();    
   }
   
   /**
@@ -99,9 +94,8 @@ public class AssetPlusFeatureSet2Controller {
         if (expectedLifeSpan <= 0) {
             return "Not a valid life span input. ";
         }
-        else{
+        else {
             return "";
         }
-    }
-
+    }  
 }

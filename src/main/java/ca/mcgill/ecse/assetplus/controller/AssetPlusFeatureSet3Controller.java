@@ -87,14 +87,11 @@ public class AssetPlusFeatureSet3Controller {
    */
   public static void deleteSpecificAsset(int assetNumber) {
 
-    try {
-      SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
-      if (specificAsset != null) {
-        assetPlus.removeSpecificAsset(specificAsset);
-      }
-    } catch (RuntimeException e) {
+    SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
+    if (specificAsset == null) {
       throw new InvalidParameterException("asset number is invalid");
     }
+    specificAsset.delete();
   }
 
   /**

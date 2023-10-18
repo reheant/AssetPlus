@@ -90,7 +90,7 @@ public class AssetPlusFeatureSet3Controller {
 
     SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
     if (specificAsset == null) {
-      throw new InvalidParameterException("asset number is invalid");
+      throw new InvalidParameterException("The asset type does not exist");
     }
     specificAsset.delete();
   }
@@ -102,7 +102,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidAssetNumber(int assetNumber) {
     if (assetNumber < 1) {
-      return "Error: Asset number is invalid.";
+      return "The asset number shall not be less than 1";
     }
     return "";
   }
@@ -114,7 +114,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidFloorNumber(int floorNumber) {
     if (floorNumber < 0) {
-      return "Error: Asset number is invalid.";
+      return "The floor number shall not be less than 0";
     }
     return "";
   }
@@ -126,7 +126,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidRoomNumber(int roomNumber) {
     if (roomNumber < -1) {
-      return "Error: Asset number is invalid.";
+      return "The room number shall not be less than -1";
     }
     return "";
   }

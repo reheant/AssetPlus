@@ -49,7 +49,8 @@ public class AssetPlusFeatureSet3Controller {
    * @author Rehean Thillainathalingam
    * @param assetNumber The asset number of the asset, must be a greater than or equal to one.
    * @param newfloorNumber The new floor number of the asset, must be greater than or equal to zero
-   * @param newroomNumber The new room number of the asset, must be greater than or equal to minus one
+   * @param newroomNumber The new room number of the asset, must be greater than or equal to minus
+   *        one
    * @param newpurchaseDate The new purchase date of the asset, must not be empty or null.
    * @param newassetTypeName The new asset type name of the asset, must not be empty or null.
    * @return An empty string indicating success. An error message if failure.
@@ -144,7 +145,8 @@ public class AssetPlusFeatureSet3Controller {
 
   /**
    * @author Rehean Thillainathalingam
-   * @param name The name of the asset type, must not be null, empty and must exist in the created asset types.
+   * @param name The name of the asset type, must not be null, empty and must exist in the created
+   *        asset types.
    * @return An empty string indicating success. An error message if failure.
    */
   private static String assertValidTypeName(String name) {

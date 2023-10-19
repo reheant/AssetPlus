@@ -28,7 +28,7 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_employees_exist_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
     List<List<String>> rows = dataTable.asLists(String.class);
-    for (int i = 1; i<rows.size(); i++) {
+    for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       String email = row.get(0);
       String password = row.get(1);
@@ -49,13 +49,13 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_manager_exists_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
-    for (int i = 0; i<rows.size(); i++) {
+    for (int i = 0; i < rows.size(); i++) {
       Map<String, String> row = rows.get(i);
       String email = row.get("email");
       String password = row.get("password");
-      System.out.println("first row: " +  email + password + " eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-      Manager manager =
-          new Manager(email, "manager", password, "(123)456-7890", assetPlus);
+      System.out.println("first row: " + email + password
+          + " eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      Manager manager = new Manager(email, "manager", password, "(123)456-7890", assetPlus);
       assetPlus.setManager(manager);
     }
     error = "";
@@ -71,10 +71,11 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_guests_exist_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
     List<List<String>> rows = dataTable.asLists(String.class);
-    for (int i = 1; i<rows.size(); i++) {
+    for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       String email = row.get(0);
-      System.out.println("email: " + email + " ###################################################################################################################");
+      System.out.println("email: " + email
+          + " ###################################################################################################################");
       String password = row.get(1);
       String name = row.get(2);
       String phoneNumber = row.get(3);
@@ -93,7 +94,7 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_asset_types_exist_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
-    for (int i = 0; i<rows.size(); i++) {
+    for (int i = 0; i < rows.size(); i++) {
       Map<String, String> row = rows.get(i);
       String name = row.get("name");
       int lifeSpan = Integer.parseInt(row.get("expectedLifeSpan"));
@@ -112,7 +113,7 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_assets_exist_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
     List<List<String>> rows = dataTable.asLists(String.class);
-    for (int i = 1; i<rows.size(); i++) {
+    for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       int assetNumber = Integer.parseInt(row.get(0));
       AssetType type = AssetType.getWithName(row.get(1));
@@ -133,7 +134,7 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_tickets_exist_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
     List<List<String>> rows = dataTable.asLists(String.class);
-    for (int i = 1; i<rows.size(); i++) {
+    for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       int id = Integer.parseInt(row.get(0));
       String ticketRaiser = row.get(1);
@@ -262,7 +263,7 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
     List<List<String>> expectedTickets = new ArrayList<List<String>>();
     List<List<String>> actualTickets = new ArrayList<List<String>>();
     List<List<String>> rows = dataTable.asLists(String.class);
-    for (int i = 1; i<rows.size(); i++) {
+    for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       List<String> oneTicket = new ArrayList<String>();
       String id = row.get(0);

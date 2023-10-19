@@ -54,7 +54,7 @@ public class AssetPlusFeatureSet4Controller {
       }
 
     } catch (Exception e) {
-      if (e.getMessage().contains("Cannot create due to duplicate id.")){
+      if (e.getMessage().contains("Cannot create due to duplicate id.")) {
         return "Ticket id already exists";
       }
 
@@ -130,7 +130,7 @@ public class AssetPlusFeatureSet4Controller {
 
     try {
 
-      
+
       existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
       existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
       existingMaintenanceTicket.setDescription(newDescription);
@@ -229,8 +229,8 @@ public class AssetPlusFeatureSet4Controller {
       return "";
     } else if (assetNumber < 1) {
       return "Error: An invalid asset number was provided: assetNumber is < 1";
-    }        
-    
+    }
+
     SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
     if (aAsset == null) {
       return "The asset does not exist";

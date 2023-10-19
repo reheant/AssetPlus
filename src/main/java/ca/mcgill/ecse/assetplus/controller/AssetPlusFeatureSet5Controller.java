@@ -9,11 +9,11 @@ import java.util.List;
 public class AssetPlusFeatureSet5Controller {
 
     /**
+     * @author Luke Freund
      * @param imageURL The URL of the image to be added to the maintenance ticket. Must not be empty or null, must
      *                 start with either http:// or https://, two imageURLs of the same ticket cannot be the same.
      * @param ticketID The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
-     * @author Luke Freund
      */
     public static String addImageToMaintenanceTicket(String imageURL, int ticketID) {
         try {
@@ -39,10 +39,10 @@ public class AssetPlusFeatureSet5Controller {
     }
 
     /**
+     * @author Luke Freund
      * @param imageURL The URL of the image to be removed from the maintenance ticket. Must not be empty or null, must
      *                 start with either http:// or https://, two imageURLs of the same ticket cannot be the same.
      * @param ticketID The unique identifier of the maintenance ticket.
-     * @author Luke Freund
      */
     public static void deleteImageFromMaintenanceTicket(String imageURL, int ticketID) {
         MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
@@ -66,6 +66,12 @@ public class AssetPlusFeatureSet5Controller {
         }
     }
 
+    /**
+     * @author Luke Freund
+     * @param imageURL The URL of the image to validated. Must not be empty or null, must
+     *                 start with either http:// or https://.
+     * @return An empty string indicating success. An error message if failure.
+     */
     private static String assertValidImageURL(String imageURL) {
         if (imageURL == null || imageURL.isEmpty()) {
             return "Image URL must not be empty or null";
@@ -76,13 +82,25 @@ public class AssetPlusFeatureSet5Controller {
         return "";
     }
 
+    /**
+     * @author Luke Freund
+     * @param ticketID The unique identifier of the maintenance ticket.
+     * @param ticket The maintenance ticket. Must exist.
+     * @return An empty string indicating success. An error message if failure.
+     */
     private static String assertTicketExists(MaintenanceTicket ticket, int ticketID) {
         if (ticket == null) {
-            return String.format("String with ticketID %d not found", ticketID);
+            return String.format("Ticket with ticketID %d not found", ticketID);
         }
         return "";
     }
 
+    /**
+     * @author Luke Freund
+     * @param imageURL The URL of the image to validated. Two imageURLs of the same ticket cannot be the same.
+     * @param ticket The maintenance ticket. Must exist.
+     * @return An empty string indicating success. An error message if failure.
+     */
     private static String assertNoSameImageURL(String imageURL, MaintenanceTicket ticket) {
         if (ticket == null) {
             return "";
@@ -98,5 +116,4 @@ public class AssetPlusFeatureSet5Controller {
         }
         return "";
     }
-
 }

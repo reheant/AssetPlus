@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-_Provide a one-sentence overview of your project here._
+AssetPlus is intended to be used by hotel staff to effectively manage hotel assets such as furniture and appliances in rooms and hallways of a hotel as well as maintenance tasks.
 
 For more information about the AssetPlus application, please consult the [wiki](../../wiki).
 

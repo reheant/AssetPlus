@@ -88,13 +88,13 @@ As a ticket raiser, I want to add and update a maintenance ticket in the system.
     When the manager attempts to update the maintenance ticket with id "<id>" to ticket raiser "<newTicketRaiser>", date "<newRaisedOnDate>", description "<newDescription>", and asset number "<newAssetNumber>" (p16)
     Then the number of tickets in the system shall be "2" (p16)
     Then the following tickets shall exist in the system (p16)
-      | id | ticketRaiser   | raisedOnDate | description                   | assetNumber |
-      |  1 | manager@ap.com |   2023-07-20 | This is a dummy description 1 |           2 |
-      |  2 | smith@ap.com   |   2023-07-10 | This is a dummy description 2 |           1 |
+      | id | newTicketRaiser | newRaisedOnDate | newDescription                | newAssetNumber |
+      |  1 | manager@ap.com  |      2023-07-20 | This is a dummy description 1 |              2 |
+      |  2 | smith@ap.com    |      2023-07-10 | This is a dummy description 2 |              1 |
     Then the system shall raise the error "<error>" (p16)
 
     Examples: 
-      | id | ticketRaiser   | raisedOnDate | description                   | assetNumber | error                              |
-      |  3 | manager@ap.com |   2023-09-23 | This is a dummy description 1 |           3 | The asset does not exist           |
-      |  3 | none@ap.com    |   2023-09-23 | This is a dummy description 1 |           1 | The ticket raiser does not exist   |
-      |  3 | smith@ap.com   |   2023-09-23 |                               |           1 | Ticket description cannot be empty |
+      | id | newTicketRaiser | newRaisedOnDate | newDescription                | newAssetNumber | error                              |
+      |  3 | manager@ap.com  |      2023-09-23 | This is a dummy description 1 |              3 | The asset does not exist           |
+      |  3 | none@ap.com     |      2023-09-23 | This is a dummy description 1 |              1 | The ticket raiser does not exist   |
+      |  3 | smith@ap.com    |      2023-09-23 |                               |              1 | Ticket description cannot be empty |

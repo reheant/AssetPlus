@@ -40,7 +40,7 @@ public class AssetPlusFeatureSet4Controller {
     try {
       User aTicketRaiser = User.getWithEmail(email);
       if (aTicketRaiser == null) {
-        return "An existing ticket raiser must be specified to create a maintenance ticket.";
+        return "The ticket raiser does not exist";
       }
 
       MaintenanceTicket maintenanceTicket =
@@ -48,15 +48,16 @@ public class AssetPlusFeatureSet4Controller {
 
       if (assetNumber != UNSPECIFIED_ASSET_NUMBER) {
         SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
-        if (aAsset == null) {
-          return "Error: An inexisting asset number was provided.";
+        if (aAsset != null) {
+          maintenanceTicket.setAsset(aAsset);
         }
-        maintenanceTicket.setAsset(aAsset);
       }
 
-      assetPlus.addMaintenanceTicket(maintenanceTicket);
-
     } catch (Exception e) {
+      if (e.getMessage().contains("Cannot create due to duplicate id.")) {
+        return "Ticket id already exists";
+      }
+
       return "An unexpected error occured: " + e.getMessage();
     }
     return "";
@@ -79,26 +80,47 @@ public class AssetPlusFeatureSet4Controller {
 
     var error = "";
     error += assertAssetPlusInitialized();
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidTicketId(id);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidRaisedOnDate(newRaisedOnDate);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidTicketDescription(newDescription);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidAssetNumber(newAssetNumber);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
 
     User newTicketRaiser = User.getWithEmail(newEmail);
     if (newTicketRaiser == null) {
-      error += "No account corresponds to the provided email: a valid email must be provided";
+      error += "The ticket raiser does not exist ";
+    }
+    if (!error.isEmpty()) {
+      return error.trim();
     }
 
     MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
     if (existingMaintenanceTicket == null) {
-      error += "Error: Inexisting maintenance ticket id provided.";
+      error += "The ticket does not exist ";
+    }
+    if (!error.isEmpty()) {
+      return error.trim();
     }
 
     SpecificAsset newAsset = null;
     if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
       newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
       if (newAsset == null) {
-        error += "Error: Inexisting asset ID provided.";
+        error += "The asset does not exist ";
       }
     }
 
@@ -108,13 +130,12 @@ public class AssetPlusFeatureSet4Controller {
 
     try {
 
-      existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
-      existingMaintenanceTicket.setDescription(newDescription);
 
-      if (newAsset != null) { // validity checks already performed, this would come up if asset is
-                              // correctly unspecified.
-        existingMaintenanceTicket.setAsset(newAsset);
-      }
+      existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
+      existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
+      existingMaintenanceTicket.setDescription(newDescription);
+      existingMaintenanceTicket.setAsset(newAsset);
+
 
     } catch (Exception e) {
       return "An unexpected error occured: " + e.getMessage();
@@ -191,7 +212,7 @@ public class AssetPlusFeatureSet4Controller {
    */
   private static String assertValidTicketDescription(String description) {
     if (description == null || description.isEmpty()) {
-      return "Error: An invalid ticket description was provided: rovided description is either null or empty. ";
+      return "Ticket description cannot be empty";
     }
     return "";
   }
@@ -209,6 +230,12 @@ public class AssetPlusFeatureSet4Controller {
     } else if (assetNumber < 1) {
       return "Error: An invalid asset number was provided: assetNumber is < 1";
     }
+
+    SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
+    if (aAsset == null) {
+      return "The asset does not exist";
+    }
+
     return "";
   }
 

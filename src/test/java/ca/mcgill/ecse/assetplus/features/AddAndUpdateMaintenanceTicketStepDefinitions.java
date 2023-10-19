@@ -53,8 +53,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       Map<String, String> row = rows.get(i);
       String email = row.get("email");
       String password = row.get("password");
-      System.out.println("first row: " + email + password
-          + " eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       Manager manager = new Manager(email, "manager", password, "(123)456-7890", assetPlus);
       assetPlus.setManager(manager);
     }
@@ -74,8 +72,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
     for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       String email = row.get(0);
-      System.out.println("email: " + email
-          + " ###################################################################################################################");
       String password = row.get(1);
       String name = row.get(2);
       String phoneNumber = row.get(3);

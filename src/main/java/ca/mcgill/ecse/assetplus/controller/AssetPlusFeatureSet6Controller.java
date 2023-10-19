@@ -80,9 +80,13 @@ public class AssetPlusFeatureSet6Controller {
     * @return A List of type String of all extracted image URLs of all of the images on a maintenance ticket. 
     */
   private static List<String> extractImageURLs(List<TicketImage> ticketImages){
+    if (ticketImages == null) {
+      throw new IllegalArgumentException("Ticket image not found.");
+    }
     
     List<String> imageURLs = new ArrayList<>();
     for (TicketImage ticketImage : ticketImages){
+
       imageURLs.add(ticketImage.getImageURL());
     }
     return imageURLs;
@@ -95,11 +99,15 @@ public class AssetPlusFeatureSet6Controller {
     * @return A List of type TOMaintenanceNote of all of the maintenance notes that have been converted to TO maintenance notes. 
     */
   private static TOMaintenanceNote[] extractMaintenanceNotes(List<MaintenanceNote> notes){
-    TOMaintenanceNote[] allNotes = new TOMaintenanceNote[notes.size()];
+    if (notes == null) {
+      throw new IllegalArgumentException("Ticket image not found.");
+    }
 
-      for (int i = 0; i < notes.size(); i++){
-        allNotes[i] = new TOMaintenanceNote(notes.get(i).getDate(), notes.get(i).getDescription(), notes.get(i).getNoteTaker().getEmail());
-      }
-      return allNotes;
+    TOMaintenanceNote[] allNotes = new TOMaintenanceNote[notes.size()];
+    for (int i = 0; i < notes.size(); i++){
+      allNotes[i] = new TOMaintenanceNote(notes.get(i).getDate(), notes.get(i).getDescription(), notes.get(i).getNoteTaker().getEmail());
+    }
+    
+    return allNotes;
   }
 }

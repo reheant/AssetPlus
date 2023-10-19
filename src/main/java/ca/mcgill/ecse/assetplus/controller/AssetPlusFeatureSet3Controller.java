@@ -88,9 +88,9 @@ public class AssetPlusFeatureSet3Controller {
    */
   public static void deleteSpecificAsset(int assetNumber) {
 
-    SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
+    SpecificAsset specificAsset = SpecificAsset.getWithAssetNumber(assetNumber);
     if (specificAsset == null) {
-      throw new InvalidParameterException("The asset type does not exist");
+      throw new InvalidParameterException("The asset does not exist");
     }
     specificAsset.delete();
   }

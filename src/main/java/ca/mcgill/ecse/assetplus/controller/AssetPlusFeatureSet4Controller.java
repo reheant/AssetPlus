@@ -80,19 +80,40 @@ public class AssetPlusFeatureSet4Controller {
 
     var error = "";
     error += assertAssetPlusInitialized();
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidTicketId(id);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidRaisedOnDate(newRaisedOnDate);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidTicketDescription(newDescription);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
     error += assertValidAssetNumber(newAssetNumber);
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
 
     User newTicketRaiser = User.getWithEmail(newEmail);
     if (newTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
+    if (!error.isEmpty()) {
+      return error.trim();
+    }
 
     MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
     if (existingMaintenanceTicket == null) {
       error += "The ticket does not exist ";
+    }
+    if (!error.isEmpty()) {
+      return error.trim();
     }
 
     SpecificAsset newAsset = null;

@@ -1,6 +1,4 @@
-# :hotel::heavy_plus_sign: ECSE223 AssetPlus Project: Team N
-
-_(Edit this file as needed, then remove this sentence)._
+# :hotel::heavy_plus_sign: ECSE223 AssetPlus Project: Team 16
 
 ## Project Overview
 
@@ -12,9 +10,9 @@ For more information about the AssetPlus application, please consult the [wiki](
 
 | Name          | GitHub username |
 | ------------- | --------------- |
-| Team Member A | ...             |
-| Team Member B | ...             |
-| Team Member C | ...             |
-| Team Member D | ...             |
-| Team Member E | ...             |
-| Team Member F | ...             |
+| Team Member A | Nicolas-Bolouri |
+| Team Member B | tiffanymillerr  |
+| Team Member C | reheant         |
+| Team Member D | jubiiz          |
+| Team Member E | lukefreund      |
+| Team Member F | liamdichiro     |

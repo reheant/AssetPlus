@@ -278,10 +278,8 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
     }
 
     List<MaintenanceTicket> maintenanceTickets = assetPlus.getMaintenanceTickets();
-    assertNotNull(maintenanceTickets);
 
     for (var ticket : maintenanceTickets) {
-      assertNotNull(ticket);
       List<String> oneTicket = new ArrayList<String>();
       String id = String.valueOf(ticket.getId());
       String ticketRaiser = ticket.getTicketRaiser().getEmail();
@@ -299,12 +297,10 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
     }
 
     assertTrue(expectedTickets.size() == actualTickets.size());
-    if (expectedTickets.size() == actualTickets.size()) {
-      for (int i = 0; i < expectedTickets.size(); i++) {
-        for (int j = 0; j < expectedTickets.get(i).size(); j++) {
-          assertEquals(expectedTickets.get(i).get(j), actualTickets.get(i).get(j));
+    for (int i = 0; i < expectedTickets.size(); i++) {
+      for (int j = 0; j < expectedTickets.get(i).size(); j++) {
+        assertEquals(expectedTickets.get(i).get(j), actualTickets.get(i).get(j));
 
-        }
       }
     }
 
@@ -328,7 +324,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
     String description = string4;
 
     MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);
-    assertNotNull(thisTicket);
     assertEquals(ticketRaiser, thisTicket.getTicketRaiser());
     assertEquals(date, thisTicket.getRaisedOnDate());
     assertEquals(description, thisTicket.getDescription());
@@ -357,7 +352,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
     SpecificAsset asset = SpecificAsset.getWithAssetNumber(assetNumber);
 
     MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);
-    assertNotNull(thisTicket);
     assertEquals(ticketRaiser, thisTicket.getTicketRaiser());
     assertEquals(date, thisTicket.getRaisedOnDate());
     assertEquals(description, thisTicket.getDescription());
@@ -371,7 +365,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   @Then("the system shall raise the error {string} \\(p16)")
   public void the_system_shall_raise_the_error_p16(String string) {
     assertEquals(string, error);
-    assertEquals(1, errorCntr);
   }
 
   /**

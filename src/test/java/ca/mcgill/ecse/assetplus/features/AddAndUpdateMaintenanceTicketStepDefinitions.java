@@ -149,21 +149,19 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The email of the user that wants to add a maintenance ticket.
-   * @param string2 The new maintenance ticket id.
-   * @param string3 The new maintenance ticket date
-   * @param string4 The new maintenance ticket description.
-   * @param string5 The new maintenance ticket's asset number.
+   * @param email The email of the user that wants to add a maintenance ticket.
+   * @param idString The new maintenance ticket id.
+   * @param dateString The new maintenance ticket date
+   * @param description The new maintenance ticket description.
+   * @param assetNumberString The new maintenance ticket's asset number.
    */
   @When("the user with email {string} attempts to add a new maintenance ticket to the system with id {string}, date {string}, description {string}, and asset number {string} \\(p16)")
   public void the_user_with_email_attempts_to_add_a_new_maintenance_ticket_to_the_system_with_id_date_description_and_asset_number_p16(
-      String string, String string2, String string3, String string4, String string5) {
+      String email, String idString, String dateString, String description, String assetNumberString) {
 
-    String email = string;
-    int id = Integer.parseInt(string2);
-    Date date = Date.valueOf(string3);
-    String description = string4;
-    int assetNumber = Integer.parseInt(string5);
+    int id = Integer.parseInt(idString);
+    Date date = Date.valueOf(dateString);
+    int assetNumber = Integer.parseInt(assetNumberString);
 
     callController(AssetPlusFeatureSet4Controller.addMaintenanceTicket(id, date, description, email,
         assetNumber));
@@ -172,19 +170,17 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The email of the user that wants to add a maintenance ticket.
-   * @param string2 The new maintenance ticket id.
-   * @param string3 The new maintenance ticket date
-   * @param string4 The new maintenance ticket description.
+   * @param email The email of the user that wants to add a maintenance ticket.
+   * @param idString The new maintenance ticket id.
+   * @param dateString The new maintenance ticket date
+   * @param description The new maintenance ticket description.
    */
   @When("the user with email {string} attempts to add a new maintenance ticket to the system with id {string}, date {string}, and description {string} but no asset number \\(p16)")
   public void the_user_with_email_attempts_to_add_a_new_maintenance_ticket_to_the_system_with_id_date_and_description_but_no_asset_number_p16(
-      String string, String string2, String string3, String string4) {
+      String email, String idString, String dateString, String description) {
 
-    String email = string;
-    int id = Integer.parseInt(string2);
-    Date date = Date.valueOf(string3);
-    String description = string4;
+    int id = Integer.parseInt(idString);
+    Date date = Date.valueOf(dateString);
     int assetNumber = -1;
 
     callController(AssetPlusFeatureSet4Controller.addMaintenanceTicket(id, date, description, email,
@@ -194,19 +190,17 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The id of the maintenance ticket the manager wants to update.
-   * @param string2 Updated maintenance ticket raiser.
-   * @param string3 Updated maintenance ticket date.
-   * @param string4 Updated maintenance ticket asset description.
+   * @param idString The id of the maintenance ticket the manager wants to update.
+   * @param email Updated maintenance ticket raiser.
+   * @param dateString Updated maintenance ticket date.
+   * @param description Updated maintenance ticket asset description.
    */
   @When("the manager attempts to update the maintenance ticket with id {string} to ticket raiser {string}, date {string}, and description {string} but no asset number \\(p16)")
   public void the_manager_attempts_to_update_the_maintenance_ticket_with_id_to_ticket_raiser_date_and_description_but_no_asset_number_p16(
-      String string, String string2, String string3, String string4) {
+      String idString, String email, String dateString, String description) {
 
-    int id = Integer.parseInt(string);
-    String email = string2;
-    Date date = Date.valueOf(string3);
-    String description = string4;
+    int id = Integer.parseInt(idString);
+    Date date = Date.valueOf(dateString);
     int assetNumber = -1;
 
     callController(AssetPlusFeatureSet4Controller.updateMaintenanceTicket(id, date, description,
@@ -216,21 +210,19 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The id of the maintenance ticket the manager wants to update.
-   * @param string2 Updated maintenance ticket raiser.
-   * @param string3 Updated maintenance ticket date.
-   * @param string4 Updated maintenance ticket description.
-   * @param string5 Updated maintenance ticket asset number.
+   * @param idString The id of the maintenance ticket the manager wants to update.
+   * @param email Updated maintenance ticket raiser.
+   * @param dateString Updated maintenance ticket date.
+   * @param description Updated maintenance ticket description.
+   * @param assetNumberString Updated maintenance ticket asset number.
    */
   @When("the manager attempts to update the maintenance ticket with id {string} to ticket raiser {string}, date {string}, description {string}, and asset number {string} \\(p16)")
   public void the_manager_attempts_to_update_the_maintenance_ticket_with_id_to_ticket_raiser_date_description_and_asset_number_p16(
-      String string, String string2, String string3, String string4, String string5) {
+      String idString, String email, String dateString, String description, String assetNumberString) {
 
-    int id = Integer.parseInt(string);
-    String email = string2;
-    Date date = Date.valueOf(string3);
-    String description = string4;
-    int assetNumber = Integer.parseInt(string5);
+    int id = Integer.parseInt(idString);
+    Date date = Date.valueOf(dateString);
+    int assetNumber = Integer.parseInt(assetNumberString);
 
     callController(AssetPlusFeatureSet4Controller.updateMaintenanceTicket(id, date, description,
         email, assetNumber));
@@ -238,12 +230,12 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The number of maintenance tickets that is expected in the system.
+   * @param expectedNumTicketsString The number of maintenance tickets that is expected in the system.
    */
   @Then("the number of tickets in the system shall be {string} \\(p16)")
-  public void the_number_of_tickets_in_the_system_shall_be_p16(String string) {
+  public void the_number_of_tickets_in_the_system_shall_be_p16(String expectedNumTicketsString) {
     int numberOfTickets = assetPlus.getMaintenanceTickets().size();
-    int expectedNumTickets = Integer.parseInt(string);
+    int expectedNumTickets = Integer.parseInt(expectedNumTicketsString);
     assertEquals(expectedNumTickets, numberOfTickets);
 
   }
@@ -308,20 +300,18 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The email of the person who raised the ticket.
-   * @param string2 The id of the new maintenance ticket raised.
-   * @param string3 The date of the new maintenance ticket raised.
-   * @param string4 The description of the new maintenance ticket raised.
+   * @param email The email of the person who raised the ticket.
+   * @param idString The id of the new maintenance ticket raised.
+   * @param dateString The date of the new maintenance ticket raised.
+   * @param description The description of the new maintenance ticket raised.
    */
   @Then("the ticket raised by {string} and with id {string}, date {string}, and description {string} but no asset shall exist in the system \\(p16)")
   public void the_ticket_raised_by_and_with_id_date_and_description_but_no_asset_shall_exist_in_the_system_p16(
-      String string, String string2, String string3, String string4) {
+      String email, String idString, String dateString, String description) {
 
-    String email = string;
     User ticketRaiser = User.getWithEmail(email);
-    int id = Integer.valueOf(string2);
-    Date date = Date.valueOf(string3);
-    String description = string4;
+    int id = Integer.valueOf(idString);
+    Date date = Date.valueOf(dateString);
 
     MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);
     assertEquals(ticketRaiser, thisTicket.getTicketRaiser());
@@ -333,22 +323,20 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param string The email of the person who raised the ticket.
-   * @param string2 The id of the new maintenance ticket raised.
-   * @param string3 The date of the new maintenance ticket raised.
-   * @param string4 The description of the new maintenance ticket raised.
-   * @param string5 The asset number associated to the new maintenance ticket raised.
+   * @param email The email of the person who raised the ticket.
+   * @param idString The id of the new maintenance ticket raised.
+   * @param dateString The date of the new maintenance ticket raised.
+   * @param description The description of the new maintenance ticket raised.
+   * @param assetNumberString The asset number associated to the new maintenance ticket raised.
    */
   @Then("the ticket raised by {string} and with id {string}, date {string}, description {string}, and asset number {string} shall exist in the system \\(p16)")
   public void the_ticket_raised_by_and_with_id_date_description_and_asset_number_shall_exist_in_the_system_p16(
-      String string, String string2, String string3, String string4, String string5) {
+      String email, String idString, String dateString, String description, String assetNumberString) {
 
-    String email = string;
     User ticketRaiser = User.getWithEmail(email);
-    int id = Integer.valueOf(string2);
-    Date date = Date.valueOf(string3);
-    String description = string4;
-    int assetNumber = Integer.valueOf(string5);
+    int id = Integer.valueOf(idString);
+    Date date = Date.valueOf(dateString);
+    int assetNumber = Integer.valueOf(assetNumberString);
     SpecificAsset asset = SpecificAsset.getWithAssetNumber(assetNumber);
 
     MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);

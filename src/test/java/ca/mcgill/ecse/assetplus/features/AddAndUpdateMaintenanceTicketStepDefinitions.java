@@ -19,7 +19,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
   private String error;
-  private int errorCntr;
 
   /**
    * @author Tiffany Miller
@@ -38,7 +37,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       assetPlus.addEmployee(email, name, password, phoneNumber);
     }
     error = "";
-    errorCntr = 0;
 
   }
 
@@ -58,7 +56,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       assetPlus.setManager(manager);
     }
     error = "";
-    errorCntr = 0;
 
   }
 
@@ -79,7 +76,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       assetPlus.addGuest(email, name, password, phoneNumber);
     }
     error = "";
-    errorCntr = 0;
 
   }
 
@@ -98,7 +94,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       assetPlus.addAssetType(name, lifeSpan);
     }
     error = "";
-    errorCntr = 0;
 
   }
 
@@ -120,7 +115,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       assetPlus.addSpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, type);
     }
     error = "";
-    errorCntr = 0;
   }
 
   /**
@@ -145,7 +139,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       thisTicket.setAsset(asset);
     }
     error = "";
-    errorCntr = 0;
   }
 
   /**
@@ -262,9 +255,9 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
     List<List<String>> rows = dataTable.asLists(String.class);
 
-    for (int i = 1; i < rows.size(); i++) { 
+    for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
-      String id = row.get(0); 
+      String id = row.get(0);
       expectedTicketsMap.put(id, row);
     }
 
@@ -359,7 +352,6 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   private void callController(String result) {
     if (!result.isEmpty()) {
       error += result;
-      errorCntr += 1;
     }
   }
 }

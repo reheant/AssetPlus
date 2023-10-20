@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.features;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.sql.Date;
@@ -256,31 +257,21 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
   public void the_following_tickets_shall_exist_in_the_system_p16(
       io.cucumber.datatable.DataTable dataTable) {
 
-    List<List<String>> expectedTickets = new ArrayList<List<String>>();
-    List<List<String>> actualTickets = new ArrayList<List<String>>();
+    Map<String, List<String>> expectedTicketsMap = new HashMap<>();
+    Map<String, List<String>> actualTicketsMap = new HashMap<>();
+
     List<List<String>> rows = dataTable.asLists(String.class);
-    for (int i = 1; i < rows.size(); i++) {
+
+    for (int i = 1; i < rows.size(); i++) { 
       List<String> row = rows.get(i);
-      List<String> oneTicket = new ArrayList<String>();
-      String id = row.get(0);
-      String ticketRaiser = row.get(1);
-      String raisedOnDate = row.get(2);
-      String description = row.get(3);
-      String assetNumber = row.get(4);
-
-      oneTicket.add(id);
-      oneTicket.add(ticketRaiser);
-      oneTicket.add(raisedOnDate);
-      oneTicket.add(description);
-      oneTicket.add(assetNumber);
-
-      expectedTickets.add(oneTicket);
+      String id = row.get(0); 
+      expectedTicketsMap.put(id, row);
     }
 
     List<MaintenanceTicket> maintenanceTickets = assetPlus.getMaintenanceTickets();
 
     for (var ticket : maintenanceTickets) {
-      List<String> oneTicket = new ArrayList<String>();
+      List<String> oneTicket = new ArrayList<>();
       String id = String.valueOf(ticket.getId());
       String ticketRaiser = ticket.getTicketRaiser().getEmail();
       String raisedOnDate = ticket.getRaisedOnDate().toString();
@@ -293,17 +284,11 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
       oneTicket.add(description);
       oneTicket.add(assetNumber);
 
-      actualTickets.add(oneTicket);
+      actualTicketsMap.put(id, oneTicket);
     }
 
-    assertTrue(expectedTickets.size() == actualTickets.size());
-    for (int i = 0; i < expectedTickets.size(); i++) {
-      for (int j = 0; j < expectedTickets.get(i).size(); j++) {
-        assertEquals(expectedTickets.get(i).get(j), actualTickets.get(i).get(j));
-
-      }
-    }
-
+    assertEquals(expectedTicketsMap.size(), actualTicketsMap.size());
+    assertEquals(expectedTicketsMap, actualTicketsMap);
   }
 
   /**

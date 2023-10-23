@@ -1,16 +1,20 @@
 package ca.mcgill.ecse.assetplus.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
-import ca.mcgill.ecse.assetplus.model.*;
+import ca.mcgill.ecse.assetplus.model.AssetPlus;
+import ca.mcgill.ecse.assetplus.model.AssetType;
+import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
+import ca.mcgill.ecse.assetplus.model.Manager;
+import ca.mcgill.ecse.assetplus.model.SpecificAsset;
+import ca.mcgill.ecse.assetplus.model.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -151,7 +155,8 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
    */
   @When("the user with email {string} attempts to add a new maintenance ticket to the system with id {string}, date {string}, description {string}, and asset number {string} \\(p16)")
   public void the_user_with_email_attempts_to_add_a_new_maintenance_ticket_to_the_system_with_id_date_description_and_asset_number_p16(
-      String email, String idString, String dateString, String description, String assetNumberString) {
+      String email, String idString, String dateString, String description,
+      String assetNumberString) {
 
     int id = Integer.parseInt(idString);
     Date date = Date.valueOf(dateString);
@@ -212,7 +217,8 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
    */
   @When("the manager attempts to update the maintenance ticket with id {string} to ticket raiser {string}, date {string}, description {string}, and asset number {string} \\(p16)")
   public void the_manager_attempts_to_update_the_maintenance_ticket_with_id_to_ticket_raiser_date_description_and_asset_number_p16(
-      String idString, String email, String dateString, String description, String assetNumberString) {
+      String idString, String email, String dateString, String description,
+      String assetNumberString) {
 
     int id = Integer.parseInt(idString);
     Date date = Date.valueOf(dateString);
@@ -224,7 +230,8 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
 
   /**
    * @author Tiffany Miller
-   * @param expectedNumTicketsString The number of maintenance tickets that is expected in the system.
+   * @param expectedNumTicketsString The number of maintenance tickets that is expected in the
+   *        system.
    */
   @Then("the number of tickets in the system shall be {string} \\(p16)")
   public void the_number_of_tickets_in_the_system_shall_be_p16(String expectedNumTicketsString) {
@@ -309,7 +316,8 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
    */
   @Then("the ticket raised by {string} and with id {string}, date {string}, description {string}, and asset number {string} shall exist in the system \\(p16)")
   public void the_ticket_raised_by_and_with_id_date_description_and_asset_number_shall_exist_in_the_system_p16(
-      String email, String idString, String dateString, String description, String assetNumberString) {
+      String email, String idString, String dateString, String description,
+      String assetNumberString) {
 
     User ticketRaiser = User.getWithEmail(email);
     int id = Integer.valueOf(idString);

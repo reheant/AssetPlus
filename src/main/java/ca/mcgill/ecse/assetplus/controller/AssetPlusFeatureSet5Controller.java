@@ -2,13 +2,13 @@ package ca.mcgill.ecse.assetplus.controller;
 
 import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
 import ca.mcgill.ecse.assetplus.model.TicketImage;
-
-import java.security.InvalidParameterException;
 import java.util.List;
 
 public class AssetPlusFeatureSet5Controller {
 
     /**
+     * Adds an image to a maintenance ticket.
+     *
      * @author Luke Freund
      * @param imageURL The URL of the image to be added to the maintenance ticket. Must not be empty or null, must
      *                 start with either http:// or https://, two imageURLs of the same ticket cannot be the same.
@@ -21,7 +21,7 @@ public class AssetPlusFeatureSet5Controller {
 
             String error = "";
             error += assertValidImageURL(imageURL);
-            error += assertTicketExists(ticket, ticketID);
+            error += assertTicketExists(ticket);
             error += assertNoSameImageURL(imageURL, ticket);
 
             if (!error.isEmpty()) {
@@ -39,6 +39,8 @@ public class AssetPlusFeatureSet5Controller {
     }
 
     /**
+     * Deletes an image from a maintenance ticket.
+     *
      * @author Luke Freund
      * @param imageURL The URL of the image to be removed from the maintenance ticket. Must not be empty or null, must
      *                 start with either http:// or https://, two imageURLs of the same ticket cannot be the same.
@@ -48,11 +50,10 @@ public class AssetPlusFeatureSet5Controller {
         MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
 
         String error = "";
-        error += assertTicketExists(ticket, ticketID);
+        error += assertTicketExists(ticket);
 
         if (!error.isEmpty()) {
-            throw new InvalidParameterException(
-                    "Ticket with provided ticket id does not exist in the system");
+            return;
         }
 
         List<TicketImage> images = ticket.getTicketImages();
@@ -67,6 +68,8 @@ public class AssetPlusFeatureSet5Controller {
     }
 
     /**
+     * Validates the imageURL according to specified constraints.
+     *
      * @author Luke Freund
      * @param imageURL The URL of the image to validated. Must not be empty or null, must
      *                 start with either http:// or https://.
@@ -74,28 +77,31 @@ public class AssetPlusFeatureSet5Controller {
      */
     private static String assertValidImageURL(String imageURL) {
         if (imageURL == null || imageURL.isEmpty()) {
-            return "Image URL must not be empty or null";
+            return "Image URL cannot be empty";
         }
-        if (!imageURL.startsWith("http://") && !imageURL.startsWith("http://")) {
-            return "Image URL must start with either http:// or https://";
+        if (!(imageURL.startsWith("http://") || imageURL.startsWith("https://"))) {
+            return "Image URL must start with http:// or https://";
         }
         return "";
     }
 
     /**
+     * Validates that the maintenance ticket exists in the system.
+     *
      * @author Luke Freund
-     * @param ticketID The unique identifier of the maintenance ticket.
      * @param ticket The maintenance ticket. Must exist.
      * @return An empty string indicating success. An error message if failure.
      */
-    private static String assertTicketExists(MaintenanceTicket ticket, int ticketID) {
+    private static String assertTicketExists(MaintenanceTicket ticket) {
         if (ticket == null) {
-            return String.format("Ticket with ticketID %d not found", ticketID);
+            return "Ticket does not exist";
         }
         return "";
     }
 
     /**
+     * Validates the imageURLs of a ticket according to specified constraints.
+     *
      * @author Luke Freund
      * @param imageURL The URL of the image to validated. Two imageURLs of the same ticket cannot be the same.
      * @param ticket The maintenance ticket. Must exist.
@@ -109,8 +115,7 @@ public class AssetPlusFeatureSet5Controller {
         if (images != null) {
             for (TicketImage image : images) {
                 if (image.getImageURL().equals(imageURL)) {
-                    return "Image not added to maintenance ticket - two imageURLs " +
-                            "of the same ticket cannot be the same: " + imageURL;
+                    return "Image already exists for the ticket";
                 }
             }
         }

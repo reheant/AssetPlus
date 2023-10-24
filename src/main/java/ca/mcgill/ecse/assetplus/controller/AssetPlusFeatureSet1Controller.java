@@ -17,8 +17,13 @@ public class AssetPlusFeatureSet1Controller {
      */
     public static String updateManager(String password) {
         var error = "";
-        error = assertManagerAvailable() + validateManagerPassword(password);
+        error = assertManagerAvailable();
 
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validateManagerPassword(password);
         if (!error.isEmpty()) {
             return error.trim();
         }
@@ -48,14 +53,35 @@ public class AssetPlusFeatureSet1Controller {
     public static String addEmployeeOrGuest(String email, String password, String name,
             String phoneNumber, boolean isEmployee) {
         var error = "";
-        error = validateEmployeeOrGuestEmail(email, isEmployee) + validatePassword(password)
-                + validateName(name) + validatePhoneNumber(phoneNumber);
+        error = validateEmployeeOrGuestEmail(email, isEmployee);
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validatePassword(password);
+
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validateName(name);
+
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validatePhoneNumber(phoneNumber);
 
         if (!error.isEmpty()) {
             return error.trim();
         }
 
         try {
+            User user = User.getWithEmail(email);
+            if (user != null) {
+                String userType = isEmployee ? "employee" : "guest";
+                return "Email already linked to an " + userType + " account";
+            }
             if (isEmployee) {
                 assetPlus.addEmployee(email, name, password, phoneNumber);
             } else {
@@ -81,8 +107,26 @@ public class AssetPlusFeatureSet1Controller {
     public static String updateEmployeeOrGuest(String email, String newPassword, String newName,
             String newPhoneNumber) {
         var error = "";
-        error = validateEmployeeOrGuestEmail(email, null) + validatePassword(newPassword)
-                + validateName(newName) + validatePhoneNumber(newPhoneNumber);
+
+        error = validateEmployeeOrGuestEmail(email, null);
+
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validatePassword(newPassword);
+
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validateName(newName);
+
+        if (!error.isEmpty()) {
+            return error.trim();
+        }
+
+        error = validatePhoneNumber(newPhoneNumber);
 
         if (!error.isEmpty()) {
             return error.trim();
@@ -91,7 +135,7 @@ public class AssetPlusFeatureSet1Controller {
         try {
             User user = User.getWithEmail(email);
             if (user == null) {
-                return "User not found.";
+                return "User not found";
             }
 
             user.setPassword(newPassword);
@@ -111,7 +155,7 @@ public class AssetPlusFeatureSet1Controller {
      *         available.
      */
     private static String assertManagerAvailable() {
-        return assetPlus.hasManager() ? "" : "Manager not found. ";
+        return assetPlus.hasManager() ? "" : "Manager not found";
     }
 
     /**
@@ -126,11 +170,19 @@ public class AssetPlusFeatureSet1Controller {
      */
     private static String validateEmployeeOrGuestEmail(String email, Boolean isEmployee) {
         if (email == null) {
-            return "Email cannot be null. ";
+            return "Email cannot be null";
+        }
+
+        if (email.isEmpty()) {
+            return "Email cannot be empty";
+        }
+
+        if (email.equals("manager@ap.com")) {
+            return "Email cannot be manager@ap.com";
         }
 
         if (email.contains(" ")) {
-            return "Email must not contain spaces. ";
+            return "Email must not contain any spaces";
         }
 
         int atIndex = email.indexOf("@");
@@ -139,19 +191,15 @@ public class AssetPlusFeatureSet1Controller {
 
         if (atIndex <= 0 || atIndex != lastAtindex || atIndex >= dotIndex - 1
                 || dotIndex >= email.length() - 1) {
-            return "Invalid email format. ";
+            return "Invalid email ";
         }
 
         if (isEmployee != null) {
             if (isEmployee && !email.endsWith("@ap.com")) {
-                return "Employee email domain must be @ap.com. ";
+                return "Email domain must be @ap.com";
             } else if (!isEmployee && email.endsWith("@ap.com")) {
-                return "Guest email domain cannot be @ap.com. ";
+                return "Email domain cannot be @ap.com";
             }
-        }
-
-        if (email.equals("manager@ap.com")) {
-            return "Employee or guest email cannot be equal to manager@ap.com. ";
         }
 
         return "";
@@ -167,10 +215,10 @@ public class AssetPlusFeatureSet1Controller {
      */
     private static String validatePassword(String password) {
         if (password == null) {
-            return "Password cannot be null. ";
+            return "Password cannot be null";
         }
         if (password.isEmpty()) {
-            return "Password cannot be empty. ";
+            return "Password cannot be empty";
         }
         return "";
     }
@@ -190,16 +238,16 @@ public class AssetPlusFeatureSet1Controller {
             return error;
         }
         if (password.length() <= 3) {
-            return "Password must be at least 4 characters long. ";
+            return "Password must be at least four characters long";
         }
         if (!password.matches(".*[!#$].*")) {
-            return "Password must contain at least one of the special characters: !, #, $. ";
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            return "Password must contain at least one uppercase letter. ";
+            return "Password must contain one character out of !#$";
         }
         if (!password.matches(".*[a-z].*")) {
-            return "Password must contain at least one lowercase letter. ";
+            return "Password must contain one lower-case character";
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            return "Password must contain one upper-case character";
         }
         return "";
     }
@@ -213,7 +261,7 @@ public class AssetPlusFeatureSet1Controller {
      *         valid.
      */
     private static String validateName(String name) {
-        return name != null ? "" : "Name cannot be null. ";
+        return name != null ? "" : "Name cannot be null";
     }
 
     /**
@@ -225,6 +273,6 @@ public class AssetPlusFeatureSet1Controller {
      *         phone number is valid.
      */
     private static String validatePhoneNumber(String phoneNumber) {
-        return phoneNumber != null ? "" : "Phone number cannot be null. ";
+        return phoneNumber != null ? "" : "Phone number cannot be null";
     }
 }

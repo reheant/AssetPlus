@@ -70,7 +70,7 @@ public class AssetPlusFeatureSet3Controller {
     }
 
     try {
-      SpecificAsset specificAsset = assetPlus.getSpecificAsset(assetNumber);
+      SpecificAsset specificAsset = SpecificAsset.getWithAssetNumber(assetNumber);
       specificAsset.setFloorNumber(newFloorNumber);
       specificAsset.setRoomNumber(newRoomNumber);
       specificAsset.setPurchaseDate(newPurchaseDate);

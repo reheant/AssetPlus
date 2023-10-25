@@ -16,11 +16,9 @@ public class AssetPlusFeatureSet1Controller {
      *         operation was successful.
      */
     public static String updateManager(String password) {
-        String error = assertManagerAvailable();
-        if (!error.isEmpty())
-            return error;
+        String error = "";
+        error += assertManagerAvailable() + validateManagerPassword(password);
 
-        error = validateManagerPassword(password);
         if (!error.isEmpty())
             return error;
 
@@ -48,11 +46,10 @@ public class AssetPlusFeatureSet1Controller {
      */
     public static String addEmployeeOrGuest(String email, String password, String name,
             String phoneNumber, boolean isEmployee) {
-        String error = validateEmployeeOrGuestEmail(email, isEmployee);
-        if (!error.isEmpty())
-            return error;
+        String error = "";
+        error += validateEmployeeOrGuestEmail(email, isEmployee)
+                + validateUserDetails(password, name, phoneNumber);
 
-        error = validateUserDetails(password, name, phoneNumber);
         if (!error.isEmpty())
             return error;
 
@@ -85,11 +82,10 @@ public class AssetPlusFeatureSet1Controller {
      */
     public static String updateEmployeeOrGuest(String email, String newPassword, String newName,
             String newPhoneNumber) {
-        String error = validateEmployeeOrGuestEmail(email, null);
-        if (!error.isEmpty())
-            return error;
+        String error = "";
+        error += validateEmployeeOrGuestEmail(email, null)
+                + validateUserDetails(newPassword, newName, newPhoneNumber);
 
-        error = validateUserDetails(newPassword, newName, newPhoneNumber);
         if (!error.isEmpty())
             return error;
 
@@ -132,19 +128,10 @@ public class AssetPlusFeatureSet1Controller {
      *         the details are valid.
      */
     private static String validateUserDetails(String password, String name, String phoneNumber) {
-        String error = validatePassword(password);
-        if (!error.isEmpty())
-            return error;
+        String error = "";
+        error += validatePassword(password) + validateName(name) + validatePhoneNumber(phoneNumber);
 
-        error = validateName(name);
-        if (!error.isEmpty())
-            return error;
-
-        error = validatePhoneNumber(phoneNumber);
-        if (!error.isEmpty())
-            return error;
-
-        return "";
+        return error;
     }
 
     /**

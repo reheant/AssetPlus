@@ -31,7 +31,6 @@ public class AssetPlusFeatureSet6Controller {
    * Returns a list of maintenance tickets from the AssetPlus system.
    *
    * @author Liam Di Chiro
-   *
    * @return A List of type TOMaintenanceTicket of all of the maintenance tickets.
    */
   public static List<TOMaintenanceTicket> getTickets() {

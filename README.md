@@ -1,8 +1,10 @@
-# :hotel::heavy_plus_sign: ECSE223 AssetPlus Project: Team 16
+# :hotel::heavy_plus_sign: ECSE223 AssetPlus Project: Team N
+
+_(Edit this file as needed, then remove this sentence)._
 
 ## Project Overview
 
-AssetPlus is intended to be used by hotel staff to effectively manage hotel assets such as furniture and appliances in rooms and hallways of a hotel as well as maintenance tasks.
+_Provide a one-sentence overview of your project here._
 
 For more information about the AssetPlus application, please consult the [wiki](../../wiki).
 
@@ -10,9 +12,9 @@ For more information about the AssetPlus application, please consult the [wiki](
 
 | Name          | GitHub username |
 | ------------- | --------------- |
-| Team Member A | Nicolas-Bolouri |
-| Team Member B | tiffanymillerr  |
-| Team Member C | reheant         |
-| Team Member D | jubiiz          |
-| Team Member E | lukefreund      |
-| Team Member F | liamdichiro     |
+| Team Member A | ...             |
+| Team Member B | ...             |
+| Team Member C | ...             |
+| Team Member D | ...             |
+| Team Member E | ...             |
+| Team Member F | ...             |

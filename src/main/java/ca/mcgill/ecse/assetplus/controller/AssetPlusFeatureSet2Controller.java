@@ -17,13 +17,22 @@ public class AssetPlusFeatureSet2Controller {
         var error = "";
         error += assertNameValid(name);
         error += assertLifeSpanValid(expectedLifeSpanInDays);
-
+        
         if (!error.isEmpty()) {
             return error.trim();
         }
 
         try {
-            assetPlus.addAssetType(name, expectedLifeSpanInDays);
+        	AssetType existingAsset = AssetType.getWithName(name);
+        	if (existingAsset != null) {
+	        	if (existingAsset.getName().equals(name)) {
+	        		return "The asset type already exists";
+	        	}
+        	}
+        	else {
+        		assetPlus.addAssetType(name, expectedLifeSpanInDays);
+            }
+            
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -46,17 +55,23 @@ public class AssetPlusFeatureSet2Controller {
         error += assertNameValid(oldName);
         error += assertLifeSpanValid(newExpectedLifeSpanInDays);
 
-        AssetType assetType = AssetType.getWithName(oldName);
-        if (assetType == null) {
-            error += "Old asset name is not valid. ";
+        AssetType oldAssetType = AssetType.getWithName(oldName);
+        if (oldAssetType == null) {
+            error += "The asset type does not exist ";
         }
+        
+        AssetType newAssetType = AssetType.getWithName(newName);
+        if (newAssetType != null) {
+            error += "The asset type already exists ";
+        }
+        
         if (!error.isEmpty()) {
             return error.trim();
         }
 
         try {
-            assetType.setName(newName);
-            assetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
+            oldAssetType.setName(newName);
+            oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -69,10 +84,9 @@ public class AssetPlusFeatureSet2Controller {
      */
     public static void deleteAssetType(String name) {
         AssetType assetType = AssetType.getWithName(name);
-        if (assetType == null) {
-            throw new NullPointerException("No such asset type");
+        if (assetType != null) {
+        	assetType.delete();
         }
-        assetType.delete();
     }
 
     /**
@@ -82,7 +96,7 @@ public class AssetPlusFeatureSet2Controller {
      */
     private static String assertNameValid(String name) {
         if (name == null || name.isEmpty()) {
-            return "A valid name must be inputted. ";
+            return "The name must not be empty ";
         } else {
             return "";
         }
@@ -95,7 +109,7 @@ public class AssetPlusFeatureSet2Controller {
      */
     private static String assertLifeSpanValid(int expectedLifeSpan) {
         if (expectedLifeSpan <= 0) {
-            return "Not a valid life span input. ";
+            return "The expected life span must be greater than 0 days ";
         } else {
             return "";
         }

@@ -142,11 +142,9 @@ public class AssetPlusFeatureSet4Controller {
 
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(id);
     if (maintenanceTicket == null) {
-      // TODO update to match gherkin message
-      throw new InvalidParameterException(
-          "Ticket with provided ticket id does not exist in the system");
+    } else {
+      maintenanceTicket.delete();
     }
-    maintenanceTicket.delete();
   }
 
 

@@ -32,15 +32,16 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidTicketDescription(description);
     error += assertValidAssetNumber(assetNumber);
 
+    User aTicketRaiser = User.getWithEmail(email);
+    if (aTicketRaiser == null) {
+      error += "The ticket raiser does not exist";
+    }
+
     if (!error.isEmpty()) {
       return error.trim();
     }
 
     try {
-      User aTicketRaiser = User.getWithEmail(email);
-      if (aTicketRaiser == null) {
-        return "The ticket raiser does not exist";
-      }
 
       MaintenanceTicket maintenanceTicket =
           new MaintenanceTicket(id, raisedOnDate, description, assetPlus, aTicketRaiser);
@@ -88,17 +89,10 @@ public class AssetPlusFeatureSet4Controller {
     if (newTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
-    
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
 
     MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
     if (existingMaintenanceTicket == null) {
       error += "The ticket does not exist ";
-    }
-    if (!error.isEmpty()) {
-      return error.trim();
     }
 
     SpecificAsset newAsset = null;
@@ -114,7 +108,6 @@ public class AssetPlusFeatureSet4Controller {
     }
 
     try {
-
 
       existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
       existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
@@ -136,7 +129,7 @@ public class AssetPlusFeatureSet4Controller {
    */
   public static void deleteMaintenanceTicket(int id) {
     if (assetPlus == null) {
-      throw new NullPointerException("AssetPlus is not initialized");
+      throw new NullPointerException("AssetPlus is not initialized ");
     }
 
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(id);

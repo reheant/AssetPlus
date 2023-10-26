@@ -16,12 +16,11 @@ public class AssetPlusFeatureSet1Controller {
      *         operation was successful.
      */
     public static String updateManager(String password) {
-        var error = "";
-        error = assertManagerAvailable() + validateManagerPassword(password);
+        String error = "";
+        error += assertManagerAvailable() + validateManagerPassword(password);
 
-        if (!error.isEmpty()) {
-            return error.trim();
-        }
+        if (!error.isEmpty())
+            return error;
 
         try {
             assetPlus.getManager().setPassword(password);
@@ -47,15 +46,18 @@ public class AssetPlusFeatureSet1Controller {
      */
     public static String addEmployeeOrGuest(String email, String password, String name,
             String phoneNumber, boolean isEmployee) {
-        var error = "";
-        error = validateEmployeeOrGuestEmail(email, isEmployee) + validatePassword(password)
-                + validateName(name) + validatePhoneNumber(phoneNumber);
+        String error = "";
+        error += validateEmployeeOrGuestEmail(email, isEmployee)
+                + validateUserDetails(password, name, phoneNumber);
 
-        if (!error.isEmpty()) {
-            return error.trim();
-        }
+        if (!error.isEmpty())
+            return error;
 
         try {
+            if (User.getWithEmail(email) != null) {
+                String userType = isEmployee ? "employee" : "guest";
+                return "Email already linked to an " + userType + " account";
+            }
             if (isEmployee) {
                 assetPlus.addEmployee(email, name, password, phoneNumber);
             } else {
@@ -80,19 +82,17 @@ public class AssetPlusFeatureSet1Controller {
      */
     public static String updateEmployeeOrGuest(String email, String newPassword, String newName,
             String newPhoneNumber) {
-        var error = "";
-        error = validateEmployeeOrGuestEmail(email, null) + validatePassword(newPassword)
-                + validateName(newName) + validatePhoneNumber(newPhoneNumber);
+        String error = "";
+        error += validateEmployeeOrGuestEmail(email, null)
+                + validateUserDetails(newPassword, newName, newPhoneNumber);
 
-        if (!error.isEmpty()) {
-            return error.trim();
-        }
+        if (!error.isEmpty())
+            return error;
 
         try {
             User user = User.getWithEmail(email);
-            if (user == null) {
-                return "User not found.";
-            }
+            if (user == null)
+                return "User not found";
 
             user.setPassword(newPassword);
             user.setName(newName);
@@ -111,7 +111,27 @@ public class AssetPlusFeatureSet1Controller {
      *         available.
      */
     private static String assertManagerAvailable() {
-        return assetPlus.hasManager() ? "" : "Manager not found. ";
+        return assetPlus.hasManager() ? "" : "Manager not found";
+    }
+
+    /**
+     * Validates the user's password, name, and phone number according to specified constraints.
+     * 
+     * @author Nicolas Bolouri
+     * @param password The user's password to be validated. Constraints are derived from the
+     *        {@link #validatePassword(String)} method.
+     * @param name The user's name to be validated. Constraints are derived from the
+     *        {@link #validateName(String)} method.
+     * @param phoneNumber The user's phone number to be validated. Constraints are derived from the
+     *        {@link #validatePhoneNumber(String)} method.
+     * @return A specific error message if any of the details are invalid, or an empty string if all
+     *         the details are valid.
+     */
+    private static String validateUserDetails(String password, String name, String phoneNumber) {
+        String error = "";
+        error += validatePassword(password) + validateName(name) + validatePhoneNumber(phoneNumber);
+
+        return error;
     }
 
     /**
@@ -125,35 +145,29 @@ public class AssetPlusFeatureSet1Controller {
      *         valid.
      */
     private static String validateEmployeeOrGuestEmail(String email, Boolean isEmployee) {
-        if (email == null) {
-            return "Email cannot be null. ";
-        }
-
-        if (email.contains(" ")) {
-            return "Email must not contain spaces. ";
-        }
+        if (email == null)
+            return "Email cannot be null";
+        if (email.isEmpty())
+            return "Email cannot be empty";
+        if (email.equals("manager@ap.com"))
+            return "Email cannot be manager@ap.com";
+        if (email.contains(" "))
+            return "Email must not contain any spaces";
 
         int atIndex = email.indexOf("@");
         int lastAtindex = email.lastIndexOf("@");
         int dotIndex = email.lastIndexOf(".");
-
         if (atIndex <= 0 || atIndex != lastAtindex || atIndex >= dotIndex - 1
                 || dotIndex >= email.length() - 1) {
-            return "Invalid email format. ";
+            return "Invalid email";
         }
 
         if (isEmployee != null) {
-            if (isEmployee && !email.endsWith("@ap.com")) {
-                return "Employee email domain must be @ap.com. ";
-            } else if (!isEmployee && email.endsWith("@ap.com")) {
-                return "Guest email domain cannot be @ap.com. ";
-            }
+            if (isEmployee && !email.endsWith("@ap.com"))
+                return "Email domain must be @ap.com";
+            if (!isEmployee && email.endsWith("@ap.com"))
+                return "Email domain cannot be @ap.com";
         }
-
-        if (email.equals("manager@ap.com")) {
-            return "Employee or guest email cannot be equal to manager@ap.com. ";
-        }
-
         return "";
     }
 
@@ -166,12 +180,10 @@ public class AssetPlusFeatureSet1Controller {
      *         password is valid.
      */
     private static String validatePassword(String password) {
-        if (password == null) {
-            return "Password cannot be null. ";
-        }
-        if (password.isEmpty()) {
-            return "Password cannot be empty. ";
-        }
+        if (password == null)
+            return "Password cannot be null";
+        if (password.isEmpty())
+            return "Password cannot be empty";
         return "";
     }
 
@@ -185,22 +197,16 @@ public class AssetPlusFeatureSet1Controller {
      */
     private static String validateManagerPassword(String password) {
         String error = validatePassword(password);
-
-        if (!error.isEmpty()) {
+        if (!error.isEmpty())
             return error;
-        }
-        if (password.length() <= 3) {
-            return "Password must be at least 4 characters long. ";
-        }
-        if (!password.matches(".*[!#$].*")) {
-            return "Password must contain at least one of the special characters: !, #, $. ";
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            return "Password must contain at least one uppercase letter. ";
-        }
-        if (!password.matches(".*[a-z].*")) {
-            return "Password must contain at least one lowercase letter. ";
-        }
+        if (password.length() <= 3)
+            return "Password must be at least four characters long";
+        if (!password.matches(".*[!#$].*"))
+            return "Password must contain one character out of !#$";
+        if (!password.matches(".*[a-z].*"))
+            return "Password must contain one lower-case character";
+        if (!password.matches(".*[A-Z].*"))
+            return "Password must contain one upper-case character";
         return "";
     }
 
@@ -213,7 +219,7 @@ public class AssetPlusFeatureSet1Controller {
      *         valid.
      */
     private static String validateName(String name) {
-        return name != null ? "" : "Name cannot be null. ";
+        return name != null ? "" : "Name cannot be null";
     }
 
     /**
@@ -225,6 +231,6 @@ public class AssetPlusFeatureSet1Controller {
      *         phone number is valid.
      */
     private static String validatePhoneNumber(String phoneNumber) {
-        return phoneNumber != null ? "" : "Phone number cannot be null. ";
+        return phoneNumber != null ? "" : "Phone number cannot be null";
     }
 }

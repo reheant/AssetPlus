@@ -17,15 +17,12 @@ public class AssetPlusFeatureSet6Controller {
    */
   public static void deleteEmployeeOrGuest(String email) {
     if (email == null) {
-      throw new IllegalArgumentException("Email not found.");
+      return;
     }
-
     User user = User.getWithEmail(email);
-
-    if (user == null) {
-      throw new IllegalArgumentException("User not found.");
+    if (user == null || user instanceof Manager) {
+      return;
     }
-
     user.delete();
   }
 
@@ -33,7 +30,6 @@ public class AssetPlusFeatureSet6Controller {
    * Returns a list of maintenance tickets from the AssetPlus system.
    *
    * @author Liam Di Chiro
-   *
    * @return A List of type TOMaintenanceTicket of all of the maintenance tickets.
    */
   public static List<TOMaintenanceTicket> getTickets() {
@@ -49,11 +45,18 @@ public class AssetPlusFeatureSet6Controller {
       Date raisedOnDate = maintenanceTicket.getRaisedOnDate();
       String description = maintenanceTicket.getDescription();
       String raisedByEmail = maintenanceTicket.getTicketRaiser().getEmail();
-      String assetName = maintenanceTicket.getAsset().getAssetType().getName();
-      int expectLifeSpan = maintenanceTicket.getAsset().getAssetType().getExpectedLifeSpan();
-      Date purchaseDate = maintenanceTicket.getAsset().getPurchaseDate();
-      int floorNumber = maintenanceTicket.getAsset().getFloorNumber();
-      int roomNumber = maintenanceTicket.getAsset().getRoomNumber();
+      String assetName = null;
+      int expectLifeSpan = -1;
+      Date purchaseDate = null;
+      int floorNumber = -1;
+      int roomNumber = -1;
+      if (maintenanceTicket.getAsset() != null){
+        assetName = maintenanceTicket.getAsset().getAssetType().getName();
+        expectLifeSpan = maintenanceTicket.getAsset().getAssetType().getExpectedLifeSpan();
+        purchaseDate = maintenanceTicket.getAsset().getPurchaseDate();
+        floorNumber = maintenanceTicket.getAsset().getFloorNumber();
+        roomNumber = maintenanceTicket.getAsset().getRoomNumber();
+      }
 
       List<TicketImage> ticketImages = maintenanceTicket.getTicketImages();
       List<String> imageURLs = extractImageURLs(ticketImages);

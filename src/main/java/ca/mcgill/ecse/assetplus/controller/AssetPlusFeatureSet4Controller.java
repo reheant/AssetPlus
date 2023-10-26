@@ -34,7 +34,7 @@ public class AssetPlusFeatureSet4Controller {
 
     User aTicketRaiser = User.getWithEmail(email);
     if (aTicketRaiser == null) {
-      error += "The ticket raiser does not exist";
+      error += "The ticket raiser does not exist ";
     }
 
     if (!error.isEmpty()) {
@@ -98,9 +98,6 @@ public class AssetPlusFeatureSet4Controller {
     SpecificAsset newAsset = null;
     if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
       newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
-      if (newAsset == null) {
-        error += "The asset does not exist ";
-      }
     }
 
     if (!error.isEmpty()) {
@@ -188,7 +185,7 @@ public class AssetPlusFeatureSet4Controller {
    */
   private static String assertValidTicketDescription(String description) {
     if (description == null || description.isEmpty()) {
-      return "Ticket description cannot be empty";
+      return "Ticket description cannot be empty ";
     }
     return "";
   }
@@ -209,7 +206,7 @@ public class AssetPlusFeatureSet4Controller {
 
     SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
     if (aAsset == null) {
-      return "The asset does not exist";
+      return "The asset does not exist ";
     }
 
     return "";

@@ -159,7 +159,7 @@ public class AssetPlusFeatureSet1Controller {
         int dotIndex = email.lastIndexOf(".");
         if (atIndex <= 0 || atIndex != lastAtindex || atIndex >= dotIndex - 1
                 || dotIndex >= email.length() - 1) {
-            return "Invalid email ";
+            return "Invalid email";
         }
 
         if (isEmployee != null) {

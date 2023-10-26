@@ -8,6 +8,8 @@ public class AssetPlusFeatureSet2Controller {
     private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
     /**
+     * Adds an asset type to the system with the given details
+     * 
      * @author Tiffany Miller
      * @param name The name of the asset type to create. Must not be empty or null.
      * @param expectedLifeSpanInDays The expected life span in days of the asset type. Must be > 0.
@@ -40,6 +42,8 @@ public class AssetPlusFeatureSet2Controller {
     }
 
     /**
+     * Updates the details of an existing asset type in the system
+     * 
      * @author Tiffany Miller
      * @param oldName The old name of the asset type to modify. Must not be empty or null. The old
      *        name must belong to an existing asset type.
@@ -58,10 +62,10 @@ public class AssetPlusFeatureSet2Controller {
         AssetType oldAssetType = AssetType.getWithName(oldName);
         if (oldAssetType == null) {
             error += "The asset type does not exist ";
-        }
+        }       
         
         AssetType newAssetType = AssetType.getWithName(newName);
-        if (newAssetType != null) {
+        if (newAssetType != null && !newName.equals(oldName)) {
             error += "The asset type already exists ";
         }
         
@@ -70,8 +74,13 @@ public class AssetPlusFeatureSet2Controller {
         }
 
         try {
-            oldAssetType.setName(newName);
-            oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
+        	if (oldName.equals(newName)) {
+                oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
+            }
+        	else {
+	            oldAssetType.setName(newName);
+	            oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
+        	}
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -79,6 +88,8 @@ public class AssetPlusFeatureSet2Controller {
     }
 
     /**
+     * Deletes an existing asset type in the system
+     * 
      * @author Tiffany Miller
      * @param name The name of the asset type to delete. Must not be empty or null.
      */
@@ -90,6 +101,8 @@ public class AssetPlusFeatureSet2Controller {
     }
 
     /**
+     * Validates a name according to basic constraints
+     * 
      * @author Tiffany Miller
      * @param name The name of the asset type to validate. Must not be empty or null.
      * @return An empty string indicating success. An error message if failure.
@@ -103,6 +116,8 @@ public class AssetPlusFeatureSet2Controller {
     }
 
     /**
+     * Validates a life span according to basic constraints
+     * 
      * @author Tiffany Miller
      * @param expectedLifeSpan The expected life span in days of the asset type. Must be > 0.
      * @return An empty string indicating success. An error message if failure.

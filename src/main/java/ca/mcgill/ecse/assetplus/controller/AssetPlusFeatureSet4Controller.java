@@ -1,6 +1,5 @@
 package ca.mcgill.ecse.assetplus.controller;
 
-import java.security.InvalidParameterException;
 import java.sql.Date;
 
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
@@ -33,15 +32,16 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidTicketDescription(description);
     error += assertValidAssetNumber(assetNumber);
 
+    User aTicketRaiser = User.getWithEmail(email);
+    if (aTicketRaiser == null) {
+      error += "The ticket raiser does not exist ";
+    }
+
     if (!error.isEmpty()) {
       return error.trim();
     }
 
     try {
-      User aTicketRaiser = User.getWithEmail(email);
-      if (aTicketRaiser == null) {
-        return "The ticket raiser does not exist";
-      }
 
       MaintenanceTicket maintenanceTicket =
           new MaintenanceTicket(id, raisedOnDate, description, assetPlus, aTicketRaiser);
@@ -80,48 +80,24 @@ public class AssetPlusFeatureSet4Controller {
 
     var error = "";
     error += assertAssetPlusInitialized();
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
     error += assertValidTicketId(id);
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
     error += assertValidRaisedOnDate(newRaisedOnDate);
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
     error += assertValidTicketDescription(newDescription);
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
     error += assertValidAssetNumber(newAssetNumber);
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
 
     User newTicketRaiser = User.getWithEmail(newEmail);
     if (newTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
-    }
-    if (!error.isEmpty()) {
-      return error.trim();
     }
 
     MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
     if (existingMaintenanceTicket == null) {
       error += "The ticket does not exist ";
     }
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
 
     SpecificAsset newAsset = null;
     if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
       newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
-      if (newAsset == null) {
-        error += "The asset does not exist ";
-      }
     }
 
     if (!error.isEmpty()) {
@@ -129,7 +105,6 @@ public class AssetPlusFeatureSet4Controller {
     }
 
     try {
-
 
       existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
       existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
@@ -151,16 +126,14 @@ public class AssetPlusFeatureSet4Controller {
    */
   public static void deleteMaintenanceTicket(int id) {
     if (assetPlus == null) {
-      throw new NullPointerException("AssetPlus is not initialized");
+      throw new NullPointerException("AssetPlus is not initialized ");
     }
 
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(id);
     if (maintenanceTicket == null) {
-      // TODO update to match gherkin message
-      throw new InvalidParameterException(
-          "Ticket with provided ticket id does not exist in the system");
+    } else {
+      maintenanceTicket.delete();
     }
-    maintenanceTicket.delete();
   }
 
 
@@ -212,7 +185,7 @@ public class AssetPlusFeatureSet4Controller {
    */
   private static String assertValidTicketDescription(String description) {
     if (description == null || description.isEmpty()) {
-      return "Ticket description cannot be empty";
+      return "Ticket description cannot be empty ";
     }
     return "";
   }
@@ -233,7 +206,7 @@ public class AssetPlusFeatureSet4Controller {
 
     SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
     if (aAsset == null) {
-      return "The asset does not exist";
+      return "The asset does not exist ";
     }
 
     return "";

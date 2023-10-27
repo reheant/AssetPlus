@@ -8,7 +8,7 @@ import ca.mcgill.ecse.assetplus.model.*;
 public class AssetPlusFeatureSet4Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
-  final private static int UNSPECIFIED_ASSET_NUMBER = -1;
+  private static final int UNSPECIFIED_ASSET_NUMBER = -1;
 
   /**
    * Adds a maintenance ticket to the system.
@@ -130,8 +130,7 @@ public class AssetPlusFeatureSet4Controller {
     }
 
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(id);
-    if (maintenanceTicket == null) {
-    } else {
+    if (maintenanceTicket != null) {
       maintenanceTicket.delete();
     }
   }

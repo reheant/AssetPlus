@@ -50,7 +50,7 @@ public class AssetPlusFeatureSet6Controller {
       Date purchaseDate = null;
       int floorNumber = -1;
       int roomNumber = -1;
-      if (maintenanceTicket.getAsset() != null){
+      if (maintenanceTicket.getAsset() != null) {
         assetName = maintenanceTicket.getAsset().getAssetType().getName();
         expectLifeSpan = maintenanceTicket.getAsset().getAssetType().getExpectedLifeSpan();
         purchaseDate = maintenanceTicket.getAsset().getPurchaseDate();

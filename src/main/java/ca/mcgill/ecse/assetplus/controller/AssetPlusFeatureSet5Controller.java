@@ -10,8 +10,9 @@ public class AssetPlusFeatureSet5Controller {
      * Adds an image to a maintenance ticket.
      *
      * @author Luke Freund
-     * @param imageURL The URL of the image to be added to the maintenance ticket. Must not be empty or null, must
-     *                 start with either http:// or https://, two imageURLs of the same ticket cannot be the same.
+     * @param imageURL The URL of the image to be added to the maintenance ticket. Must not be empty
+     *        or null, must start with either http:// or https://, two imageURLs of the same ticket
+     *        cannot be the same.
      * @param ticketID The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
@@ -33,8 +34,8 @@ public class AssetPlusFeatureSet5Controller {
 
             return "";
         } catch (Exception e) {
-            return "An unexpected error occurred while attempting to add an " +
-                    "image to the maintenance ticket: " + e.getMessage();
+            return "An unexpected error occurred while attempting to add an "
+                    + "image to the maintenance ticket: " + e.getMessage();
         }
     }
 
@@ -42,8 +43,9 @@ public class AssetPlusFeatureSet5Controller {
      * Deletes an image from a maintenance ticket.
      *
      * @author Luke Freund
-     * @param imageURL The URL of the image to be removed from the maintenance ticket. Must not be empty or null, must
-     *                 start with either http:// or https://, two imageURLs of the same ticket cannot be the same.
+     * @param imageURL The URL of the image to be removed from the maintenance ticket. Must not be
+     *        empty or null, must start with either http:// or https://, two imageURLs of the same
+     *        ticket cannot be the same.
      * @param ticketID The unique identifier of the maintenance ticket.
      */
     public static void deleteImageFromMaintenanceTicket(String imageURL, int ticketID) {
@@ -71,8 +73,8 @@ public class AssetPlusFeatureSet5Controller {
      * Validates the imageURL according to specified constraints.
      *
      * @author Luke Freund
-     * @param imageURL The URL of the image to validated. Must not be empty or null, must
-     *                 start with either http:// or https://.
+     * @param imageURL The URL of the image to validated. Must not be empty or null, must start with
+     *        either http:// or https://.
      * @return An empty string indicating success. An error message if failure.
      */
     private static String assertValidImageURL(String imageURL) {
@@ -103,7 +105,8 @@ public class AssetPlusFeatureSet5Controller {
      * Validates the imageURLs of a ticket according to specified constraints.
      *
      * @author Luke Freund
-     * @param imageURL The URL of the image to validated. Two imageURLs of the same ticket cannot be the same.
+     * @param imageURL The URL of the image to validated. Two imageURLs of the same ticket cannot be
+     *        the same.
      * @param ticket The maintenance ticket. Must exist.
      * @return An empty string indicating success. An error message if failure.
      */

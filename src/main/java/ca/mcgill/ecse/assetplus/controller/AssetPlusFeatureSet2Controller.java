@@ -19,22 +19,21 @@ public class AssetPlusFeatureSet2Controller {
         var error = "";
         error += assertNameValid(name);
         error += assertLifeSpanValid(expectedLifeSpanInDays);
-        
+
         if (!error.isEmpty()) {
             return error.trim();
         }
 
         try {
-        	AssetType existingAsset = AssetType.getWithName(name);
-        	if (existingAsset != null) {
-	        	if (existingAsset.getName().equals(name)) {
-	        		return "The asset type already exists";
-	        	}
-        	}
-        	else {
-        		assetPlus.addAssetType(name, expectedLifeSpanInDays);
+            AssetType existingAsset = AssetType.getWithName(name);
+            if (existingAsset != null) {
+                if (existingAsset.getName().equals(name)) {
+                    return "The asset type already exists";
+                }
+            } else {
+                assetPlus.addAssetType(name, expectedLifeSpanInDays);
             }
-            
+
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -62,25 +61,24 @@ public class AssetPlusFeatureSet2Controller {
         AssetType oldAssetType = AssetType.getWithName(oldName);
         if (oldAssetType == null) {
             error += "The asset type does not exist ";
-        }       
-        
+        }
+
         AssetType newAssetType = AssetType.getWithName(newName);
         if (newAssetType != null && !newName.equals(oldName)) {
             error += "The asset type already exists ";
         }
-        
+
         if (!error.isEmpty()) {
             return error.trim();
         }
 
         try {
-        	if (oldName.equals(newName)) {
+            if (oldName.equals(newName)) {
+                oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
+            } else {
+                oldAssetType.setName(newName);
                 oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
             }
-        	else {
-	            oldAssetType.setName(newName);
-	            oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
-        	}
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -96,7 +94,7 @@ public class AssetPlusFeatureSet2Controller {
     public static void deleteAssetType(String name) {
         AssetType assetType = AssetType.getWithName(name);
         if (assetType != null) {
-        	assetType.delete();
+            assetType.delete();
         }
     }
 

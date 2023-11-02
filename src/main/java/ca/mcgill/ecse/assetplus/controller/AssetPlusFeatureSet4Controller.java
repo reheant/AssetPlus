@@ -2,12 +2,26 @@ package ca.mcgill.ecse.assetplus.controller;
 
 import java.sql.Date;
 
+import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
+import ca.mcgill.ecse.assetplus.model.*;
+
 public class AssetPlusFeatureSet4Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
   private static final int UNSPECIFIED_ASSET_NUMBER = -1;
 
-  // assetNumber -1 means that no asset is specified
+  /**
+   * Adds a maintenance ticket to the system.
+   * 
+   * @author Julien Audet
+   * @param id The id of the maintenance ticket to create. Must be > 0.
+   * @param raisedOnDate The date at which the ticket was raised.
+   * @param description A description of why the ticket is being raised.
+   * @param email The email of the user raising the ticket.
+   * @param assetNumber The asset number of the asset in need of maintenance. Must be > 1. Can be -1
+   *        to avoid specifying asset.
+   * @return An empty string indicating success. An error message if failure.
+   */
   public static String addMaintenanceTicket(int id, Date raisedOnDate, String description,
       String email, int assetNumber) {
 
@@ -49,7 +63,18 @@ public class AssetPlusFeatureSet4Controller {
     return "";
   }
 
-  // newAssetNumber -1 means that no asset is specified
+  /**
+   * Updates the details of an existing maintenance ticket in the system.
+   * 
+   * @author Julien Audet
+   * @param id The id of the maintenance ticket to create. Must be >= 0.
+   * @param newRaisedOnDate The date at which the ticket was raised.
+   * @param newDescription A description of why the ticket is being raised.
+   * @param newEmail The email of the user raising the ticket.
+   * @param newAssetNumber The asset number of the asset in need of maintenance. Must be >= 1. Can
+   *        be -1 to avoid specifying asset.
+   * @return An empty string indicating success. An error message if failure.
+   */
   public static String updateMaintenanceTicket(int id, Date newRaisedOnDate, String newDescription,
       String newEmail, int newAssetNumber) {
 
@@ -93,8 +118,13 @@ public class AssetPlusFeatureSet4Controller {
     return "";
   }
 
+  /**
+   * Deletes an existing maintenance ticket from the system.
+   * 
+   * @author Julien Audet
+   * @param id The id of the maintenance ticket to create. Must be > 0.
+   */
   public static void deleteMaintenanceTicket(int id) {
-
     if (assetPlus == null) {
       throw new NullPointerException("AssetPlus is not initialized ");
     }

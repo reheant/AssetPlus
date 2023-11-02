@@ -1,5 +1,8 @@
 package ca.mcgill.ecse.assetplus.controller;
 
+import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
+import ca.mcgill.ecse.assetplus.model.*;
+
 public class AssetPlusFeatureSet1Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 

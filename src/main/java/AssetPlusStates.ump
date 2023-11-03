@@ -1,0 +1,34 @@
+class TicketStatus {
+
+    Open {
+        assignStaff [isManager()] / {
+            setTicketDetails(PriorityLevel priority, TimeEstimate timeEstimate, ticketFixer, ticketID);
+        }
+    }
+
+    Assigned {
+        startedToWork [isHotelStaff()] -> InProgress;
+    }
+
+    InProgress {
+        completed -> Resolved;
+    }
+
+    Resolved {
+        [!requireManagerApproval()] -> Closed;
+        approve [isManager()] -> Closed;
+        disapprove [isManager()] -> InProgress;
+    }
+
+    Closed { }
+    
+    private void setTicketDetails(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
+        MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+        ticket.setPriority(priority);
+        ticket.setTimeToResolve(timeEstimate);
+        ticket.setTicketFixer(ticketFixer);
+
+    }
+
+}
+

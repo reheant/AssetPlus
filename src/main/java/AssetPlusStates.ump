@@ -1,34 +1,43 @@
 class TicketStatus {
-
+  possible_state{
     Open {
-        assignStaff [isManager()] / {
-            setTicketDetails(PriorityLevel priority, TimeEstimate timeEstimate, ticketFixer, ticketID);
-        }
+      assignStaff [isManager()] / {
+        setTicketDetails(priority, timeEstimate, ticketFixer, ticketID);
+      } -> Assigned;
     }
-
-    Assigned {
-        startedToWork [isHotelStaff()] -> InProgress;
-    }
-
-    InProgress {
-        completed -> Resolved;
-    }
-
-    Resolved {
-        [!requireManagerApproval()] -> Closed;
-        approve [isManager()] -> Closed;
-        disapprove [isManager()] -> InProgress;
-    }
-
-    Closed { }
     
-    private void setTicketDetails(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
-        MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
-        ticket.setPriority(priority);
-        ticket.setTimeToResolve(timeEstimate);
-        ticket.setTicketFixer(ticketFixer);
-
+    Assigned {
+      startedToWork [isHotelStaff()] -> InProgress;
     }
+    
+    InProgress {
+      completed -> Resolved;
+    }
+    
+    Resolved {
+      [!requireManagerApproval()] -> Closed;
+      approve [isManager()] -> Closed;
+      disapprove [isManager()] -> InProgress;
+    }
+    
+    Closed { }
+  }
+  
+  private void setTicketDetails(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    ticket.setPriority(priority);
+    ticket.setTimeToResolve(timeEstimate);
+    ticket.setTicketFixer(ticketFixer);
+    
+  }
+  private Boolean requireManagerApproval(int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    return ticket.hasFixApprover();
+  }
 
+  private Boolean isManager(String userEmail) {
+    User currentUser = User.getWithEmail(userEmail);
+    return (currentUser.getEmail().equals("manager@ap.com"));
+  }
 }
 

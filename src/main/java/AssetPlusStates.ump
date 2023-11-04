@@ -1,13 +1,20 @@
+
+external Manager{}
+external PriorityLevel{}
+external TimeEstimate{}
+external HotelStaff{}
+external String{}
+
 class TicketStatus {
   possible_state{
     Open {
-      assignStaff [isManager()] / {
+      assignStaff [isManager(userEmail)] / {
         setTicketDetails(priority, timeEstimate, ticketFixer, ticketID);
       } -> Assigned;
     }
     
     Assigned {
-      startedToWork [isHotelStaff()] -> InProgress;
+      startedToWork [isHotelStaff(userEmail)] -> InProgress;
     }
     
     InProgress {
@@ -15,9 +22,9 @@ class TicketStatus {
     }
     
     Resolved {
-      [!requireManagerApproval()] -> Closed;
-      approve [isManager()] -> Closed;
-      disapprove [isManager()] -> InProgress;
+      [!requireManagerApproval(ticketID)] -> Closed;
+      approve [isManager(userEmail)] -> Closed;
+      disapprove [isManager(userEmail)] -> InProgress;
     }
     
     Closed { }
@@ -38,6 +45,11 @@ class TicketStatus {
   private Boolean isManager(String userEmail) {
     User currentUser = User.getWithEmail(userEmail);
     return (currentUser.getEmail().equals("manager@ap.com"));
+  }
+
+  private Boolean isHotelStaff(String userEmail) {
+    User currentUser = User.getWithEmail(userEmail);
+    return(currentUser.getEmail().endsWith("@ap.com"));
   }
 }
 

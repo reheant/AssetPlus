@@ -1,20 +1,14 @@
 
-external Manager{}
-external PriorityLevel{}
-external TimeEstimate{}
-external HotelStaff{}
-external String{}
-
 class TicketStatus {
   possible_state{
     Open {
-      assignStaff [isManager(userEmail)] / {
-        setTicketDetails(priority, timeEstimate, ticketFixer, ticketID);
+      assignStaff(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) [isManager(userEmail)] / {
+        doAssign(priority, timeEstimate, ticketFixer, ticketID);
       } -> Assigned;
     }
     
     Assigned {
-      startedToWork [isHotelStaff(userEmail)] -> InProgress;
+      startedToWork(String userEmail) [isHotelStaff(userEmail)] -> InProgress;
     }
     
     InProgress {
@@ -23,14 +17,14 @@ class TicketStatus {
     
     Resolved {
       [!requireManagerApproval(ticketID)] -> Closed;
-      approve [isManager(userEmail)] -> Closed;
-      disapprove [isManager(userEmail)] -> InProgress;
+      approve(String userEmail) [isManager(userEmail)] -> Closed;
+      disapprove(String userEmail) [isManager(userEmail)] -> InProgress;
     }
     
     Closed { }
   }
   
-  private void setTicketDetails(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
+  private void doAssign(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
     MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
     ticket.setPriority(priority);
     ticket.setTimeToResolve(timeEstimate);

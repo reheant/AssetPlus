@@ -45,6 +45,11 @@ public class AssetPlusFeatureSet6Controller {
       Date raisedOnDate = maintenanceTicket.getRaisedOnDate();
       String description = maintenanceTicket.getDescription();
       String raisedByEmail = maintenanceTicket.getTicketRaiser().getEmail();
+      String status = "";
+      String fixedByEmail = "";
+      String timeToResolve = "";
+      String priority = "";
+      boolean approvalRequired = false;
       String assetName = null;
       int expectLifeSpan = -1;
       Date purchaseDate = null;
@@ -65,8 +70,8 @@ public class AssetPlusFeatureSet6Controller {
       List<MaintenanceNote> notes = maintenanceTicket.getTicketNotes();
       TOMaintenanceNote[] allNotes = extractMaintenanceNotes(notes);
 
-      TOMaintenanceTicket currTOMaintenanceTicket =
-          new TOMaintenanceTicket(id, raisedOnDate, description, raisedByEmail, assetName,
+TOMaintenanceTicket currTOMaintenanceTicket =
+          new TOMaintenanceTicket(id, raisedOnDate, description, raisedByEmail, status, fixedByEmail, timeToResolve, priority, approvalRequired, assetName,
               expectLifeSpan, purchaseDate, floorNumber, roomNumber, imageURLs, allNotes);
       maintenanceTicketsTO.add(currTOMaintenanceTicket);
     }

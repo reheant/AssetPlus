@@ -1,0 +1,45 @@
+class AssetPlus {
+  public void reinitialize() {
+  	User.reinitializeUser(getUser());
+    AssetType.reinitializeAssetType(getAssetType());
+    SpecificAsset.reinitializeSpecificAsset(getSpecificAsset());
+    MaintenanceTicket.reinitializeMaintenanceTicket(getMaintenanceTicket());
+    
+  }
+}
+
+class User {
+  public static void reinitializeUniqueEmail(List<User> users) {
+    usersByEmail.clear();
+    for (var user : users) {
+      usersByEmail.put(user.getEmail(), user);
+    }
+  }
+}
+
+class AssetType {
+  public static void reinitializeUniqueName(List<AssetType> assetTypes) {
+    assetTypesByName.clear();
+    for (var assetType : assetTypes) {
+      assetTypesByName.put(assetType.getName(), assetType);
+    }
+  }
+}
+
+class SpecificAsset {
+  public static void reinitializeUniqueAssetNumber(List<SpecificAsset> specificAssets) {
+    specificAssetByNumber.clear();
+    for (var specificAsset : specificAssets) {
+      specificAssetByNumber.put(assetType.getNumber(), specificAsset);
+    }
+  }
+}
+
+class MaintenanceTicket {
+  public static void reinitializeUniqueID(List<MaintenanceTicket> maintenanceTicket) {
+    maintenanceTicketByID.clear();
+    for (var maintenanceTicket : maintenanceTickets) {
+      maintenanceTicketByID.put(maintenanceTicket.getID(), maintenanceTicket);
+    }
+  }
+}

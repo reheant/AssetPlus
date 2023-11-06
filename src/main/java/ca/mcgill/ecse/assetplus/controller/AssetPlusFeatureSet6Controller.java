@@ -45,17 +45,32 @@ public class AssetPlusFeatureSet6Controller {
       Date raisedOnDate = maintenanceTicket.getRaisedOnDate();
       String description = maintenanceTicket.getDescription();
       String raisedByEmail = maintenanceTicket.getTicketRaiser().getEmail();
+      String status = maintenanceTicket.getPossible_stateFullName();
+      String fixedByEmail = null;
+      String timeToResolve = null;
+      String priority = null;
+      boolean approvalRequired = maintenanceTicket.hasFixApprover();
       String assetName = null;
       int expectLifeSpan = -1;
       Date purchaseDate = null;
       int floorNumber = -1;
       int roomNumber = -1;
+
       if (maintenanceTicket.getAsset() != null) {
         assetName = maintenanceTicket.getAsset().getAssetType().getName();
         expectLifeSpan = maintenanceTicket.getAsset().getAssetType().getExpectedLifeSpan();
         purchaseDate = maintenanceTicket.getAsset().getPurchaseDate();
         floorNumber = maintenanceTicket.getAsset().getFloorNumber();
         roomNumber = maintenanceTicket.getAsset().getRoomNumber();
+      }
+      if (maintenanceTicket.getTicketFixer() != null){
+        fixedByEmail = maintenanceTicket.getTicketFixer().getEmail();
+      }
+      if (maintenanceTicket.getTimeToResolve() != null){
+        timeToResolve = maintenanceTicket.getTimeToResolve().toString();
+      }
+      if (maintenanceTicket.getPriority() != null){
+        priority = maintenanceTicket.getPriority().toString();
       }
 
       List<TicketImage> ticketImages = maintenanceTicket.getTicketImages();
@@ -66,8 +81,10 @@ public class AssetPlusFeatureSet6Controller {
       TOMaintenanceNote[] allNotes = extractMaintenanceNotes(notes);
 
       TOMaintenanceTicket currTOMaintenanceTicket =
-          new TOMaintenanceTicket(id, raisedOnDate, description, raisedByEmail, assetName,
-              expectLifeSpan, purchaseDate, floorNumber, roomNumber, imageURLs, allNotes);
+          new TOMaintenanceTicket(id, raisedOnDate, description, raisedByEmail, status,
+              fixedByEmail, timeToResolve, priority, approvalRequired, assetName, expectLifeSpan,
+              purchaseDate, floorNumber, roomNumber, imageURLs, allNotes);
+
       maintenanceTicketsTO.add(currTOMaintenanceTicket);
     }
 

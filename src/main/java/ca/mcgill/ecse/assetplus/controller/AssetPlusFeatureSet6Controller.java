@@ -46,9 +46,9 @@ public class AssetPlusFeatureSet6Controller {
       String description = maintenanceTicket.getDescription();
       String raisedByEmail = maintenanceTicket.getTicketRaiser().getEmail();
       String status = maintenanceTicket.getPossible_stateFullName();
-      String fixedByEmail = maintenanceTicket.getTicketFixer().getEmail();
-      String timeToResolve = maintenanceTicket.getTimeToResolve().toString();
-      String priority = maintenanceTicket.getPriority().toString();
+      String fixedByEmail = null;
+      String timeToResolve = null;
+      String priority = null;
       boolean approvalRequired = maintenanceTicket.hasFixApprover();
       String assetName = null;
       int expectLifeSpan = -1;
@@ -62,6 +62,15 @@ public class AssetPlusFeatureSet6Controller {
         purchaseDate = maintenanceTicket.getAsset().getPurchaseDate();
         floorNumber = maintenanceTicket.getAsset().getFloorNumber();
         roomNumber = maintenanceTicket.getAsset().getRoomNumber();
+      }
+      if (maintenanceTicket.getTicketFixer() != null){
+        fixedByEmail = maintenanceTicket.getTicketFixer().getEmail();
+      }
+      if (maintenanceTicket.getTimeToResolve() != null){
+        timeToResolve = maintenanceTicket.getTimeToResolve().toString();
+      }
+      if (maintenanceTicket.getPriority() != null){
+        priority = maintenanceTicket.getPriority().toString();
       }
 
       List<TicketImage> ticketImages = maintenanceTicket.getTicketImages();

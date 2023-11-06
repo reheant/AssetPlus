@@ -1,8 +1,8 @@
 
-class TicketStatus {
+class MaintenanceTicket {
   possible_state{
     Open {
-      assignStaff(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) [isManager(userEmail)] / {
+      assignStaff(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID, String userEmail) [isManager(userEmail)] / {
         doAssign(priority, timeEstimate, ticketFixer, ticketID);
       } -> Assigned;
     }
@@ -16,7 +16,7 @@ class TicketStatus {
     }
     
     Resolved {
-      [!requireManagerApproval(ticketID)] -> Closed;
+      resolve(int ticketID) [!requireManagerApproval(ticketID)] -> Closed;
       approve(String userEmail) [isManager(userEmail)] -> Closed;
       disapprove(String userEmail) [isManager(userEmail)] -> InProgress;
     }
@@ -47,3 +47,4 @@ class TicketStatus {
   }
 }
 
+use AssetPlus.ump;

@@ -1,103 +1,181 @@
 package ca.mcgill.ecse.assetplus.features;
 
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
+import ca.mcgill.ecse.assetplus.model.AssetPlus;
+import ca.mcgill.ecse.assetplus.model.AssetType;
+import ca.mcgill.ecse.assetplus.model.Employee;
+import ca.mcgill.ecse.assetplus.model.HotelStaff;
+import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
+import ca.mcgill.ecse.assetplus.model.Manager;
+import ca.mcgill.ecse.assetplus.model.SpecificAsset;
+import ca.mcgill.ecse.assetplus.model.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class MaintenanceTicketsStepDefinitions {
+
+  private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
+  private String error;
+
+
+  /**
+   * @author Tiffany Miller, Julien Audet
+   * @param dataTable The data table of the employees that must exist in the system.
+   */
   @Given("the following employees exist in the system")
   public void the_following_employees_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<List<String>> rows = dataTable.asLists(String.class);
+    for (int i = 1; i < rows.size(); i++) {
+      List<String> row = rows.get(i);
+      String email = row.get(0);
+      String password = row.get(1);
+      String name = row.get(2);
+      String phoneNumber = row.get(3);
+      assetPlus.addEmployee(email, name, password, phoneNumber);
+    }
+    error = "";
   }
 
+  /**
+   * @author Tiffany Miller, Julien Audet
+   * @param dataTable The data table of the manager that must exist in the system.
+   */
   @Given("the following manager exists in the system")
   public void the_following_manager_exists_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (int i = 0; i < rows.size(); i++) {
+      Map<String, String> row = rows.get(i);
+      String email = row.get("email");
+      String password = row.get("password");
+      Manager manager = new Manager(email, "manager", password, "(123)456-7890", assetPlus);
+      assetPlus.setManager(manager);
+    }
+    error = "";
   }
 
+  /**
+   * @author Tiffany Miller, Julien Audet
+   * @param dataTable The data table of the asset types that must exist in the system.
+   */
   @Given("the following asset types exist in the system")
   public void the_following_asset_types_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (int i = 0; i < rows.size(); i++) {
+      Map<String, String> row = rows.get(i);
+      String name = row.get("name");
+      int lifeSpan = Integer.parseInt(row.get("expectedLifeSpan"));
+      assetPlus.addAssetType(name, lifeSpan);
+    }
+    error = "";
   }
 
+  /**
+   * @author Tiffany Miller, Julien Audet
+   * @param dataTable The data table of the assets that must exist in the system.
+   */
   @Given("the following assets exist in the system")
   public void the_following_assets_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<List<String>> rows = dataTable.asLists(String.class);
+    for (int i = 1; i < rows.size(); i++) {
+      List<String> row = rows.get(i);
+      int assetNumber = Integer.parseInt(row.get(0));
+      AssetType type = AssetType.getWithName(row.get(1));
+      Date purchaseDate = Date.valueOf(row.get(2));
+      int floorNumber = Integer.parseInt(row.get(3));
+      int roomNumber = Integer.parseInt(row.get(4));
+      assetPlus.addSpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, type);
+    }
+    error = "";
   }
 
+  /**
+   * @author Tiffany Miller, Julien Audet
+   * @param dataTable The data table of the tickets that must exist in the system.
+   */
   @Given("the following tickets exist in the system")
   public void the_following_tickets_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<List<String>> rows = dataTable.asLists(String.class);
+    for (int i = 1; i < rows.size(); i++) {
+      List<String> row = rows.get(i);
+      int id = Integer.parseInt(row.get(0));
+      String ticketRaiser = row.get(1);
+      Date raisedOnDate = Date.valueOf(row.get(2));
+      String description = row.get(3);
+      int assetNumber = Integer.parseInt(row.get(4));
+      User raiserUser = User.getWithEmail(ticketRaiser);
+      SpecificAsset asset = SpecificAsset.getWithAssetNumber(assetNumber);
+      assetPlus.addMaintenanceTicket(id, raisedOnDate, description, raiserUser);
+      MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);
+      thisTicket.setAsset(asset);
+    }
+    error = "";
   }
 
+  /**
+   * @author Julien Audet
+   * @param dataTable dataTable of the notes that must exist in the system.
+   */
   @Given("the following notes exist in the system")
   public void the_following_notes_exist_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<List<String>> rows = dataTable.asLists(String.class);
+    for (int i = 1; i < rows.size(); i++) {
+      List<String> row = rows.get(i);
+      String noteTakerEmail = row.get(0);
+      int ticketId = Integer.parseInt(row.get(1));
+      Date addedOnDate = Date.valueOf(row.get(2));
+      String description = row.get(3);
+
+      HotelStaff noteTaker = (HotelStaff) HotelStaff.getWithEmail(noteTakerEmail);
+      MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+
+      maintenanceTicket.addTicketNote(addedOnDate, description, noteTaker);
+    }
+    error = "";
   }
 
+  /**
+   * @author Julien Audet
+   * @param dataTable dataTable of the images that must exist in the system.
+   */
   @Given("the following ticket images exist in the system")
   public void the_following_ticket_images_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+      List<Map<String, String>> rows = dataTable.asMaps();
+      for (int i = 1; i < rows.size(); i++) {
+        Map<String, String> row = rows.get(i);
+        String imageUrl = row.get("imageUrl");
+        int ticketId = Integer.parseInt(row.get("ticketId"));
+
+        MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+
+        maintenanceTicket.addTicketImage(imageUrl);
+      }
   }
 
+  /**
+   * @author Julien Audet
+   * @param string 
+   * @param string2
+   * @param string3
+   */
   @Given("ticket {string} is marked as {string} with requires approval {string}")
-  public void ticket_is_marked_as_with_requires_approval(String string, String string2,
-      String string3) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void ticket_is_marked_as_with_requires_approval(String ticketIdString, String stateString,
+      String requiresApprovalString) {
+    int ticketId = Integer.parseInt(ticketIdString);
+    // some parsing to do with stateString?
+    boolean requiresApproval = Boolean.parseBoolean(requiresApprovalString);
+
+    MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+
+    maintenanceTicket//.setState(stateString);  // TODO implement states
+
   }
 
   @Given("ticket {string} is marked as {string}")

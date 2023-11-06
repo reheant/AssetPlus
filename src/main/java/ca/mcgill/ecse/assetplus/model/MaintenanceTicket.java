@@ -5,7 +5,8 @@ package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 import java.sql.Date;
 
-// line 43 "../../../../../AssetPlus.ump"
+// line 2 "../../../../../AssetPlusStates.ump"
+// line 44 "../../../../../AssetPlus.ump"
 public class MaintenanceTicket
 {
 
@@ -32,6 +33,10 @@ public class MaintenanceTicket
   private String description;
   private TimeEstimate timeToResolve;
   private PriorityLevel priority;
+
+  //MaintenanceTicket State Machines
+  public enum Possible_state { Open, Assigned, InProgress, Resolved, Closed }
+  private Possible_state possible_state;
 
   //MaintenanceTicket Associations
   private List<MaintenanceNote> ticketNotes;
@@ -66,6 +71,7 @@ public class MaintenanceTicket
     {
       throw new RuntimeException("Unable to create raisedTicket due to ticketRaiser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    setPossible_state(Possible_state.Open);
   }
 
   //------------------------
@@ -156,6 +162,184 @@ public class MaintenanceTicket
   public PriorityLevel getPriority()
   {
     return priority;
+  }
+
+  public String getPossible_stateFullName()
+  {
+    String answer = possible_state.toString();
+    return answer;
+  }
+
+  public Possible_state getPossible_state()
+  {
+    return possible_state;
+  }
+
+  public boolean assignStaff(PriorityLevel priority,TimeEstimate timeEstimate,HotelStaff ticketFixer,int ticketID,String userEmail)
+  {
+    boolean wasEventProcessed = false;
+    
+    Possible_state aPossible_state = possible_state;
+    switch (aPossible_state)
+    {
+      case Open:
+        if (isManager(userEmail))
+        {
+        // line 5 "../../../../../AssetPlusStates.ump"
+          doAssign(priority, timeEstimate, ticketFixer, ticketID);
+          setPossible_state(Possible_state.Assigned);
+          wasEventProcessed = true;
+          break;
+        }
+        if (isManager(userEmail))
+        {
+        // line 5 "../../../../../AssetPlusStates.ump"
+          doAssign(priority, timeEstimate, ticketFixer, ticketID);
+          setPossible_state(Possible_state.Assigned);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean startedToWork(String userEmail)
+  {
+    boolean wasEventProcessed = false;
+    
+    Possible_state aPossible_state = possible_state;
+    switch (aPossible_state)
+    {
+      case Assigned:
+        if (isHotelStaff(userEmail))
+        {
+          setPossible_state(Possible_state.InProgress);
+          wasEventProcessed = true;
+          break;
+        }
+        if (isHotelStaff(userEmail))
+        {
+          setPossible_state(Possible_state.InProgress);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean completed()
+  {
+    boolean wasEventProcessed = false;
+    
+    Possible_state aPossible_state = possible_state;
+    switch (aPossible_state)
+    {
+      case InProgress:
+        setPossible_state(Possible_state.Resolved);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean resolve(int ticketID)
+  {
+    boolean wasEventProcessed = false;
+    
+    Possible_state aPossible_state = possible_state;
+    switch (aPossible_state)
+    {
+      case Resolved:
+        if (!(requireManagerApproval(ticketID)))
+        {
+          setPossible_state(Possible_state.Closed);
+          wasEventProcessed = true;
+          break;
+        }
+        if (!(requireManagerApproval(ticketID)))
+        {
+          setPossible_state(Possible_state.Closed);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean approve(String userEmail)
+  {
+    boolean wasEventProcessed = false;
+    
+    Possible_state aPossible_state = possible_state;
+    switch (aPossible_state)
+    {
+      case Resolved:
+        if (isManager(userEmail))
+        {
+          setPossible_state(Possible_state.Closed);
+          wasEventProcessed = true;
+          break;
+        }
+        if (isManager(userEmail))
+        {
+          setPossible_state(Possible_state.Closed);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean disapprove(String userEmail)
+  {
+    boolean wasEventProcessed = false;
+    
+    Possible_state aPossible_state = possible_state;
+    switch (aPossible_state)
+    {
+      case Resolved:
+        if (isManager(userEmail))
+        {
+          setPossible_state(Possible_state.InProgress);
+          wasEventProcessed = true;
+          break;
+        }
+        if (isManager(userEmail))
+        {
+          setPossible_state(Possible_state.InProgress);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  private void setPossible_state(Possible_state aPossible_state)
+  {
+    possible_state = aPossible_state;
   }
   /* Code from template association_GetMany */
   public MaintenanceNote getTicketNote(int index)
@@ -541,6 +725,32 @@ public class MaintenanceTicket
       this.fixApprover = null;
       placeholderFixApprover.removeTicketsForApproval(this);
     }
+  }
+
+  // line 28 "../../../../../AssetPlusStates.ump"
+   private void doAssign(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID){
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    ticket.setPriority(priority);
+    ticket.setTimeToResolve(timeEstimate);
+    ticket.setTicketFixer(ticketFixer);
+  }
+
+  // line 35 "../../../../../AssetPlusStates.ump"
+   private Boolean requireManagerApproval(int ticketID){
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    return ticket.hasFixApprover();
+  }
+
+  // line 40 "../../../../../AssetPlusStates.ump"
+   private Boolean isManager(String userEmail){
+    User currentUser = User.getWithEmail(userEmail);
+    return (currentUser.getEmail().equals("manager@ap.com"));
+  }
+
+  // line 45 "../../../../../AssetPlusStates.ump"
+   private Boolean isHotelStaff(String userEmail){
+    User currentUser = User.getWithEmail(userEmail);
+    return(currentUser.getEmail().endsWith("@ap.com"));
   }
 
 

@@ -1,5 +1,6 @@
 namespace ca.mcgill.ecse.assetplus.model;
 
+
 class AssetPlus
 {
   1 <@>- * Employee employees;
@@ -37,7 +38,7 @@ class Employee
 
 class Manager
 {
-  isA HotelStaff;
+ isA HotelStaff;
 }
 
 class MaintenanceTicket
@@ -112,3 +113,4 @@ association
 }
 
 use AssetPlusTransferObjects.ump;
+use AssetPlusStates.ump;

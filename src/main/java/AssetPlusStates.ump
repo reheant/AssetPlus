@@ -1,0 +1,50 @@
+
+class MaintenanceTicket {
+  possible_state{
+    Open {
+      assignStaff(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID, String userEmail) [isManager(userEmail)] / {
+        doAssign(priority, timeEstimate, ticketFixer, ticketID);
+      } -> Assigned;
+    }
+    
+    Assigned {
+      startedToWork(String userEmail) [isHotelStaff(userEmail)] -> InProgress;
+    }
+    
+    InProgress {
+      completed -> Resolved;
+    }
+    
+    Resolved {
+      resolve(int ticketID) [!requireManagerApproval(ticketID)] -> Closed;
+      approve(String userEmail) [isManager(userEmail)] -> Closed;
+      disapprove(String userEmail) [isManager(userEmail)] -> InProgress;
+    }
+    
+    Closed { }
+  }
+  
+  private void doAssign(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    ticket.setPriority(priority);
+    ticket.setTimeToResolve(timeEstimate);
+    ticket.setTicketFixer(ticketFixer);
+    
+  }
+  private Boolean requireManagerApproval(int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    return ticket.hasFixApprover();
+  }
+
+  private Boolean isManager(String userEmail) {
+    User currentUser = User.getWithEmail(userEmail);
+    return (currentUser.getEmail().equals("manager@ap.com"));
+  }
+
+  private Boolean isHotelStaff(String userEmail) {
+    User currentUser = User.getWithEmail(userEmail);
+    return(currentUser.getEmail().endsWith("@ap.com"));
+  }
+}
+
+use AssetPlus.ump;

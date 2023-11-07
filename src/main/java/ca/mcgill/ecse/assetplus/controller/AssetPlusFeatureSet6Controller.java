@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.List;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 
 public class AssetPlusFeatureSet6Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
@@ -24,6 +25,7 @@ public class AssetPlusFeatureSet6Controller {
       return;
     }
     user.delete();
+    AssetPlusPersistence.save();
   }
 
   /**
@@ -88,6 +90,7 @@ public class AssetPlusFeatureSet6Controller {
       maintenanceTicketsTO.add(currTOMaintenanceTicket);
     }
 
+    AssetPlusPersistence.save();
     return maintenanceTicketsTO;
 
   }

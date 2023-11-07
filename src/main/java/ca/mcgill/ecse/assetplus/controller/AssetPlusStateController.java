@@ -8,6 +8,7 @@ import ca.mcgill.ecse.assetplus.model.MaintenanceTicket.PriorityLevel;
 import ca.mcgill.ecse.assetplus.model.MaintenanceTicket.TimeEstimate;
 import ca.mcgill.ecse.assetplus.model.Manager;
 import ca.mcgill.ecse.assetplus.model.User;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 import java.sql.Date;
 
 public class AssetPlusStateController {
@@ -44,12 +45,11 @@ public class AssetPlusStateController {
             if (requiresManagerApproval){
                 ticket.setFixApprover(manager);
             }
-
-            return "";
+            AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to assign a ticket" + e.getMessage();
         }
-
+        return "";
     }
 
     /**
@@ -72,11 +72,11 @@ public class AssetPlusStateController {
             String employeeEmail = ticket.getTicketFixer().getEmail();
             ticket.startedToWork(employeeEmail);
 
-            return "";
+            AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to start a ticket" + e.getMessage();
         }
-
+        return "";
     }
 
     /**
@@ -99,10 +99,11 @@ public class AssetPlusStateController {
             }
 
             ticket.completed();
-            return "";
+            AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to complete a ticket" + e.getMessage();
         }
+        return "";
     }
 
  /**
@@ -129,6 +130,7 @@ public class AssetPlusStateController {
             Manager manager = assetPlus.getManager();
             ticket.disapprove(manager.getEmail());
             ticket.addTicketNote(date, reason, manager);
+            AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to disapprove a ticket" + e.getMessage();
         }
@@ -155,6 +157,7 @@ public class AssetPlusStateController {
             }
 
             ticket.approve(assetPlus.getManager().getEmail());
+            AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to disapprove a ticket" + e.getMessage();
         }

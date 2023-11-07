@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.controller;
 
 import ca.mcgill.ecse.assetplus.model.*;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 
 public class AssetPlusFeatureSet2Controller {
@@ -33,7 +34,7 @@ public class AssetPlusFeatureSet2Controller {
             } else {
                 assetPlus.addAssetType(name, expectedLifeSpanInDays);
             }
-
+            AssetPlusPersistence.save();
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -79,6 +80,7 @@ public class AssetPlusFeatureSet2Controller {
                 oldAssetType.setName(newName);
                 oldAssetType.setExpectedLifeSpan(newExpectedLifeSpanInDays);
             }
+            AssetPlusPersistence.save();
         } catch (RuntimeException e) {
             return e.getMessage();
         }
@@ -95,6 +97,7 @@ public class AssetPlusFeatureSet2Controller {
         AssetType assetType = AssetType.getWithName(name);
         if (assetType != null) {
             assetType.delete();
+            AssetPlusPersistence.save();
         }
     }
 

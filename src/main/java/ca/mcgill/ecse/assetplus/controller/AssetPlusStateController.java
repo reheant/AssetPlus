@@ -22,14 +22,15 @@ public class AssetPlusStateController {
      * @param employeeEmail The email of a hotel staff member.
      * @param timeEstimate The estimated completion time of the maintenance ticket.
      * @param priorityLevel The priority level of the maintenance ticket.
-     * @param requiresManagerApproval Indicates if the ticket requires a manager's approval before closing.
+     * @param requiresManagerApproval Indicates if the ticket requires a manager's approval before
+     *        closing.
      * @return An empty string indicating success. An error message if failure.
      */
     public static String assignTicket(int ticketID, String employeeEmail, TimeEstimate timeEstimate,
-                                      PriorityLevel priorityLevel, boolean requiresManagerApproval) {
+            PriorityLevel priorityLevel, boolean requiresManagerApproval) {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
-            HotelStaff employee = (HotelStaff)User.getWithEmail(employeeEmail);
+            HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
 
             var error = "";
             error += assertTicketExists(ticket);
@@ -42,12 +43,13 @@ public class AssetPlusStateController {
 
             Manager manager = assetPlus.getManager();
             ticket.assignStaff(priorityLevel, timeEstimate, employee, ticketID, manager.getEmail());
-            if (requiresManagerApproval){
+            if (requiresManagerApproval) {
                 ticket.setFixApprover(manager);
             }
             AssetPlusPersistence.save();
         } catch (Exception e) {
-            return "An unexpected error occurred while attempting to assign a ticket" + e.getMessage();
+            return "An unexpected error occurred while attempting to assign a ticket"
+                    + e.getMessage();
         }
         return "";
     }
@@ -59,7 +61,7 @@ public class AssetPlusStateController {
      * @param ticketID The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    public static String startTicket(int ticketID){
+    public static String startTicket(int ticketID) {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             var error = "";
@@ -74,7 +76,8 @@ public class AssetPlusStateController {
 
             AssetPlusPersistence.save();
         } catch (Exception e) {
-            return "An unexpected error occurred while attempting to start a ticket" + e.getMessage();
+            return "An unexpected error occurred while attempting to start a ticket"
+                    + e.getMessage();
         }
         return "";
     }
@@ -86,7 +89,7 @@ public class AssetPlusStateController {
      * @param ticketID The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    public static String completeTicket(int ticketID){
+    public static String completeTicket(int ticketID) {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             var error = "";
@@ -101,19 +104,21 @@ public class AssetPlusStateController {
             ticket.completed();
             AssetPlusPersistence.save();
         } catch (Exception e) {
-            return "An unexpected error occurred while attempting to complete a ticket" + e.getMessage();
+            return "An unexpected error occurred while attempting to complete a ticket"
+                    + e.getMessage();
         }
         return "";
     }
 
- /**
+    /**
      * Disapproves a maintenance ticket in the system.
      * 
      * @author Nicolas Bolouri
      * @param ticketID The ID of the maintenance ticket to be disapproved.
      * @param date The date of disapproval.
      * @param reason The reason for disapproval.
-     * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
+     * @return A string message indicating the failure of the operation or an empty string if the
+     *         operation was successful.
      */
     public static String disapproveTicket(int ticketID, Date date, String reason) {
         try {
@@ -132,7 +137,8 @@ public class AssetPlusStateController {
             ticket.addTicketNote(date, reason, manager);
             AssetPlusPersistence.save();
         } catch (Exception e) {
-            return "An unexpected error occurred while attempting to disapprove a ticket" + e.getMessage();
+            return "An unexpected error occurred while attempting to disapprove a ticket"
+                    + e.getMessage();
         }
         return "";
     }
@@ -142,10 +148,11 @@ public class AssetPlusStateController {
      * 
      * @author Nicolas Bolouri
      * @param ticketID The ID of the maintenance ticket to be approved.
-     * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
+     * @return A string message indicating the failure of the operation or an empty string if the
+     *         operation was successful.
      */
     public static String approveTicket(int ticketID) {
-          try {
+        try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             var error = "";
 
@@ -159,7 +166,8 @@ public class AssetPlusStateController {
             ticket.approve(assetPlus.getManager().getEmail());
             AssetPlusPersistence.save();
         } catch (Exception e) {
-            return "An unexpected error occurred while attempting to disapprove a ticket" + e.getMessage();
+            return "An unexpected error occurred while attempting to disapprove a ticket"
+                    + e.getMessage();
         }
         return "";
     }
@@ -186,8 +194,8 @@ public class AssetPlusStateController {
      * @param employee The employee. Must exist.
      * @return An empty string indicating success. An error message if failure.
      */
-    private static String assertEmployeeExists(HotelStaff employee){
-        if (employee == null){
+    private static String assertEmployeeExists(HotelStaff employee) {
+        if (employee == null) {
             return "Staff to assign does not exist.";
         }
         return "";
@@ -200,15 +208,15 @@ public class AssetPlusStateController {
      * @param ticket The maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    private static String assertTicketAssignable(MaintenanceTicket ticket){
-        if (ticket != null){
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned){
+    private static String assertTicketAssignable(MaintenanceTicket ticket) {
+        if (ticket != null) {
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
                 return "The maintenance ticket is already assigned.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved){
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
                 return "Cannot assign a maintenance ticket which is resolved.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed){
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
                 return "Cannot assign a maintenance ticket which is closed.";
             }
             if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
@@ -225,15 +233,15 @@ public class AssetPlusStateController {
      * @param ticket The maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    private static String assertTicketStartable(MaintenanceTicket ticket){
-        if (ticket != null){
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open){
+    private static String assertTicketStartable(MaintenanceTicket ticket) {
+        if (ticket != null) {
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
                 return "Cannot start a maintenance ticket which is open.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved){
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
                 return "Cannot start a maintenance ticket which is resolved.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed){
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
                 return "Cannot start a maintenance ticket which is closed.";
             }
             if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
@@ -250,15 +258,15 @@ public class AssetPlusStateController {
      * @param ticket The maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    private static String assertTicketCompletable(MaintenanceTicket ticket){
-        if (ticket != null){
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open){
+    private static String assertTicketCompletable(MaintenanceTicket ticket) {
+        if (ticket != null) {
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
                 return "Cannot complete a maintenance ticket which is open";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned){
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
                 return "Cannot complete a maintenance ticket which is assigned.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed){
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
                 return "The maintenance ticket is already closed.";
             }
             if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
@@ -273,7 +281,8 @@ public class AssetPlusStateController {
      *
      * @author Nicolas Bolouri
      * @param ticket The maintenance ticket to be checked.
-     * @return An empty string indicating the ticket can be disapproved. An error message if the ticket cannot be disapproved.
+     * @return An empty string indicating the ticket can be disapproved. An error message if the
+     *         ticket cannot be disapproved.
      */
     private static String assertTicketDisapprovable(MaintenanceTicket ticket) {
         if (ticket != null) {
@@ -298,7 +307,8 @@ public class AssetPlusStateController {
      * 
      * @author Nicolas Bolouri
      * @param ticket The maintenance ticket to be checked.
-     * @return An empty string indicating the ticket can be approved. An error message if the ticket cannot be approved.
+     * @return An empty string indicating the ticket can be approved. An error message if the ticket
+     *         cannot be approved.
      */
     private static String assertTicketApprovable(MaintenanceTicket ticket) {
         if (ticket != null) {

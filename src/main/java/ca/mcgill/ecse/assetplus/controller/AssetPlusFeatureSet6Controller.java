@@ -65,13 +65,13 @@ public class AssetPlusFeatureSet6Controller {
         floorNumber = maintenanceTicket.getAsset().getFloorNumber();
         roomNumber = maintenanceTicket.getAsset().getRoomNumber();
       }
-      if (maintenanceTicket.getTicketFixer() != null){
+      if (maintenanceTicket.getTicketFixer() != null) {
         fixedByEmail = maintenanceTicket.getTicketFixer().getEmail();
       }
-      if (maintenanceTicket.getTimeToResolve() != null){
+      if (maintenanceTicket.getTimeToResolve() != null) {
         timeToResolve = maintenanceTicket.getTimeToResolve().toString();
       }
-      if (maintenanceTicket.getPriority() != null){
+      if (maintenanceTicket.getPriority() != null) {
         priority = maintenanceTicket.getPriority().toString();
       }
 

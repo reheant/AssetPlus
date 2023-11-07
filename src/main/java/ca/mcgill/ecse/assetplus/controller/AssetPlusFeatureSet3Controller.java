@@ -36,7 +36,7 @@ public class AssetPlusFeatureSet3Controller {
     if (!error.isEmpty()) {
       return error.trim();
     }
-    
+
     try {
       assetPlus.addSpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate,
           AssetType.getWithName(assetTypeName));

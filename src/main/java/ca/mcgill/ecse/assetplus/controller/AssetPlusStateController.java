@@ -65,7 +65,7 @@ public class AssetPlusStateController {
             var error = "";
             error += assertTicketExists(ticket);
             error += assertTicketStartable(ticket);
-            
+
             if (!error.isEmpty()) {
                 return error.trim();
             }
@@ -90,12 +90,14 @@ public class AssetPlusStateController {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             var error = "";
+
             error += assertTicketExists(ticket);
             error += assertTicketCompletable(ticket);
 
             if (!error.isEmpty()) {
                 return error.trim();
             }
+
             ticket.completed();
             return "";
         } catch (Exception e) {
@@ -113,35 +115,24 @@ public class AssetPlusStateController {
      * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String disapproveTicket(int ticketID, Date date, String reason) {
-        String error = "";
-        MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+        try {
+            MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+            var error = "";
 
-        if (ticket == null) {
-            error += "Maintenance ticket does not exist. ";
-            return error;
+            error += assertTicketExists(ticket);
+            error += assertTicketDisapprovable(ticket);
+
+            if (!error.isEmpty()) {
+                return error.trim();
+            }
+
+            Manager manager = assetPlus.getManager();
+            ticket.disapprove(manager.getEmail());
+            ticket.addTicketNote(date, reason, manager);
+        } catch (Exception e) {
+            return "An unexpected error occurred while attempting to disapprove a ticket" + e.getMessage();
         }
-
-        switch (ticket.getPossible_state()) {
-            case Open:
-                error += "Cannot disapprove a maintenance ticket which is open. ";
-                break;
-            case Assigned:
-                error += "Cannot disapprove a maintenance ticket which is assigned. ";
-                break;
-            case Closed:
-                error += "Cannot disapprove a maintenance ticket which is closed. ";
-                break;
-            case InProgress:
-                error += "Cannot disapprove a maintenance ticket which is in progress. ";
-                break;
-            case Resolved:
-                if (!ticket.disapprove(assetPlus.getManager().getEmail())) {
-                    error += "Disapproval failed. ";
-                }
-                break;
-        }
-
-        return error;
+        return "";
     }
 
     /**
@@ -152,36 +143,22 @@ public class AssetPlusStateController {
      * @return A string message indicating the failure of the operation or an empty string if the operation was successful.
      */
     public static String approveTicket(int ticketID) {
-        String error = "";
-        MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+          try {
+            MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+            var error = "";
 
-        if (ticket == null) {
-            error += "Maintenance ticket does not exist. ";
-            return error;
+            error += assertTicketExists(ticket);
+            error += assertTicketApprovable(ticket);
+
+            if (!error.isEmpty()) {
+                return error.trim();
+            }
+
+            ticket.approve(assetPlus.getManager().getEmail());
+        } catch (Exception e) {
+            return "An unexpected error occurred while attempting to disapprove a ticket" + e.getMessage();
         }
-
-        switch (ticket.getPossible_state()) {
-            case Open:
-                error += "Cannot approve a maintenance ticket which is open. ";
-                break;
-            case Assigned:
-                error += "Cannot approve a maintenance ticket which is assigned. ";
-                break;
-            case Closed:
-                error += "The maintenance ticket is already closed. ";
-                break;
-            case InProgress:
-                error += "Cannot approve a maintenance ticket which is in progress. ";
-                break;
-            case Resolved:
-                // Approval logic for resolved tickets
-                if (!ticket.approve(assetPlus.getManager().getEmail())) {
-                    error += "Approval failed. ";
-                }
-                break;
-        }
-
-        return error;
+        return "";
     }
 
 
@@ -283,6 +260,56 @@ public class AssetPlusStateController {
             }
             if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
                 return "The maintenance ticket is already resolved.";
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Checks if a maintenance ticket can be disapproved based on its current state.
+     *
+     * @author Nicolas Bolouri
+     * @param ticket The maintenance ticket to be checked.
+     * @return An empty string indicating the ticket can be disapproved. An error message if the ticket cannot be disapproved.
+     */
+    private static String assertTicketDisapprovable(MaintenanceTicket ticket) {
+        if (ticket != null) {
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
+                return "Cannot disapprove a maintenance ticket which is open.";
+            }
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
+                return "Cannot disapprove a maintenance ticket which is assigned.";
+            }
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+                return "Cannot disapprove a maintenance ticket which is closed.";
+            }
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
+                return "Cannot disapprove a maintenance ticket which is in progress.";
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Validates that the maintenance ticket is approvable.
+     * 
+     * @author Nicolas Bolouri
+     * @param ticket The maintenance ticket to be checked.
+     * @return An empty string indicating the ticket can be approved. An error message if the ticket cannot be approved.
+     */
+    private static String assertTicketApprovable(MaintenanceTicket ticket) {
+        if (ticket != null) {
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
+                return "Cannot approve a maintenance ticket which is open.";
+            }
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
+                return "Cannot approve a maintenance ticket which is assigned.";
+            }
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+                return "The maintenance ticket is already closed.";
+            }
+            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
+                return "Cannot approve a maintenance ticket which is in progress.";
             }
         }
         return "";

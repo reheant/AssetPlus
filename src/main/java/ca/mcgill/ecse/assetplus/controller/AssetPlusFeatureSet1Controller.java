@@ -2,6 +2,7 @@ package ca.mcgill.ecse.assetplus.controller;
 
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 
 public class AssetPlusFeatureSet1Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
@@ -24,6 +25,7 @@ public class AssetPlusFeatureSet1Controller {
 
     try {
       assetPlus.getManager().setPassword(password);
+      AssetPlusPersistence.save();
     } catch (Exception e) {
       return "An unexpected error occurred: " + e.getMessage();
     }
@@ -63,6 +65,7 @@ public class AssetPlusFeatureSet1Controller {
       } else {
         assetPlus.addGuest(email, name, password, phoneNumber);
       }
+      AssetPlusPersistence.save();
     } catch (Exception e) {
       return "An error occurred while adding the user: " + e.getMessage();
     }
@@ -97,6 +100,7 @@ public class AssetPlusFeatureSet1Controller {
       user.setPassword(newPassword);
       user.setName(newName);
       user.setPhoneNumber(newPhoneNumber);
+      AssetPlusPersistence.save();
     } catch (Exception e) {
       return "An error occurred while updating the user: " + e.getMessage();
     }

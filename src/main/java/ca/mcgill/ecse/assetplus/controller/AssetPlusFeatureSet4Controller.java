@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 
 public class AssetPlusFeatureSet4Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
@@ -52,7 +53,7 @@ public class AssetPlusFeatureSet4Controller {
           maintenanceTicket.setAsset(aAsset);
         }
       }
-
+      AssetPlusPersistence.save();
     } catch (Exception e) {
       if (e.getMessage().contains("Cannot create due to duplicate id.")) {
         return "Ticket id already exists";
@@ -111,7 +112,7 @@ public class AssetPlusFeatureSet4Controller {
       existingMaintenanceTicket.setDescription(newDescription);
       existingMaintenanceTicket.setAsset(newAsset);
 
-
+      AssetPlusPersistence.save();
     } catch (Exception e) {
       return "An unexpected error occured: " + e.getMessage();
     }
@@ -132,6 +133,7 @@ public class AssetPlusFeatureSet4Controller {
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(id);
     if (maintenanceTicket != null) {
       maintenanceTicket.delete();
+      AssetPlusPersistence.save();
     }
   }
 

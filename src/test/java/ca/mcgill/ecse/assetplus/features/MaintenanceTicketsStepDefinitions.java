@@ -34,8 +34,6 @@ public class MaintenanceTicketsStepDefinitions {
   private List<TOMaintenanceTicket> tOMaintenanceTickets;
 
 
-  // TODO javadocs
-
   /**
    * @author Tiffany Miller, Julien Audet
    * @param dataTable The data table of the employees that must exist in the system.
@@ -183,20 +181,17 @@ public class MaintenanceTicketsStepDefinitions {
   public void ticket_is_marked_as_with_requires_approval(String ticketIdString, String stateString,
       String requiresApprovalString) {
     int ticketId = Integer.parseInt(ticketIdString);
-    // some parsing to do with stateString?
     boolean requiresApproval = Boolean.parseBoolean(requiresApprovalString);
-
     MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
 
-    // maintenanceTicket.setState(stateString); // TODO implement states
-    throw new io.cucumber.java.PendingException();
+    setMaintenanceTicketAsState(maintenanceTicket, stateString);
   }
 
   @Given("ticket {string} is marked as {string}")
-  public void ticket_is_marked_as(String string, String string2) {
-    // todo complete
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void ticket_is_marked_as(String ticketIdString, String stateString) {
+    int ticketId = Integer.parseInt(ticketIdString);    
+    MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+    setMaintenanceTicketAsState(maintenanceTicket, stateString);
   }
 
   /**
@@ -341,38 +336,53 @@ public class MaintenanceTicketsStepDefinitions {
     
     List<List<String>> rows = dataTable.asLists(String.class);
     
-    for (int i = 0; i < maintenanceTicketNoteTos.size(); i++) {
-      TOMaintenanceNote maintenanceTicketNote //todo finish this one
-      List<String> MaintenanceTicketNoteTo
+    for (int i = 1; i < maintenanceTicketNoteTos.size(); i++) {
+      TOMaintenanceNote actualMaintenanceTicketNoteTo = maintenanceTicketNoteTos.get(i);
+      String actualNoteTakerEmail = actualMaintenanceTicketNoteTo.getNoteTakerEmail();
+      String actualAddedOnDate = String.valueOf(actualMaintenanceTicketNoteTo.getDate());
+      String actualDescription = actualMaintenanceTicketNoteTo.getDescription();
+
+
+      List<String> expectedMaintenanceTicketNoteAsList = rows.get(i);
+      String expectedNoteTakerEmail = expectedMaintenanceTicketNoteAsList.get(0);
+      String expectedAddedOnDate = expectedMaintenanceTicketNoteAsList.get(1);
+      String expectedDescription = expectedMaintenanceTicketNoteAsList.get(2);
+
+      assertEquals(expectedNoteTakerEmail, actualNoteTakerEmail);
+      assertEquals(expectedAddedOnDate, actualAddedOnDate);
+      assertEquals(expectedDescription, actualDescription);
     }
-
-
-
   }
 
   @Then("the ticket with id {string} shall have no notes")
-  public void the_ticket_with_id_shall_have_no_notes(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_ticket_with_id_shall_have_no_notes(String ticketIdString) {
+    Map<String, TOMaintenanceTicket> maintenanceTicketToMap = getMaintenanceTicketToMap();
+    TOMaintenanceTicket maintenanceTicketTo = maintenanceTicketToMap.get(ticketIdString);
+    List<TOMaintenanceNote> maintenanceTicketNoteTos = maintenanceTicketTo.getNotes();
+
+    assertTrue(maintenanceTicketNoteTos.isEmpty());
   }
 
   @Then("the ticket with id {string} shall have the following images")
-  public void the_ticket_with_id_shall_have_the_following_images(String string,
+  public void the_ticket_with_id_shall_have_the_following_images(String ticketIdString,
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
-    // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    Map<String, TOMaintenanceTicket> maintenanceTicketToMap = getMaintenanceTicketToMap();
+    TOMaintenanceTicket maintenanceTicketTo = maintenanceTicketToMap.get(ticketIdString);
+    List<String> actualImageUrls = maintenanceTicketTo.getImageURLs();
+
+    List<String> expectedImageUrls = dataTable.asList();
+    expectedImageUrls.remove(0); // column names
+
+    assertEquals(expectedImageUrls, actualImageUrls);
   }
 
   @Then("the ticket with id {string} shall have no images")
-  public void the_ticket_with_id_shall_have_no_images(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_ticket_with_id_shall_have_no_images(String tickeIdString) {
+    Map<String, TOMaintenanceTicket> maintenanceTicketToMap = getMaintenanceTicketToMap();
+    TOMaintenanceTicket maintenanceTicketTo = maintenanceTicketToMap.get(tickeIdString);
+    List<String> actualImageUrls = maintenanceTicketTo.getImageURLs();
+
+    assertTrue(actualImageUrls.isEmpty());
   }
 
 
@@ -454,6 +464,52 @@ public class MaintenanceTicketsStepDefinitions {
     }
 
     return ticketsToMapAsStrings;
+  }
+
+
+  private void setMaintenanceTicketAsState(MaintenanceTicket maintenanceTicket, String state){
+    if (!maintenanceTicket.getPossible_stateFullName().equals("Open")){
+      throw new InvalidParameterException("ticket must start in open state");
+    }
+    switch(state){
+      case "Open":
+        break;
+      case "Assigned":
+        setMaintenanceTicketAsAssigned(maintenanceTicket);
+      case "InProgress":
+        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
+      case "Resolved":
+        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
+        maintenanceTicket.completed();
+      case "Closed":
+        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
+        maintenanceTicket.completed();
+        setResolvedMaintenanceticketAsClosed(maintenanceTicket);
+    }
+    return;
+  }
+
+
+  private void setMaintenanceTicketAsAssigned(MaintenanceTicket maintenanceTicket) {
+    maintenanceTicket.assignStaff(null, null, null, maintenanceTicket.getId(), "manager@ap.com");
+    return;
+  }
+
+  private void setAssignedMaintenanceTicketAsInProgress(MaintenanceTicket maintenanceTicket){
+    // we're not given a user email to say started to work,
+    // and I don't want to create a new user (could mess with the tests)
+    if (maintenanceTicket.getPossible_stateFullName().equals("Assigned")) {
+      maintenanceTicket.startedToWork("manager@ap.com");
+    }
+  }
+
+  private void setResolvedMaintenanceticketAsClosed(MaintenanceTicket maintenanceTicket) {
+    if (maintenanceTicket.getPossible_stateFullName().equals("Resolved")) {
+        maintenanceTicket.approve("manager@ap.com");
+    }
   }
 
 

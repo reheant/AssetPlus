@@ -47,4 +47,3 @@ class MaintenanceTicket {
   }
 }
 
-use AssetPlus.ump;

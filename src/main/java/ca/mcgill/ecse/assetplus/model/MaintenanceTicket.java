@@ -5,8 +5,8 @@ package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 import java.sql.Date;
 
-// line 2 "../../../../../AssetPlusStates.ump"
 // line 44 "../../../../../AssetPlus.ump"
+// line 2 "../../../../../AssetPlusStates.ump"
 public class MaintenanceTicket
 {
 
@@ -191,14 +191,6 @@ public class MaintenanceTicket
           wasEventProcessed = true;
           break;
         }
-        if (isManager(userEmail))
-        {
-        // line 5 "../../../../../AssetPlusStates.ump"
-          doAssign(priority, timeEstimate, ticketFixer, ticketID);
-          setPossible_state(Possible_state.Assigned);
-          wasEventProcessed = true;
-          break;
-        }
         break;
       default:
         // Other states do respond to this event
@@ -215,12 +207,6 @@ public class MaintenanceTicket
     switch (aPossible_state)
     {
       case Assigned:
-        if (isHotelStaff(userEmail))
-        {
-          setPossible_state(Possible_state.InProgress);
-          wasEventProcessed = true;
-          break;
-        }
         if (isHotelStaff(userEmail))
         {
           setPossible_state(Possible_state.InProgress);
@@ -267,12 +253,6 @@ public class MaintenanceTicket
           wasEventProcessed = true;
           break;
         }
-        if (!(requireManagerApproval(ticketID)))
-        {
-          setPossible_state(Possible_state.Closed);
-          wasEventProcessed = true;
-          break;
-        }
         break;
       default:
         // Other states do respond to this event
@@ -295,12 +275,6 @@ public class MaintenanceTicket
           wasEventProcessed = true;
           break;
         }
-        if (isManager(userEmail))
-        {
-          setPossible_state(Possible_state.Closed);
-          wasEventProcessed = true;
-          break;
-        }
         break;
       default:
         // Other states do respond to this event
@@ -317,12 +291,6 @@ public class MaintenanceTicket
     switch (aPossible_state)
     {
       case Resolved:
-        if (isManager(userEmail))
-        {
-          setPossible_state(Possible_state.InProgress);
-          wasEventProcessed = true;
-          break;
-        }
         if (isManager(userEmail))
         {
           setPossible_state(Possible_state.InProgress);

@@ -6,7 +6,7 @@ import java.util.*;
 import java.sql.Date;
 
 // line 2 "../../../../../AssetPlusStates.ump"
-// line 44 "../../../../../AssetPlus.ump"
+// line 45 "../../../../../AssetPlus.ump"
 public class MaintenanceTicket
 {
 
@@ -191,14 +191,6 @@ public class MaintenanceTicket
           wasEventProcessed = true;
           break;
         }
-        if (isManager(userEmail))
-        {
-        // line 5 "../../../../../AssetPlusStates.ump"
-          doAssign(priority, timeEstimate, ticketFixer, ticketID);
-          setPossible_state(Possible_state.Assigned);
-          wasEventProcessed = true;
-          break;
-        }
         break;
       default:
         // Other states do respond to this event
@@ -221,12 +213,6 @@ public class MaintenanceTicket
           wasEventProcessed = true;
           break;
         }
-        if (isHotelStaff(userEmail))
-        {
-          setPossible_state(Possible_state.InProgress);
-          wasEventProcessed = true;
-          break;
-        }
         break;
       default:
         // Other states do respond to this event
@@ -235,7 +221,7 @@ public class MaintenanceTicket
     return wasEventProcessed;
   }
 
-  public boolean completed()
+  public boolean resolve(String userEmail,int ticketID)
   {
     boolean wasEventProcessed = false;
     
@@ -243,8 +229,12 @@ public class MaintenanceTicket
     switch (aPossible_state)
     {
       case InProgress:
-        setPossible_state(Possible_state.Resolved);
-        wasEventProcessed = true;
+        if (isTicketFixer(userEmail,ticketID))
+        {
+          setPossible_state(Possible_state.Resolved);
+          wasEventProcessed = true;
+          break;
+        }
         break;
       default:
         // Other states do respond to this event
@@ -253,7 +243,7 @@ public class MaintenanceTicket
     return wasEventProcessed;
   }
 
-  public boolean resolve(int ticketID)
+  public boolean close(int ticketID)
   {
     boolean wasEventProcessed = false;
     
@@ -261,12 +251,6 @@ public class MaintenanceTicket
     switch (aPossible_state)
     {
       case Resolved:
-        if (!(requireManagerApproval(ticketID)))
-        {
-          setPossible_state(Possible_state.Closed);
-          wasEventProcessed = true;
-          break;
-        }
         if (!(requireManagerApproval(ticketID)))
         {
           setPossible_state(Possible_state.Closed);
@@ -295,12 +279,6 @@ public class MaintenanceTicket
           wasEventProcessed = true;
           break;
         }
-        if (isManager(userEmail))
-        {
-          setPossible_state(Possible_state.Closed);
-          wasEventProcessed = true;
-          break;
-        }
         break;
       default:
         // Other states do respond to this event
@@ -317,12 +295,6 @@ public class MaintenanceTicket
     switch (aPossible_state)
     {
       case Resolved:
-        if (isManager(userEmail))
-        {
-          setPossible_state(Possible_state.InProgress);
-          wasEventProcessed = true;
-          break;
-        }
         if (isManager(userEmail))
         {
           setPossible_state(Possible_state.InProgress);
@@ -751,6 +723,13 @@ public class MaintenanceTicket
    private Boolean isHotelStaff(String userEmail){
     User currentUser = User.getWithEmail(userEmail);
     return(currentUser.getEmail().endsWith("@ap.com"));
+  }
+
+  // line 50 "../../../../../AssetPlusStates.ump"
+   private Boolean isTicketFixer(String userEmail, int ticketID){
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    User currentUser = User.getWithEmail(userEmail);
+    return(ticket.getTicketFixer().equals(currentUser));
   }
 
 

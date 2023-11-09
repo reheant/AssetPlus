@@ -2,6 +2,7 @@ package ca.mcgill.ecse.assetplus.controller;
 
 import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
 import ca.mcgill.ecse.assetplus.model.TicketImage;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 import java.util.List;
 
 public class AssetPlusFeatureSet5Controller {
@@ -32,11 +33,12 @@ public class AssetPlusFeatureSet5Controller {
             // Creates two-way association between image and maintenance ticket.
             TicketImage image = new TicketImage(imageURL, ticket);
 
-            return "";
+            AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to add an "
                     + "image to the maintenance ticket: " + e.getMessage();
         }
+        return "";
     }
 
     /**
@@ -63,6 +65,7 @@ public class AssetPlusFeatureSet5Controller {
             for (TicketImage image : images) {
                 if (image.getImageURL().equals(imageURL)) {
                     image.delete();
+                    AssetPlusPersistence.save();
                     return;
                 }
             }

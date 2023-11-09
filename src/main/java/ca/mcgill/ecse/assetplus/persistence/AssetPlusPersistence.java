@@ -19,16 +19,16 @@ public class AssetPlusPersistence {
   public static void save(AssetPlus assetPlus) {
     serializer.serialize(assetPlus, filename);
   }
-  
-  public static AssetPlus load() {
-	    var assetPlus = (AssetPlus) serializer.deserialize(filename);
-	    
-	    if (assetPlus == null) {
-	      assetPlus = new AssetPlus();
-	    } else {
-	      assetPlus.reinitialize();
-	    }
-	    return assetPlus;
-	  }
 
-	}
+  public static AssetPlus load() {
+    var assetPlus = (AssetPlus) serializer.deserialize(filename);
+
+    if (assetPlus == null) {
+      assetPlus = new AssetPlus();
+    } else {
+      assetPlus.reinitialize();
+    }
+    return assetPlus;
+  }
+
+}

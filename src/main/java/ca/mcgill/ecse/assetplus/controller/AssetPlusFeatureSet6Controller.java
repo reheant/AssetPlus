@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.List;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 
 public class AssetPlusFeatureSet6Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
@@ -24,6 +25,7 @@ public class AssetPlusFeatureSet6Controller {
       return;
     }
     user.delete();
+    AssetPlusPersistence.save();
   }
 
   /**
@@ -63,13 +65,13 @@ public class AssetPlusFeatureSet6Controller {
         floorNumber = maintenanceTicket.getAsset().getFloorNumber();
         roomNumber = maintenanceTicket.getAsset().getRoomNumber();
       }
-      if (maintenanceTicket.getTicketFixer() != null){
+      if (maintenanceTicket.getTicketFixer() != null) {
         fixedByEmail = maintenanceTicket.getTicketFixer().getEmail();
       }
-      if (maintenanceTicket.getTimeToResolve() != null){
+      if (maintenanceTicket.getTimeToResolve() != null) {
         timeToResolve = maintenanceTicket.getTimeToResolve().toString();
       }
-      if (maintenanceTicket.getPriority() != null){
+      if (maintenanceTicket.getPriority() != null) {
         priority = maintenanceTicket.getPriority().toString();
       }
 
@@ -88,6 +90,7 @@ public class AssetPlusFeatureSet6Controller {
       maintenanceTicketsTO.add(currTOMaintenanceTicket);
     }
 
+    AssetPlusPersistence.save();
     return maintenanceTicketsTO;
 
   }

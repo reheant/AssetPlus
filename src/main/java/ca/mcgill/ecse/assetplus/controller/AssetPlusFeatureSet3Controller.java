@@ -5,6 +5,7 @@ import java.sql.Date;
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.model.AssetType;
 import ca.mcgill.ecse.assetplus.model.SpecificAsset;
+import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 
 public class AssetPlusFeatureSet3Controller {
@@ -39,6 +40,7 @@ public class AssetPlusFeatureSet3Controller {
     try {
       assetPlus.addSpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate,
           AssetType.getWithName(assetTypeName));
+      AssetPlusPersistence.save();
     } catch (RuntimeException e) {
       return e.getMessage();
     }
@@ -78,6 +80,7 @@ public class AssetPlusFeatureSet3Controller {
       specificAsset.setRoomNumber(newRoomNumber);
       specificAsset.setPurchaseDate(newPurchaseDate);
       specificAsset.setAssetType(AssetType.getWithName(newAssetTypeName));
+      AssetPlusPersistence.save();
     } catch (RuntimeException e) {
       return e.getMessage();
     }
@@ -96,6 +99,7 @@ public class AssetPlusFeatureSet3Controller {
     SpecificAsset specificAsset = SpecificAsset.getWithAssetNumber(assetNumber);
     if (specificAsset != null) {
       specificAsset.delete();
+      AssetPlusPersistence.save();
     }
   }
 

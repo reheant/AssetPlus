@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
 package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
@@ -708,7 +708,18 @@ public class MaintenanceTicket
     }
   }
 
-  // line 28 "../../../../../AssetPlusStates.ump"
+
+  /**
+   * 
+   * Assigns maintenance ticket to a  hotel staff
+   * 
+   * @author Rehean Thillainathalingam
+   * @param priority The priority level of the ticket
+   * @param timeEstimate The time estimate of the ticket
+   * @param ticketFixer The assigned hotel staff
+   * @param ticketID The ticket ID of the assigned ticket
+   */
+  // line 37 "../../../../../AssetPlusStates.ump"
    private void doAssign(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID){
     MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
     ticket.setPriority(priority);
@@ -716,25 +727,62 @@ public class MaintenanceTicket
     ticket.setTicketFixer(ticketFixer);
   }
 
-  // line 35 "../../../../../AssetPlusStates.ump"
+
+  /**
+   * 
+   * Verifies if a ticket requires manager approval
+   * 
+   * @author Rehean Thillainathalingam
+   * @param ticketID The ticket ID of the assigned ticket
+   * @return boolean indicating if the ticket has an approver
+   */
+  // line 52 "../../../../../AssetPlusStates.ump"
    private Boolean requireManagerApproval(int ticketID){
     MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
     return ticket.hasFixApprover();
   }
 
-  // line 40 "../../../../../AssetPlusStates.ump"
+
+  /**
+   * 
+   * Verifies if the user is a manager
+   * 
+   * @author Rehean Thillainathalingam
+   * @param userEmail The email of the current user
+   * @return boolean indicating if the user's email is that of the manager
+   */
+  // line 64 "../../../../../AssetPlusStates.ump"
    private Boolean isManager(String userEmail){
     User currentUser = User.getWithEmail(userEmail);
     return (currentUser.getEmail().equals("manager@ap.com"));
   }
 
-  // line 45 "../../../../../AssetPlusStates.ump"
+
+  /**
+   * 
+   * Verifies if the user is a hotel staff
+   * 
+   * @author Rehean Thillainathalingam
+   * @param userEmail The email of the current user
+   * @return boolean indicating if the user's email is that of a hotel staff
+   */
+  // line 76 "../../../../../AssetPlusStates.ump"
    private Boolean isHotelStaff(String userEmail){
     User currentUser = User.getWithEmail(userEmail);
     return(currentUser.getEmail().endsWith("@ap.com"));
   }
 
-  // line 50 "../../../../../AssetPlusStates.ump"
+
+  /**
+   * 
+   * Verifies if the user is a ticket fixer
+   * 
+   * @author Rehean Thillainathalingam
+   * @param userEmail The email of the current user
+   * @param ticketID The ticket ID of the assigned ticket
+   * @return boolean indicating if the user is the ticket fixer of the current ticket
+   */
+  // line 89 "../../../../../AssetPlusStates.ump"
    private Boolean isTicketFixer(String userEmail, int ticketID){
     MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
     User currentUser = User.getWithEmail(userEmail);

@@ -149,7 +149,7 @@ public class AddAndUpdateMaintenanceTicketStepDefinitions {
    * @author Tiffany Miller
    * @param email The email of the user that wants to add a maintenance ticket.
    * @param idString The new maintenance ticket id.
-   * @param dateString The new maintenance ticket date
+   * @param dateString The new maintenance ticket date.
    * @param description The new maintenance ticket description.
    * @param assetNumberString The new maintenance ticket's asset number.
    */

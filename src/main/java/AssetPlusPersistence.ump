@@ -1,9 +1,17 @@
 class AssetPlus {
   public void reinitialize() {
-  	User.reinitializeUser(getUser());
-    AssetType.reinitializeAssetType(getAssetType());
-    SpecificAsset.reinitializeSpecificAsset(getSpecificAsset());
-    MaintenanceTicket.reinitializeMaintenanceTicket(getMaintenanceTicket());
+  	List<Employee> employees = getEmployees();
+    List<Guest> guests = getGuests();
+   
+    List<User> users = new ArrayList<>(employees.size() + guests.size());
+   
+    users.addAll(employees);
+    users.addAll(guests); 
+	   
+  	User.reinitializeUniqueEmail(users);
+    AssetType.reinitializeUniqueName(getAssetTypes());
+    SpecificAsset.reinitializeUniqueAssetNumber(getSpecificAssets());
+    MaintenanceTicket.reinitializeUniqueID(getMaintenanceTickets());
     
   }
 }
@@ -19,27 +27,27 @@ class User {
 
 class AssetType {
   public static void reinitializeUniqueName(List<AssetType> assetTypes) {
-    assetTypesByName.clear();
+    assettypesByName.clear();
     for (var assetType : assetTypes) {
-      assetTypesByName.put(assetType.getName(), assetType);
+      assettypesByName.put(assetType.getName(), assetType);
     }
   }
 }
 
 class SpecificAsset {
   public static void reinitializeUniqueAssetNumber(List<SpecificAsset> specificAssets) {
-    specificAssetByNumber.clear();
+    specificassetsByAssetNumber.clear();
     for (var specificAsset : specificAssets) {
-      specificAssetByNumber.put(assetType.getNumber(), specificAsset);
+      specificassetsByAssetNumber.put(specificAsset.getAssetNumber(), specificAsset);
     }
   }
 }
 
 class MaintenanceTicket {
-  public static void reinitializeUniqueID(List<MaintenanceTicket> maintenanceTicket) {
-    maintenanceTicketByID.clear();
+  public static void reinitializeUniqueID(List<MaintenanceTicket> maintenanceTickets) {
+    maintenanceticketsById.clear();
     for (var maintenanceTicket : maintenanceTickets) {
-      maintenanceTicketByID.put(maintenanceTicket.getID(), maintenanceTicket);
+      maintenanceticketsById.put(maintenanceTicket.getId(), maintenanceTicket);
     }
   }
 }

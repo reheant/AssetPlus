@@ -1,11 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
+/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 import java.sql.Date;
 
-// line 14 "../../../../../AssetPlus.ump"
+// line 19 "../../../../../AssetPlusPersistence.ump"
+// line 16 "../../../../../AssetPlus.ump"
 public abstract class User
 {
 
@@ -230,6 +231,14 @@ public abstract class User
     {
       MaintenanceTicket aRaisedTicket = raisedTickets.get(i - 1);
       aRaisedTicket.delete();
+    }
+  }
+
+  // line 21 "../../../../../AssetPlusPersistence.ump"
+   public static  void reinitializeUniqueEmail(List<User> users){
+    usersByEmail.clear();
+    for (var user : users) {
+      usersByEmail.put(user.getEmail(), user);
     }
   }
 

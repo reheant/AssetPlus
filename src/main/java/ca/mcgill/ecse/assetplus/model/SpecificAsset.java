@@ -1,11 +1,12 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
+/*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 package ca.mcgill.ecse.assetplus.model;
 import java.util.*;
 import java.sql.Date;
 
-// line 71 "../../../../../AssetPlus.ump"
+// line 37 "../../../../../AssetPlusPersistence.ump"
+// line 73 "../../../../../AssetPlus.ump"
 public class SpecificAsset
 {
 
@@ -300,6 +301,14 @@ public class SpecificAsset
     if(placeholderAssetType != null)
     {
       placeholderAssetType.removeSpecificAsset(this);
+    }
+  }
+
+  // line 39 "../../../../../AssetPlusPersistence.ump"
+   public static  void reinitializeUniqueAssetNumber(List<SpecificAsset> specificAssets){
+    specificassetsByAssetNumber.clear();
+    for (var specificAsset : specificAssets) {
+      specificassetsByAssetNumber.put(specificAsset.getAssetNumber(), specificAsset);
     }
   }
 

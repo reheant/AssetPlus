@@ -99,7 +99,7 @@ public class MaintenanceTicketsStepDefinitions {
     List<List<String>> rows = dataTable.asLists(String.class);
     for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
-      int assetNumber = parseAssetNumber(row.get(0));
+      Integer assetNumber = parseAssetNumber(row.get(0));
       AssetType type = AssetType.getWithName(row.get(1));
       Date purchaseDate = Date.valueOf(row.get(2));
       int floorNumber = Integer.parseInt(row.get(3));
@@ -122,7 +122,7 @@ public class MaintenanceTicketsStepDefinitions {
       String ticketRaiser = row.get(1);
       Date raisedOnDate = Date.valueOf(row.get(2));
       String description = row.get(3);
-      int assetNumber = parseAssetNumber(row.get(4));
+      Integer assetNumber = parseAssetNumber(row.get(4));
       
       
       User raiserUser = User.getWithEmail(ticketRaiser);
@@ -414,7 +414,7 @@ public class MaintenanceTicketsStepDefinitions {
       case "ThreeOrMoreWeeks":
         return MaintenanceTicket.TimeEstimate.ThreeOrMoreWeeks;
       default:
-        throw new InvalidParameterException("Time estimate does not exist. ");
+        return null;
     }
   }
 
@@ -427,7 +427,7 @@ public class MaintenanceTicketsStepDefinitions {
       case "Low":
         return MaintenanceTicket.PriorityLevel.Low;
       default:
-        throw new InvalidParameterException("Time estimate does not exist. ");
+        return null;
     }
   }
 
@@ -562,9 +562,9 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
 
-  private int parseAssetNumber(String assetNumberString) {
+  private Integer parseAssetNumber(String assetNumberString) {
     if (assetNumberString == null || assetNumberString.isEmpty()){
-      return -1;
+      return null;
     }
     return Integer.parseInt(assetNumberString);
   }

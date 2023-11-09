@@ -86,22 +86,24 @@ public class AssetPlusStateController {
      * Completes the work on a maintenance ticket.
      *
      * @author Luke Freund
-     * @param ticketID The unique identifier of the maintenance ticket.
+     * @param userEmail The email of the user resolving the ticket
+     * @param ticketId The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    public static String completeTicket(int ticketID) {
+    public static String resolveTicket(String userEmail, int ticketId) {
         try {
-            MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+            MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketId);
             var error = "";
 
             error += assertTicketExists(ticket);
             error += assertTicketCompletable(ticket);
+            error += assertUserIsEmployee(userEmail);
 
             if (!error.isEmpty()) {
                 return error.trim();
             }
 
-            ticket.completed();
+            ticket.resolve(userEmail, ticketId);
             AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to complete a ticket"
@@ -327,4 +329,14 @@ public class AssetPlusStateController {
         }
         return "";
     }
+
+    private static String assertUserIsEmployee(String employeeEmail) {
+        if (!employeeEmail.endsWith("@ap.com")) {
+            return "email is not a valid employee email ";
+        }
+
+        HotelStaff employee = (HotelStaff) HotelStaff.getWithEmail(employeeEmail);
+        return assertEmployeeExists(employee);
+    }
+
 }

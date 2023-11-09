@@ -235,7 +235,9 @@ public class MaintenanceTicketsStepDefinitions {
   @When("the hotel staff attempts to complete the ticket {string}")
   public void the_hotel_staff_attempts_to_complete_the_ticket(String ticketIdString) {
     int ticketId = Integer.parseInt(ticketIdString);
-    callController(AssetPlusStateController.completeTicket(ticketId));
+    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
+    String employeeEmail = maintenanceTicket.getTicketFixer().getEmail();
+    callController(AssetPlusStateController.resolveTicket(employeeEmail, ticketId));
   }
 
   @When("the manager attempts to disapprove the ticket {string} on date {string} and with reason {string}")
@@ -482,11 +484,11 @@ public class MaintenanceTicketsStepDefinitions {
       case "Resolved":
         setMaintenanceTicketAsAssigned(maintenanceTicket);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
-        maintenanceTicket.completed();
+        setInProgressMaintenanceTicketAsClosed(maintenanceTicket);
       case "Closed":
         setMaintenanceTicketAsAssigned(maintenanceTicket);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
-        maintenanceTicket.completed();
+        setInProgressMaintenanceTicketAsClosed(maintenanceTicket);
         setResolvedMaintenanceticketAsClosed(maintenanceTicket);
     }
     return;
@@ -512,12 +514,18 @@ public class MaintenanceTicketsStepDefinitions {
     }
   }
 
+  private void setInProgressMaintenanceTicketAsClosed(MaintenanceTicket maintenanceTicket) {
+    String employeeEmail = maintenanceTicket.getTicketFixer().getEmail();
+    maintenanceTicket.resolve(employeeEmail, maintenanceTicket.getId());
+  }
+
   private int parseAssetNumber(String assetNumberString) {
     if (assetNumberString == null || assetNumberString.isEmpty()){
       return -1;
     }
     return Integer.parseInt(assetNumberString);
   }
+
 
 
 }

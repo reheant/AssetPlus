@@ -90,14 +90,20 @@ public class AssetPlusStateController {
      * @param ticketId The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
-    public static String resolveTicket(String userEmail, int ticketId) {
+    public static String resolveTicket(int ticketId) {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketId);
             var error = "";
 
+            String userEmail = "";
+
             error += assertTicketExists(ticket);
             error += assertTicketCompletable(ticket);
-            error += assertUserIsEmployee(userEmail);
+
+            if (ticket != null){
+                userEmail = ticket.getTicketFixer().getEmail();
+                error += assertUserIsEmployee(userEmail);
+            }
 
             if (!error.isEmpty()) {
                 return error.trim();

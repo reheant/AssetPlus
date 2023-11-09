@@ -19,10 +19,12 @@ import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.model.AssetType;
 import ca.mcgill.ecse.assetplus.model.Employee;
 import ca.mcgill.ecse.assetplus.model.HotelStaff;
+import ca.mcgill.ecse.assetplus.model.MaintenanceNote;
 import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
 import ca.mcgill.ecse.assetplus.model.Manager;
 import ca.mcgill.ecse.assetplus.model.SpecificAsset;
 import ca.mcgill.ecse.assetplus.model.User;
+import cucumber.api.cli.Main;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -121,11 +123,23 @@ public class MaintenanceTicketsStepDefinitions {
       Date raisedOnDate = Date.valueOf(row.get(2));
       String description = row.get(3);
       int assetNumber = parseAssetNumber(row.get(4));
+      
+      
       User raiserUser = User.getWithEmail(ticketRaiser);
       SpecificAsset asset = SpecificAsset.getWithAssetNumber(assetNumber);
       assetPlus.addMaintenanceTicket(id, raisedOnDate, description, raiserUser);
       MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);
       thisTicket.setAsset(asset);
+
+      if (row.size() > 9) {
+        String stateString = row.get(5);
+        String fixedByEmail = row.get(6);
+        String timeEstimateString = row.get(7);
+        String priorityString = row.get(8);
+        boolean approvalRequired = Boolean.parseBoolean(row.get(9));
+        setMaintenanceTicketAsState(thisTicket, stateString, fixedByEmail, timeEstimateString, priorityString, approvalRequired);
+      }
+      
     }
     error = "";
   }
@@ -184,14 +198,14 @@ public class MaintenanceTicketsStepDefinitions {
     boolean requiresApproval = Boolean.parseBoolean(requiresApprovalString);
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
 
-    setMaintenanceTicketAsState(maintenanceTicket, stateString);
+    setMaintenanceTicketAsState(maintenanceTicket, stateString, "manager@ap.com", "OneToThreeDays", "Low", requiresApproval);
   }
 
   @Given("ticket {string} is marked as {string}")
   public void ticket_is_marked_as(String ticketIdString, String stateString) {
     int ticketId = Integer.parseInt(ticketIdString);    
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
-    setMaintenanceTicketAsState(maintenanceTicket, stateString);
+    setMaintenanceTicketAsState(maintenanceTicket, stateString, "manager@ap.com", "OneToThreeDays", "Low", false);
   }
 
   /**
@@ -235,9 +249,7 @@ public class MaintenanceTicketsStepDefinitions {
   @When("the hotel staff attempts to complete the ticket {string}")
   public void the_hotel_staff_attempts_to_complete_the_ticket(String ticketIdString) {
     int ticketId = Integer.parseInt(ticketIdString);
-    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
-    String employeeEmail = maintenanceTicket.getTicketFixer().getEmail();
-    callController(AssetPlusStateController.resolveTicket(employeeEmail, ticketId));
+    callController(AssetPlusStateController.resolveTicket(ticketId));
   }
 
   @When("the manager attempts to disapprove the ticket {string} on date {string} and with reason {string}")
@@ -332,17 +344,17 @@ public class MaintenanceTicketsStepDefinitions {
   public void the_ticket_with_id_shall_have_the_following_notes(String ticketIdString,
       io.cucumber.datatable.DataTable dataTable) {  
       
-    Map<String, TOMaintenanceTicket> maintenanceTicketToMap = getMaintenanceTicketToMap();
-    TOMaintenanceTicket maintenanceTicketTo = maintenanceTicketToMap.get(ticketIdString);
-    List<TOMaintenanceNote> maintenanceTicketNoteTos = maintenanceTicketTo.getNotes();
+    int ticketId = Integer.parseInt(ticketIdString);
+    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
+    List<MaintenanceNote> maintenanceNotes = maintenanceTicket.getTicketNotes();
     
     List<List<String>> rows = dataTable.asLists(String.class);
     
-    for (int i = 1; i < maintenanceTicketNoteTos.size(); i++) {
-      TOMaintenanceNote actualMaintenanceTicketNoteTo = maintenanceTicketNoteTos.get(i);
-      String actualNoteTakerEmail = actualMaintenanceTicketNoteTo.getNoteTakerEmail();
-      String actualAddedOnDate = String.valueOf(actualMaintenanceTicketNoteTo.getDate());
-      String actualDescription = actualMaintenanceTicketNoteTo.getDescription();
+    for (int i = 1; i < maintenanceNotes.size(); i++) {
+      MaintenanceNote actualMaintenanceNote = maintenanceNotes.get(i);
+      String actualNoteTakerEmail = actualMaintenanceNote.getNoteTaker().getEmail();
+      String actualAddedOnDate = String.valueOf(actualMaintenanceNote.getDate());
+      String actualDescription = actualMaintenanceNote.getDescription();
 
 
       List<String> expectedMaintenanceTicketNoteAsList = rows.get(i);
@@ -450,6 +462,11 @@ public class MaintenanceTicketsStepDefinitions {
       String purchaseDateString = String.valueOf(maintenanceTicketTo.getPurchaseDate());
       String floorNumberString = String.valueOf(maintenanceTicketTo.getFloorNumber());
       String roomNumberString = String.valueOf(maintenanceTicketTo.getRoomNumber());
+      String state = maintenanceTicketTo.getStatus();
+      String ticketFixerEmail =maintenanceTicketTo.getFixedByEmail();
+      String timeEstimateString = maintenanceTicketTo.getTimeToResolve();
+      String priorityString = maintenanceTicketTo.getPriority();
+      String requiresManagerApprovalString = String.valueOf(maintenanceTicketTo.getApprovalRequired());
       
       List<String> oneTicketTO = new ArrayList<>();
       oneTicketTO.add(ticketIdString);
@@ -461,6 +478,11 @@ public class MaintenanceTicketsStepDefinitions {
       oneTicketTO.add(purchaseDateString);
       oneTicketTO.add(floorNumberString);
       oneTicketTO.add(roomNumberString);
+      oneTicketTO.add(state);
+      oneTicketTO.add(ticketFixerEmail);
+      oneTicketTO.add(timeEstimateString);
+      oneTicketTO.add(priorityString);
+      oneTicketTO.add(requiresManagerApprovalString);
       
       ticketsToMapAsStrings.put(ticketIdString, oneTicketTO);
     }
@@ -469,7 +491,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
 
-  private void setMaintenanceTicketAsState(MaintenanceTicket maintenanceTicket, String state){
+  private void setMaintenanceTicketAsState(MaintenanceTicket maintenanceTicket, String state, String fixedByEmail,
+   String timeToResolveString, String priorityString, boolean approvalRequired){
     if (!maintenanceTicket.getPossible_stateFullName().equals("Open")){
       throw new InvalidParameterException("ticket must start in open state");
     }
@@ -477,26 +500,46 @@ public class MaintenanceTicketsStepDefinitions {
       case "Open":
         break;
       case "Assigned":
-        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString, priorityString, approvalRequired);
+        break;
       case "InProgress":
-        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString, priorityString, approvalRequired);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
+        break;
       case "Resolved":
-        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString, priorityString, approvalRequired);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
-        setInProgressMaintenanceTicketAsClosed(maintenanceTicket);
+        setInProgressMaintenanceTicketAsResolved(maintenanceTicket);
+        break;
       case "Closed":
-        setMaintenanceTicketAsAssigned(maintenanceTicket);
+        setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString, priorityString, approvalRequired);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
-        setInProgressMaintenanceTicketAsClosed(maintenanceTicket);
+        setInProgressMaintenanceTicketAsResolved(maintenanceTicket);
         setResolvedMaintenanceticketAsClosed(maintenanceTicket);
+        break;
     }
     return;
   }
 
 
-  private void setMaintenanceTicketAsAssigned(MaintenanceTicket maintenanceTicket) {
-    maintenanceTicket.assignStaff(null, null, null, maintenanceTicket.getId(), "manager@ap.com");
+  private void setMaintenanceTicketAsAssigned(MaintenanceTicket maintenanceTicket, String fixedByEmail,
+   String timeToResolveString, String priorityString, boolean approvalRequired) {
+    MaintenanceTicket.PriorityLevel priority = parsePriorityLevel(priorityString);
+    MaintenanceTicket.TimeEstimate timeEstimate = parseTimeEstimate(timeToResolveString);
+
+    HotelStaff ticketFixer;
+    if (fixedByEmail == null || fixedByEmail.isEmpty()) {
+      ticketFixer = (HotelStaff) HotelStaff.getWithEmail("manager@ap.com");
+    } else {
+      ticketFixer = (HotelStaff) HotelStaff.getWithEmail(fixedByEmail);
+    }
+
+    maintenanceTicket.assignStaff(priority, timeEstimate, ticketFixer, maintenanceTicket.getId(), "manager@ap.com");
+
+    if (approvalRequired){
+      Manager manager = (Manager) Manager.getWithEmail("manager@ap.com");
+      maintenanceTicket.setFixApprover(manager);
+    }
     return;
   }
 
@@ -508,16 +551,16 @@ public class MaintenanceTicketsStepDefinitions {
     }
   }
 
+  private void setInProgressMaintenanceTicketAsResolved(MaintenanceTicket maintenanceTicket) {
+    maintenanceTicket.resolve("manager@ap.com", maintenanceTicket.getId());
+  }
+
   private void setResolvedMaintenanceticketAsClosed(MaintenanceTicket maintenanceTicket) {
     if (maintenanceTicket.getPossible_stateFullName().equals("Resolved")) {
         maintenanceTicket.approve("manager@ap.com");
     }
   }
 
-  private void setInProgressMaintenanceTicketAsClosed(MaintenanceTicket maintenanceTicket) {
-    String employeeEmail = maintenanceTicket.getTicketFixer().getEmail();
-    maintenanceTicket.resolve(employeeEmail, maintenanceTicket.getId());
-  }
 
   private int parseAssetNumber(String assetNumberString) {
     if (assetNumberString == null || assetNumberString.isEmpty()){

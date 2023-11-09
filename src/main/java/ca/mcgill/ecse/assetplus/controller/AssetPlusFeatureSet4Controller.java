@@ -6,9 +6,6 @@ import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
 
 public class AssetPlusFeatureSet4Controller {
-  private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
-
-  private static final int UNSPECIFIED_ASSET_NUMBER = -1;
 
   /**
    * Adds a maintenance ticket to the system.
@@ -24,43 +21,8 @@ public class AssetPlusFeatureSet4Controller {
    */
   public static String addMaintenanceTicket(int id, Date raisedOnDate, String description,
       String email, int assetNumber) {
-
-    var error = "";
-    error += assertAssetPlusInitialized();
-    error += assertValidTicketId(id);
-    error += assertValidRaisedOnDate(raisedOnDate);
-    error += assertValidTicketDescription(description);
-    error += assertValidAssetNumber(assetNumber);
-
-    User aTicketRaiser = User.getWithEmail(email);
-    if (aTicketRaiser == null) {
-      error += "The ticket raiser does not exist ";
-    }
-
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
-
-    try {
-
-      MaintenanceTicket maintenanceTicket =
-          new MaintenanceTicket(id, raisedOnDate, description, assetPlus, aTicketRaiser);
-
-      if (assetNumber != UNSPECIFIED_ASSET_NUMBER) {
-        SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);
-        if (aAsset != null) {
-          maintenanceTicket.setAsset(aAsset);
-        }
-      }
-
-    } catch (Exception e) {
-      if (e.getMessage().contains("Cannot create due to duplicate id.")) {
-        return "Ticket id already exists";
-      }
-
-      return "An unexpected error occured: " + e.getMessage();
-    }
-    return "";
+    // Remove this exception when you implement this method
+    throw new UnsupportedOperationException("Not Implemented!");
   }
 
   /**
@@ -77,45 +39,8 @@ public class AssetPlusFeatureSet4Controller {
    */
   public static String updateMaintenanceTicket(int id, Date newRaisedOnDate, String newDescription,
       String newEmail, int newAssetNumber) {
-
-    var error = "";
-    error += assertAssetPlusInitialized();
-    error += assertValidTicketId(id);
-    error += assertValidRaisedOnDate(newRaisedOnDate);
-    error += assertValidTicketDescription(newDescription);
-    error += assertValidAssetNumber(newAssetNumber);
-
-    User newTicketRaiser = User.getWithEmail(newEmail);
-    if (newTicketRaiser == null) {
-      error += "The ticket raiser does not exist ";
-    }
-
-    MaintenanceTicket existingMaintenanceTicket = MaintenanceTicket.getWithId(id);
-    if (existingMaintenanceTicket == null) {
-      error += "The ticket does not exist ";
-    }
-
-    SpecificAsset newAsset = null;
-    if (newAssetNumber != UNSPECIFIED_ASSET_NUMBER) {
-      newAsset = SpecificAsset.getWithAssetNumber(newAssetNumber);
-    }
-
-    if (!error.isEmpty()) {
-      return error.trim();
-    }
-
-    try {
-
-      existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
-      existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
-      existingMaintenanceTicket.setDescription(newDescription);
-      existingMaintenanceTicket.setAsset(newAsset);
-
-
-    } catch (Exception e) {
-      return "An unexpected error occured: " + e.getMessage();
-    }
-    return "";
+    // Remove this exception when you implement this method
+    throw new UnsupportedOperationException("Not Implemented!");
   }
 
   /**

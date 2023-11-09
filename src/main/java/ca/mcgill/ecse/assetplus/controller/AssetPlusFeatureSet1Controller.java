@@ -4,103 +4,21 @@ import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
 
 public class AssetPlusFeatureSet1Controller {
-  private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
-  /**
-   * Updates the password of the manager in the system.
-   * 
-   * @author Nicolas Bolouri
-   * @param password The new password for the manager must be >=4 characters, contain !#$, an
-   *        uppercase, and a lowercase letter.
-   * @return A string message indicating the failure of the operation or an empty string if the
-   *         operation was successful.
-   */
   public static String updateManager(String password) {
-    String error = "";
-    error += assertManagerAvailable() + validateManagerPassword(password);
-
-    if (!error.isEmpty())
-      return error;
-
-    try {
-      assetPlus.getManager().setPassword(password);
-    } catch (Exception e) {
-      return "An unexpected error occurred: " + e.getMessage();
-    }
-    return "";
+    // Remove this exception when you implement this method
+    throw new UnsupportedOperationException("Not Implemented!");
   }
 
-  /**
-   * Adds a new Employee or Guest to the AssetPlus system with the given details.
-   * 
-   * @author Nicolas Bolouri
-   * @param email The email of the new user, following specific constraints for Employees and
-   *        Guests.
-   * @param password The password of the new user, cannot be null or empty.
-   * @param name The name of the new user, cannot be null.
-   * @param phoneNumber The phone number of the new user, cannot be null.
-   * @param isEmployee A boolean indicating whether the new user is an Employee (true) or Guest
-   *        (false).
-   * @return A string message indicating the failure of the operation or an empty string if the
-   *         operation was successful.
-   */
-  public static String addEmployeeOrGuest(String email, String password, String name,
-      String phoneNumber, boolean isEmployee) {
-    String error = "";
-    error += validateEmployeeOrGuestEmail(email, isEmployee)
-        + validateUserDetails(password, name, phoneNumber);
-
-    if (!error.isEmpty())
-      return error;
-
-    try {
-      if (User.getWithEmail(email) != null) {
-        String userType = isEmployee ? "an employee" : "a guest";
-        return "Email already linked to " + userType + " account";
-      }
-      if (isEmployee) {
-        assetPlus.addEmployee(email, name, password, phoneNumber);
-      } else {
-        assetPlus.addGuest(email, name, password, phoneNumber);
-      }
-    } catch (Exception e) {
-      return "An error occurred while adding the user: " + e.getMessage();
-    }
-    return "";
+  public static String addEmployeeOrGuest(String email, String password, String name, String phoneNumber,
+        boolean isEmployee) {
+    // Remove this exception when you implement this method
+    throw new UnsupportedOperationException("Not Implemented!");
   }
 
-  /**
-   * Updates the details of an existing Employee or Guest in the AssetPlus system.
-   * 
-   * @author Nicolas Bolouri
-   * @param email The email of the user to be updated.
-   * @param newPassword The new password to be set for the user, cannot be null or empty.
-   * @param newName The new name to be set for the user, cannot be null.
-   * @param newPhoneNumber The new phone number to be set for the user, cannot be null.
-   * @return A string message indicating the failure of the operation or an empty string if the
-   *         operation was successful.
-   */
-  public static String updateEmployeeOrGuest(String email, String newPassword, String newName,
-      String newPhoneNumber) {
-    String error = "";
-    error += validateEmployeeOrGuestEmail(email, null)
-        + validateUserDetails(newPassword, newName, newPhoneNumber);
-
-    if (!error.isEmpty())
-      return error;
-
-    try {
-      User user = User.getWithEmail(email);
-      if (user == null)
-        return "User not found";
-
-      user.setPassword(newPassword);
-      user.setName(newName);
-      user.setPhoneNumber(newPhoneNumber);
-    } catch (Exception e) {
-      return "An error occurred while updating the user: " + e.getMessage();
-    }
-    return "";
+  public static String updateEmployeeOrGuest(String email, String newPassword, String newName, String newPhoneNumber) {
+    // Remove this exception when you implement this method
+    throw new UnsupportedOperationException("Not Implemented!");
   }
 
   /**

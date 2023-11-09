@@ -65,13 +65,22 @@ public class AssetPlusStateController {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             var error = "";
+
             error += assertTicketExists(ticket);
             error += assertTicketStartable(ticket);
 
             if (!error.isEmpty()) {
                 return error.trim();
             }
-            String employeeEmail = ticket.getTicketFixer().getEmail();
+
+            HotelStaff ticketFixer = ticket.getTicketFixer();
+            error += assertUserExistsAndIsEmployee(ticketFixer);
+
+            if (!error.isEmpty()) {
+                return error.trim();
+            }
+
+            String employeeEmail = ticketFixer.getEmail();
             ticket.startedToWork(employeeEmail);
 
             AssetPlusPersistence.save();
@@ -95,20 +104,21 @@ public class AssetPlusStateController {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketId);
             var error = "";
 
-            String userEmail = "";
-
             error += assertTicketExists(ticket);
             error += assertTicketCompletable(ticket);
-
-            if (ticket != null){
-                userEmail = ticket.getTicketFixer().getEmail();
-                error += assertUserIsEmployee(userEmail);
-            }
 
             if (!error.isEmpty()) {
                 return error.trim();
             }
 
+            HotelStaff ticketFixer = ticket.getTicketFixer();
+            error += assertUserExistsAndIsEmployee(ticketFixer);
+
+            if (!error.isEmpty()) {
+                return error.trim();
+            }
+
+            String userEmail = ticketFixer.getEmail();
             ticket.resolve(userEmail, ticketId);
             AssetPlusPersistence.save();
         } catch (Exception e) {
@@ -269,7 +279,7 @@ public class AssetPlusStateController {
     private static String assertTicketCompletable(MaintenanceTicket ticket) {
         if (ticket != null) {
             if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
-                return "Cannot complete a maintenance ticket which is open";
+                return "Cannot complete a maintenance ticket which is open.";
             }
             if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
                 return "Cannot complete a maintenance ticket which is assigned.";
@@ -336,13 +346,36 @@ public class AssetPlusStateController {
         return "";
     }
 
+    /**
+     * Validates if the provided email address belongs to a hotel employee.
+     * 
+     * @author Nicolas Bolouri
+     * @param employeeEmail The email address to be validated.
+     * @return An empty string if the email is a valid employee email. An error message stating the
+     *         error otherwise.
+     */
     private static String assertUserIsEmployee(String employeeEmail) {
         if (!employeeEmail.endsWith("@ap.com")) {
-            return "email is not a valid employee email ";
+            return "Email is not a valid employee email ";
         }
 
-        HotelStaff employee = (HotelStaff) HotelStaff.getWithEmail(employeeEmail);
+        HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
         return assertEmployeeExists(employee);
+    }
+
+    /**
+     * Validates that the specified HotelStaff object represents an existing employee.
+     * 
+     * @author Nicolas Bolouri
+     * @param employee The HotelStaff object to be validated.
+     * @return An empty string if the employee exists, or an error message if not.
+     */
+    private static String assertUserExistsAndIsEmployee(HotelStaff employee) {
+        if (employee == null) {
+            return "Staff to assign does not exist.";
+        }
+
+        return assertUserIsEmployee(employee.getEmail());
     }
 
 }

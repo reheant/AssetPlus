@@ -26,7 +26,7 @@ public class AssetPlusPersistence {
 	    if (assetPlus == null) {
 	      assetPlus = new AssetPlus();
 	    } else {
-	      assetPlus.reinitialize();
+	      //assetPlus.reinitialize();
 	    }
 	    return assetPlus;
 	  }

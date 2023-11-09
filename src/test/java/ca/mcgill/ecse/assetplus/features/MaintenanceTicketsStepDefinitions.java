@@ -97,7 +97,7 @@ public class MaintenanceTicketsStepDefinitions {
     List<List<String>> rows = dataTable.asLists(String.class);
     for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
-      int assetNumber = Integer.parseInt(row.get(0));
+      int assetNumber = parseAssetNumber(row.get(0));
       AssetType type = AssetType.getWithName(row.get(1));
       Date purchaseDate = Date.valueOf(row.get(2));
       int floorNumber = Integer.parseInt(row.get(3));
@@ -120,7 +120,7 @@ public class MaintenanceTicketsStepDefinitions {
       String ticketRaiser = row.get(1);
       Date raisedOnDate = Date.valueOf(row.get(2));
       String description = row.get(3);
-      int assetNumber = Integer.parseInt(row.get(4));
+      int assetNumber = parseAssetNumber(row.get(4));
       User raiserUser = User.getWithEmail(ticketRaiser);
       SpecificAsset asset = SpecificAsset.getWithAssetNumber(assetNumber);
       assetPlus.addMaintenanceTicket(id, raisedOnDate, description, raiserUser);
@@ -145,7 +145,7 @@ public class MaintenanceTicketsStepDefinitions {
       String description = row.get(3);
 
       HotelStaff noteTaker = (HotelStaff) HotelStaff.getWithEmail(noteTakerEmail);
-      MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+      MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
 
       maintenanceTicket.addTicketNote(addedOnDate, description, noteTaker);
     }
@@ -182,7 +182,7 @@ public class MaintenanceTicketsStepDefinitions {
       String requiresApprovalString) {
     int ticketId = Integer.parseInt(ticketIdString);
     boolean requiresApproval = Boolean.parseBoolean(requiresApprovalString);
-    MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
 
     setMaintenanceTicketAsState(maintenanceTicket, stateString);
   }
@@ -190,7 +190,7 @@ public class MaintenanceTicketsStepDefinitions {
   @Given("ticket {string} is marked as {string}")
   public void ticket_is_marked_as(String ticketIdString, String stateString) {
     int ticketId = Integer.parseInt(ticketIdString);    
-    MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
     setMaintenanceTicketAsState(maintenanceTicket, stateString);
   }
 
@@ -510,6 +510,13 @@ public class MaintenanceTicketsStepDefinitions {
     if (maintenanceTicket.getPossible_stateFullName().equals("Resolved")) {
         maintenanceTicket.approve("manager@ap.com");
     }
+  }
+
+  private int parseAssetNumber(String assetNumberString) {
+    if (assetNumberString == null || assetNumberString.isEmpty()){
+      return -1;
+    }
+    return Integer.parseInt(assetNumberString);
   }
 
 

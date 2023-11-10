@@ -34,6 +34,8 @@ public class MaintenanceTicketsStepDefinitions {
 
 
   /**
+   * Adds the required employees to the system
+   * 
    * @author Tiffany Miller, Julien Audet
    * @param dataTable The data table of the employees that must exist in the system.
    */
@@ -53,6 +55,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Adds the required managers to the system
+   * 
    * @author Tiffany Miller, Julien Audet
    * @param dataTable The data table of the manager that must exist in the system.
    */
@@ -71,6 +75,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Adding the required asset types to the system
+   * 
    * @author Tiffany Miller, Julien Audet
    * @param dataTable The data table of the asset types that must exist in the system.
    */
@@ -88,6 +94,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Add the required asssets to the system
+   * 
    * @author Tiffany Miller, Julien Audet
    * @param dataTable The data table of the assets that must exist in the system.
    */
@@ -107,6 +115,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Adds the required tickets to the system
+   * 
    * @author Tiffany Miller, Julien Audet
    * @param dataTable The data table of the tickets that must exist in the system.
    */
@@ -148,6 +158,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Adds the required notes to the system
+   * 
    * @author Julien Audet
    * @param dataTable dataTable of the notes that must exist in the system.
    */
@@ -170,6 +182,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Adds the required images to the system
+   * 
    * @author Julien Audet
    * @param dataTable dataTable of the images that must exist in the system.
    */
@@ -189,6 +203,8 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
+   * Sets a ticket to a specified state, and requires approval if needed
+   * 
    * @author Julien Audet
    * @param ticketIdString the id of the ticket
    * @param stateString the state of the ticket
@@ -213,7 +229,7 @@ public class MaintenanceTicketsStepDefinitions {
         "Low", false);
   }
 
-  /**
+  /** 
    * Step definition to retrieve all the maintenance tickets in the system.
    * 
    * @author Julien Audet
@@ -224,6 +240,16 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
 
+  /**
+   * Assigns the maintenance tickets to an employee. Adds the relevant ticket information, like time estimate, priority, requires approval.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString String containing the id of the ticket to assign
+   * @param assigneeEmail String containing the email of the employee to assign
+   * @param timeEstimateString String containing the time estimate to set
+   * @param priorityString String containing the priority to set
+   * @param requiresApprovalString String containing whether whether the ticket requires manager approval
+   */
   @When("the manager attempts to assign the ticket {string} to {string} with estimated time {string}, priority {string}, and requires approval {string}")
   public void the_manager_attempts_to_assign_the_ticket_to_with_estimated_time_priority_and_requires_approval(
       String ticketIdString, String assigneeEmail, String timeEstimateString, String priorityString,
@@ -237,6 +263,12 @@ public class MaintenanceTicketsStepDefinitions {
         priorityLevel, requiresApproval));
   }
 
+  /**
+   * Mark ticket as in progress
+   * 
+   * @author Julien Audet
+   * @param ticketIdString String containing the id of the ticket to assign
+   */
   @When("the hotel staff attempts to start the ticket {string}")
   public void the_hotel_staff_attempts_to_start_the_ticket(String ticketIdString) {
     int ticketId = Integer.parseInt(ticketIdString);

@@ -123,7 +123,12 @@ public class MaintenanceTicketsStepDefinitions {
 
 
       User raiserUser = User.getWithEmail(ticketRaiser);
-      SpecificAsset asset = SpecificAsset.getWithAssetNumber(assetNumber);
+
+      SpecificAsset asset = null;
+      if (assetNumber != null) {
+        asset = SpecificAsset.getWithAssetNumber(assetNumber);
+      }
+
       assetPlus.addMaintenanceTicket(id, raisedOnDate, description, raiserUser);
       MaintenanceTicket thisTicket = MaintenanceTicket.getWithId(id);
       thisTicket.setAsset(asset);
@@ -133,7 +138,7 @@ public class MaintenanceTicketsStepDefinitions {
         String fixedByEmail = row.get(6);
         String timeEstimateString = row.get(7);
         String priorityString = row.get(8);
-        boolean approvalRequired = Boolean.parseBoolean(row.get(9));
+        Boolean approvalRequired = parseStringTicketPropertyToBoolean(row.get(9));
         setMaintenanceTicketAsState(thisTicket, stateString, fixedByEmail, timeEstimateString,
             priorityString, approvalRequired);
       }
@@ -458,10 +463,10 @@ public class MaintenanceTicketsStepDefinitions {
       String raisedOnDateString = maintenanceTicketTo.getRaisedOnDate().toString();
       String description = maintenanceTicketTo.getDescription();
       String assetName = String.valueOf(maintenanceTicketTo.getAssetName());
-      String expectedLifeSpanString = String.valueOf(maintenanceTicketTo.getExpectLifeSpanInDays());
+      String expectedLifeSpanString = parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getExpectLifeSpanInDays());
       String purchaseDateString = String.valueOf(maintenanceTicketTo.getPurchaseDate());
-      String floorNumberString = String.valueOf(maintenanceTicketTo.getFloorNumber());
-      String roomNumberString = String.valueOf(maintenanceTicketTo.getRoomNumber());
+      String floorNumberString = parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getFloorNumber());
+      String roomNumberString = parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getRoomNumber());
       String state = maintenanceTicketTo.getStatus();
       String ticketFixerEmail = maintenanceTicketTo.getFixedByEmail();
       String timeEstimateString = maintenanceTicketTo.getTimeToResolve();
@@ -494,7 +499,7 @@ public class MaintenanceTicketsStepDefinitions {
 
   private void setMaintenanceTicketAsState(MaintenanceTicket maintenanceTicket, String state,
       String fixedByEmail, String timeToResolveString, String priorityString,
-      boolean approvalRequired) {
+      Boolean approvalRequired) {
     if (!maintenanceTicket.getPossible_stateFullName().equals("Open")) {
       throw new InvalidParameterException("ticket must start in open state");
     }
@@ -530,7 +535,7 @@ public class MaintenanceTicketsStepDefinitions {
 
   private void setMaintenanceTicketAsAssigned(MaintenanceTicket maintenanceTicket,
       String fixedByEmail, String timeToResolveString, String priorityString,
-      boolean approvalRequired) {
+      Boolean approvalRequired) {
     MaintenanceTicket.PriorityLevel priority = parsePriorityLevel(priorityString);
     MaintenanceTicket.TimeEstimate timeEstimate = parseTimeEstimate(timeToResolveString);
 
@@ -578,5 +583,20 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
 
+  private String parsePositiveIntTicketPropertyToString(int ticketProperty) {
+    if (ticketProperty == -1) {
+      return "null";
+    }
+    return String.valueOf(ticketProperty);
+  }
+
+  private Boolean parseStringTicketPropertyToBoolean(String ticketProperty) {
+    if (ticketProperty == null) {
+      return null;
+    }
+    else {
+      return Boolean.parseBoolean(ticketProperty);
+    }
+  }
 
 }

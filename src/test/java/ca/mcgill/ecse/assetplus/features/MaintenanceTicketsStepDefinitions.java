@@ -551,13 +551,13 @@ public class MaintenanceTicketsStepDefinitions {
         setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString,
             priorityString, approvalRequired);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
-        setInProgressMaintenanceTicketAsResolved(maintenanceTicket);
+        setInProgressMaintenanceTicketAsResolved(maintenanceTicket, fixedByEmail);
         break;
       case "Closed":
         setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString,
             priorityString, approvalRequired);
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
-        setInProgressMaintenanceTicketAsResolved(maintenanceTicket);
+        setInProgressMaintenanceTicketAsResolved(maintenanceTicket, fixedByEmail);
         setResolvedMaintenanceticketAsClosed(maintenanceTicket);
         break;
     }
@@ -596,8 +596,11 @@ public class MaintenanceTicketsStepDefinitions {
     }
   }
 
-  private void setInProgressMaintenanceTicketAsResolved(MaintenanceTicket maintenanceTicket) {
-    maintenanceTicket.resolve("manager@ap.com", maintenanceTicket.getId());
+  private void setInProgressMaintenanceTicketAsResolved(MaintenanceTicket maintenanceTicket, String fixedByEmail) {
+    if (fixedByEmail == null) {
+      fixedByEmail = "manager@ap.com";
+    }
+    maintenanceTicket.resolve(fixedByEmail, maintenanceTicket.getId());
   }
 
   private void setResolvedMaintenanceticketAsClosed(MaintenanceTicket maintenanceTicket) {

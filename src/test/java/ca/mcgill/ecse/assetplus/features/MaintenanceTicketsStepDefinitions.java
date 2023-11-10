@@ -229,7 +229,7 @@ public class MaintenanceTicketsStepDefinitions {
         "Low", false);
   }
 
-  /** 
+  /**
    * Step definition to retrieve all the maintenance tickets in the system.
    * 
    * @author Julien Audet
@@ -241,14 +241,16 @@ public class MaintenanceTicketsStepDefinitions {
 
 
   /**
-   * Assigns the maintenance tickets to an employee. Adds the relevant ticket information, like time estimate, priority, requires approval.
+   * Assigns the maintenance tickets to an employee. Adds the relevant ticket information, like time
+   * estimate, priority, requires approval.
    * 
    * @author Julien Audet
    * @param ticketIdString String containing the id of the ticket to assign
    * @param assigneeEmail String containing the email of the employee to assign
    * @param timeEstimateString String containing the time estimate to set
    * @param priorityString String containing the priority to set
-   * @param requiresApprovalString String containing whether whether the ticket requires manager approval
+   * @param requiresApprovalString String containing whether whether the ticket requires manager
+   *        approval
    */
   @When("the manager attempts to assign the ticket {string} to {string} with estimated time {string}, priority {string}, and requires approval {string}")
   public void the_manager_attempts_to_assign_the_ticket_to_with_estimated_time_priority_and_requires_approval(
@@ -275,18 +277,38 @@ public class MaintenanceTicketsStepDefinitions {
     callController(AssetPlusStateController.startTicket(ticketId));
   }
 
+  /**
+   * Attempts to approve a ticket in the system.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format that needs to be approved.
+   */
   @When("the manager attempts to approve the ticket {string}")
   public void the_manager_attempts_to_approve_the_ticket(String ticketIdString) {
     int ticketId = Integer.parseInt(ticketIdString);
     callController(AssetPlusStateController.approveTicket(ticketId));
   }
 
+  /**
+   * Attempts to complete a ticket in the system.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format that needs to be completed.
+   */
   @When("the hotel staff attempts to complete the ticket {string}")
   public void the_hotel_staff_attempts_to_complete_the_ticket(String ticketIdString) {
     int ticketId = Integer.parseInt(ticketIdString);
     callController(AssetPlusStateController.resolveTicket(ticketId));
   }
 
+  /**
+   * Attempts to disapprove a ticket in the system on a specific date and for a specific reason.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format that is to be disapproved.
+   * @param dateString The date on which the ticket is disapproved, in string format.
+   * @param reason The reason for disapproving the ticket.
+   */
   @When("the manager attempts to disapprove the ticket {string} on date {string} and with reason {string}")
   public void the_manager_attempts_to_disapprove_the_ticket_on_date_and_with_reason(
       String ticketIdString, String dateString, String reason) {
@@ -295,6 +317,16 @@ public class MaintenanceTicketsStepDefinitions {
     callController(AssetPlusStateController.disapproveTicket(ticketId, date, reason));
   }
 
+  /**
+   * Checks if the ticket is marked with the expected state.
+   * 
+   * This method asserts whether a ticket, identified by its ID, is marked as a specific state in
+   * the system. It compares the actual state of the ticket with the expected state provided.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format.
+   * @param expectedStateString The expected state of the ticket in string format.
+   */
   @Then("the ticket {string} shall be marked as {string}")
   public void the_ticket_shall_be_marked_as(String ticketIdString, String expectedStateString) {
     int ticketId = Integer.parseInt(ticketIdString);
@@ -304,11 +336,29 @@ public class MaintenanceTicketsStepDefinitions {
     assertEquals(expectedStateString, actualStateString);
   }
 
+  /**
+   * Ensures that the system raises a specific error.
+   * 
+   * This method is used to validate that the system raises an expected error. It compares the
+   * actual error raised by the system with the expected error.
+   * 
+   * @author Julien Audet
+   * @param actualError The actual error message raised by the system.
+   */
   @Then("the system shall raise the error {string}")
   public void the_system_shall_raise_the_error(String actualError) {
     assertEquals(error, actualError);
   }
 
+  /**
+   * Validates that a ticket does not exist in the system.
+   * 
+   * This method checks that no ticket exists in the system with the given ID. It asserts that the
+   * ticket, when queried, returns null, indicating non-existence.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format which should not exist.
+   */
   @Then("the ticket {string} shall not exist in the system")
   public void the_ticket_shall_not_exist_in_the_system(String ticketIdString) {
     int ticketId = Integer.parseInt(ticketIdString);
@@ -317,6 +367,19 @@ public class MaintenanceTicketsStepDefinitions {
     assertNull(maintenanceTicket);
   }
 
+  /**
+   * Confirms that a ticket has the specified time estimate, priority, and approval requirement.
+   * 
+   * This method verifies the properties of a ticket such as estimated time to resolve, priority
+   * level, and whether it requires approval. It asserts these properties against the expected
+   * values provided.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format.
+   * @param expectedTimeEstimateString The expected time estimate for the ticket.
+   * @param expectedPriorityString The expected priority level of the ticket.
+   * @param expectedRequiresApprovalString String indicating whether the ticket requires approval.
+   */
   @Then("the ticket {string} shall have estimated time {string}, priority {string}, and requires approval {string}")
   public void the_ticket_shall_have_estimated_time_priority_and_requires_approval(
       String ticketIdString, String expectedTimeEstimateString, String expectedPriorityString,
@@ -337,6 +400,17 @@ public class MaintenanceTicketsStepDefinitions {
     assertEquals(expectedRequiresApproval, actualRequiresApproval);
   }
 
+  /**
+   * Validates that the ticket is assigned to the expected employee.
+   * 
+   * This method confirms whether a specific ticket, identified by its ID, is assigned to an
+   * employee whose email matches the expected email. It asserts the actual assigned employee's
+   * email against the expected one.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format.
+   * @param expectedEmployeeEmail The expected email of the employee to whom the ticket is assigned.
+   */
   @Then("the ticket {string} shall be assigned to {string}")
   public void the_ticket_shall_be_assigned_to(String ticketIdString, String expectedEmployeeEmail) {
     int ticketId = Integer.parseInt(ticketIdString);
@@ -349,7 +423,14 @@ public class MaintenanceTicketsStepDefinitions {
   }
 
   /**
-   * @author Tiffany Miller, Julien Audet
+   * Asserts the total number of tickets in the system.
+   * 
+   * This method checks if the total number of maintenance tickets in the system matches the
+   * expected number. It compares the actual number of tickets with the expected number provided as
+   * a string.
+   * 
+   * @author Julien Audet
+   * @param expectedNumTicketsString The expected number of tickets in the system in string format.
    */
   @Then("the number of tickets in the system shall be {string}")
   public void the_number_of_tickets_in_the_system_shall_be(String expectedNumTicketsString) {
@@ -358,6 +439,16 @@ public class MaintenanceTicketsStepDefinitions {
     assertEquals(expectedNumTickets, numberOfTickets);
   }
 
+  /**
+   * Validates the presentation of maintenance tickets against a provided data table.
+   * 
+   * This method ensures that the maintenance tickets presented in the system match the expected
+   * tickets outlined in the provided data table. It compares the actual ticket data with the
+   * expected data.
+   * 
+   * @author Julien Audet
+   * @param dataTable The data table containing the expected ticket information.
+   */
   @Then("the following maintenance tickets shall be presented")
   public void the_following_maintenance_tickets_shall_be_presented(
       io.cucumber.datatable.DataTable dataTable) {
@@ -377,6 +468,17 @@ public class MaintenanceTicketsStepDefinitions {
     assertEquals(expectedTicketsToMap, actualTicketsToMap);
   }
 
+  /**
+   * Verifies the notes associated with a particular ticket.
+   * 
+   * This method checks the notes of a specific ticket, identified by its ID, against the expected
+   * notes outlined in the provided data table. It ensures that each note's details match the
+   * expected information.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format.
+   * @param dataTable The data table containing the expected notes information.
+   */
   @Then("the ticket with id {string} shall have the following notes")
   public void the_ticket_with_id_shall_have_the_following_notes(String ticketIdString,
       io.cucumber.datatable.DataTable dataTable) {
@@ -405,6 +507,15 @@ public class MaintenanceTicketsStepDefinitions {
     }
   }
 
+  /**
+   * Verifies that the specified ticket has no notes attached.
+   * 
+   * This method checks if a particular ticket, identified by its ID, has no maintenance notes
+   * associated with it. It asserts that the list of notes for the ticket is empty.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format.
+   */
   @Then("the ticket with id {string} shall have no notes")
   public void the_ticket_with_id_shall_have_no_notes(String ticketIdString) {
     Map<String, TOMaintenanceTicket> maintenanceTicketToMap = getMaintenanceTicketToMap();
@@ -414,6 +525,17 @@ public class MaintenanceTicketsStepDefinitions {
     assertTrue(maintenanceTicketNoteTos.isEmpty());
   }
 
+  /**
+   * Ensures that the ticket contains the expected images.
+   * 
+   * This method checks if a ticket, identified by its ID, includes a specific set of images. It
+   * compares the actual image URLs attached to the ticket with the expected URLs provided in the
+   * data table.
+   * 
+   * @author Julien Audet
+   * @param ticketIdString The ticket ID in string format.
+   * @param dataTable The data table containing the expected image URLs.
+   */
   @Then("the ticket with id {string} shall have the following images")
   public void the_ticket_with_id_shall_have_the_following_images(String ticketIdString,
       io.cucumber.datatable.DataTable dataTable) {
@@ -427,6 +549,15 @@ public class MaintenanceTicketsStepDefinitions {
     assertEquals(expectedImageUrls, actualImageUrls);
   }
 
+  /**
+   * Validates that the specified ticket does not have any images.
+   * 
+   * This method confirms that a ticket, identified by its ID, does not have any images attached. It
+   * asserts that the list of image URLs for the ticket is empty.
+   * 
+   * @author Julien Audet
+   * @param tickeIdString The ticket ID in string format.
+   */
   @Then("the ticket with id {string} shall have no images")
   public void the_ticket_with_id_shall_have_no_images(String tickeIdString) {
     Map<String, TOMaintenanceTicket> maintenanceTicketToMap = getMaintenanceTicketToMap();
@@ -495,10 +626,13 @@ public class MaintenanceTicketsStepDefinitions {
       String raisedOnDateString = maintenanceTicketTo.getRaisedOnDate().toString();
       String description = maintenanceTicketTo.getDescription();
       String assetName = String.valueOf(maintenanceTicketTo.getAssetName());
-      String expectedLifeSpanString = parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getExpectLifeSpanInDays());
+      String expectedLifeSpanString =
+          parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getExpectLifeSpanInDays());
       String purchaseDateString = String.valueOf(maintenanceTicketTo.getPurchaseDate());
-      String floorNumberString = parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getFloorNumber());
-      String roomNumberString = parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getRoomNumber());
+      String floorNumberString =
+          parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getFloorNumber());
+      String roomNumberString =
+          parsePositiveIntTicketPropertyToString(maintenanceTicketTo.getRoomNumber());
       String state = maintenanceTicketTo.getStatus();
       String ticketFixerEmail = maintenanceTicketTo.getFixedByEmail();
       String timeEstimateString = maintenanceTicketTo.getTimeToResolve();
@@ -625,8 +759,7 @@ public class MaintenanceTicketsStepDefinitions {
   private Boolean parseStringTicketPropertyToBoolean(String ticketProperty) {
     if (ticketProperty == null) {
       return null;
-    }
-    else {
+    } else {
       return Boolean.parseBoolean(ticketProperty);
     }
   }

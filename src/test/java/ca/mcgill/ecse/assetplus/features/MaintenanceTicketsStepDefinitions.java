@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.thoughtworks.xstream.converters.extended.ToAttributedValueConverter;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusStateController;
@@ -17,14 +16,12 @@ import ca.mcgill.ecse.assetplus.controller.TOMaintenanceNote;
 import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.model.AssetType;
-import ca.mcgill.ecse.assetplus.model.Employee;
 import ca.mcgill.ecse.assetplus.model.HotelStaff;
 import ca.mcgill.ecse.assetplus.model.MaintenanceNote;
 import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
 import ca.mcgill.ecse.assetplus.model.Manager;
 import ca.mcgill.ecse.assetplus.model.SpecificAsset;
 import ca.mcgill.ecse.assetplus.model.User;
-import cucumber.api.cli.Main;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -230,8 +227,6 @@ public class MaintenanceTicketsStepDefinitions {
     MaintenanceTicket.TimeEstimate timeEstimate = parseTimeEstimate(timeEstimateString);
     MaintenanceTicket.PriorityLevel priorityLevel = parsePriorityLevel(priorityString);
     boolean requiresApproval = Boolean.parseBoolean(requiresApprovalString);
-
-    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
 
     callController(AssetPlusStateController.assignTicket(ticketId, assigneeEmail, timeEstimate,
         priorityLevel, requiresApproval));
@@ -444,7 +439,7 @@ public class MaintenanceTicketsStepDefinitions {
 
 
   private Map<String, TOMaintenanceTicket> getMaintenanceTicketToMap() {
-    Map<String, TOMaintenanceTicket> ticketsToMap = new HashMap();
+    Map<String, TOMaintenanceTicket> ticketsToMap = new HashMap<>();
 
     for (var maintenanceTicketTo : tOMaintenanceTickets) {
       String ticketIdString = String.valueOf(maintenanceTicketTo.getId());

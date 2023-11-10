@@ -120,6 +120,11 @@ public class AssetPlusStateController {
 
             String userEmail = ticketFixer.getEmail();
             ticket.resolve(userEmail, ticketId);
+
+            if (!ticket.hasFixApprover()) {
+                ticket.close(ticketId);
+            }
+
             AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to complete a ticket"

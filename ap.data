@@ -1,0 +1,221 @@
+{
+  "AssetPlus": {
+    "employees": [
+      {
+        "Employee": [
+          {
+            "email": "jeff@ap.com",
+            "name": "Jeff",
+            "password": "pass1",
+            "phoneNumber": "(555)555-5555",
+            "raisedTickets": [
+              ""
+            ],
+            "maintenanceNotes": [
+              ""
+            ],
+            "maintenanceTasks": [
+              ""
+            ],
+            "assetPlus": {
+              "@reference": "../../.."
+            }
+          },
+          {
+            "email": "smith@ap.com",
+            "name": "Smith",
+            "password": "pass2",
+            "phoneNumber": "(555)555-5555",
+            "raisedTickets": [
+              {
+                "MaintenanceTicket": {
+                  "id": 2,
+                  "raisedOnDate": "2023-07-10",
+                  "description": "This is a dummy description 2",
+                  "possible_state": "Open",
+                  "ticketNotes": [
+                    ""
+                  ],
+                  "ticketImages": [
+                    ""
+                  ],
+                  "assetPlus": {
+                    "@reference": "../../../../.."
+                  },
+                  "ticketRaiser": {
+                    "@class": "Employee",
+                    "@reference": "../../.."
+                  },
+                  "asset": {
+                    "assetNumber": 1,
+                    "floorNumber": 9,
+                    "roomNumber": 23,
+                    "purchaseDate": "2022-03-20",
+                    "assetPlus": {
+                      "@reference": "../../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      {
+                        "MaintenanceTicket": {
+                          "@reference": "../../.."
+                        }
+                      }
+                    ],
+                    "assetType": {
+                      "name": "lamp",
+                      "expectedLifeSpan": 1800,
+                      "assetPlus": {
+                        "@reference": "../../../../../../.."
+                      },
+                      "specificAssets": [
+                        {
+                          "SpecificAsset": {
+                            "@reference": "../../.."
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "maintenanceNotes": [
+              ""
+            ],
+            "maintenanceTasks": [
+              ""
+            ],
+            "assetPlus": {
+              "@reference": "../../.."
+            }
+          }
+        ]
+      }
+    ],
+    "guests": [
+      ""
+    ],
+    "manager": {
+      "email": "manager@ap.com",
+      "name": "",
+      "password": "manager",
+      "phoneNumber": "",
+      "raisedTickets": [
+        {
+          "MaintenanceTicket": {
+            "id": 1,
+            "raisedOnDate": "2023-07-20",
+            "description": "This is a dummy description 1",
+            "possible_state": "Open",
+            "ticketNotes": [
+              ""
+            ],
+            "ticketImages": [
+              {
+                "TicketImage": [
+                  {
+                    "imageURL": "https://imageurl.com/i.jpg",
+                    "ticket": {
+                      "@reference": "../../.."
+                    }
+                  },
+                  {
+                    "imageURL": "http://thisimage.com/1.png",
+                    "ticket": {
+                      "@reference": "../../.."
+                    }
+                  }
+                ]
+              }
+            ],
+            "assetPlus": {
+              "@reference": "../../../.."
+            },
+            "ticketRaiser": {
+              "@class": "Manager",
+              "@reference": "../../.."
+            },
+            "asset": {
+              "assetNumber": 2,
+              "floorNumber": 10,
+              "roomNumber": 35,
+              "purchaseDate": "2010-01-30",
+              "assetPlus": {
+                "@reference": "../../../../.."
+              },
+              "maintenanceTickets": [
+                {
+                  "MaintenanceTicket": {
+                    "@reference": "../../.."
+                  }
+                }
+              ],
+              "assetType": {
+                "name": "bed",
+                "expectedLifeSpan": 5000,
+                "assetPlus": {
+                  "@reference": "../../../../../.."
+                },
+                "specificAssets": [
+                  {
+                    "SpecificAsset": {
+                      "@reference": "../../.."
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "maintenanceNotes": [
+        ""
+      ],
+      "maintenanceTasks": [
+        ""
+      ],
+      "assetPlus": {
+        "@reference": "../.."
+      },
+      "ticketsForApproval": [
+        ""
+      ]
+    },
+    "maintenanceTickets": [
+      {
+        "MaintenanceTicket": [
+          {
+            "@reference": "../../manager/raisedTickets/MaintenanceTicket"
+          },
+          {
+            "@reference": "../../employees/Employee[2]/raisedTickets/MaintenanceTicket"
+          }
+        ]
+      }
+    ],
+    "assetTypes": [
+      {
+        "AssetType": [
+          {
+            "@reference": "../../employees/Employee[2]/raisedTickets/MaintenanceTicket/asset/assetType"
+          },
+          {
+            "@reference": "../../manager/raisedTickets/MaintenanceTicket/asset/assetType"
+          }
+        ]
+      }
+    ],
+    "specificAssets": [
+      {
+        "SpecificAsset": [
+          {
+            "@reference": "../../employees/Employee[2]/raisedTickets/MaintenanceTicket/asset"
+          },
+          {
+            "@reference": "../../manager/raisedTickets/MaintenanceTicket/asset"
+          }
+        ]
+      }
+    ]
+  }
+}

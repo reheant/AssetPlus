@@ -730,7 +730,8 @@ public class MaintenanceTicketsStepDefinitions {
     }
   }
 
-  private void setInProgressMaintenanceTicketAsResolved(MaintenanceTicket maintenanceTicket, String fixedByEmail) {
+  private void setInProgressMaintenanceTicketAsResolved(MaintenanceTicket maintenanceTicket,
+      String fixedByEmail) {
     if (fixedByEmail == null) {
       fixedByEmail = "manager@ap.com";
     }

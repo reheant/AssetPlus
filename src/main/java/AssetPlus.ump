@@ -1,4 +1,7 @@
 namespace ca.mcgill.ecse.assetplus.model;
+use AssetPlusPersistence.ump;
+
+use AssetPlusStates.ump;
 
 class AssetPlus
 {
@@ -37,7 +40,7 @@ class Employee
 
 class Manager
 {
-  isA HotelStaff;
+ isA HotelStaff;
 }
 
 class MaintenanceTicket

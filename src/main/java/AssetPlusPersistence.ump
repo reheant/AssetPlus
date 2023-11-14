@@ -1,0 +1,53 @@
+class AssetPlus {
+  public void reinitialize() {
+  	List<Employee> employees = getEmployees();
+    List<Guest> guests = getGuests();
+   
+    List<User> users = new ArrayList<>(employees.size() + guests.size());
+   
+    users.addAll(employees);
+    users.addAll(guests); 
+	   
+  	User.reinitializeUniqueEmail(users);
+    AssetType.reinitializeUniqueName(getAssetTypes());
+    SpecificAsset.reinitializeUniqueAssetNumber(getSpecificAssets());
+    MaintenanceTicket.reinitializeUniqueID(getMaintenanceTickets());
+    
+  }
+}
+
+class User {
+  public static void reinitializeUniqueEmail(List<User> users) {
+    usersByEmail.clear();
+    for (var user : users) {
+      usersByEmail.put(user.getEmail(), user);
+    }
+  }
+}
+
+class AssetType {
+  public static void reinitializeUniqueName(List<AssetType> assetTypes) {
+    assettypesByName.clear();
+    for (var assetType : assetTypes) {
+      assettypesByName.put(assetType.getName(), assetType);
+    }
+  }
+}
+
+class SpecificAsset {
+  public static void reinitializeUniqueAssetNumber(List<SpecificAsset> specificAssets) {
+    specificassetsByAssetNumber.clear();
+    for (var specificAsset : specificAssets) {
+      specificassetsByAssetNumber.put(specificAsset.getAssetNumber(), specificAsset);
+    }
+  }
+}
+
+class MaintenanceTicket {
+  public static void reinitializeUniqueID(List<MaintenanceTicket> maintenanceTickets) {
+    maintenanceticketsById.clear();
+    for (var maintenanceTicket : maintenanceTickets) {
+      maintenanceticketsById.put(maintenanceTicket.getId(), maintenanceTicket);
+    }
+  }
+}

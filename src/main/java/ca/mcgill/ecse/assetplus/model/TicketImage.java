@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.assetplus.model;
 
-// line 65 "../../../../../AssetPlus.ump"
+// line 68 "../../../../../AssetPlus.ump"
 public class TicketImage
 {
 

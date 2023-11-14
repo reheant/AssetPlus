@@ -1,0 +1,94 @@
+
+class MaintenanceTicket {
+  possible_state{
+    Open {
+      assignStaff(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID, String userEmail) [isManager(userEmail)] / {
+        doAssign(priority, timeEstimate, ticketFixer, ticketID);
+      } -> Assigned;
+    }
+    
+    Assigned {
+      startedToWork(String userEmail) [isHotelStaff(userEmail)] -> InProgress;
+    }
+    
+    InProgress {
+      resolve(String userEmail, int ticketID) [isTicketFixer(userEmail, ticketID)]-> Resolved;
+    }
+    
+    Resolved {
+      close(int ticketID) [!requireManagerApproval(ticketID)] -> Closed;
+      approve(String userEmail) [isManager(userEmail)] -> Closed;
+      disapprove(String userEmail) [isManager(userEmail)] -> InProgress;
+    }
+    
+    Closed { }
+  }
+  
+  /**
+   * Assigns maintenance ticket to a  hotel staff
+   * 
+   * @author Rehean Thillainathalingam
+   * @param priority The priority level of the ticket
+   * @param timeEstimate The time estimate of the ticket
+   * @param ticketFixer The assigned hotel staff
+   * @param ticketID The ticket ID of the assigned ticket
+   */
+  private void doAssign(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    ticket.setPriority(priority);
+    ticket.setTimeToResolve(timeEstimate);
+    ticket.setTicketFixer(ticketFixer);
+    
+  }
+
+  /**
+   * Verifies if a ticket requires manager approval
+   * 
+   * @author Rehean Thillainathalingam
+   * @param ticketID The ticket ID of the assigned ticket
+   * @return boolean indicating if the ticket has an approver
+   */
+  private Boolean requireManagerApproval(int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    return ticket.hasFixApprover();
+  }
+
+  /**
+   * Verifies if the user is a manager
+   * 
+   * @author Rehean Thillainathalingam
+   * @param userEmail The email of the current user
+   * @return boolean indicating if the user's email is that of the manager
+   */
+  private Boolean isManager(String userEmail) {
+    User currentUser = User.getWithEmail(userEmail);
+    return (currentUser.getEmail().equals("manager@ap.com"));
+  }
+
+  /**
+   * Verifies if the user is a hotel staff
+   * 
+   * @author Rehean Thillainathalingam
+   * @param userEmail The email of the current user
+   * @return boolean indicating if the user's email is that of a hotel staff
+   */
+  private Boolean isHotelStaff(String userEmail) {
+    User currentUser = User.getWithEmail(userEmail);
+    return(currentUser.getEmail().endsWith("@ap.com"));
+  }
+
+  /**
+   * Verifies if the user is a ticket fixer
+   * 
+   * @author Rehean Thillainathalingam
+   * @param userEmail The email of the current user
+   * @param ticketID The ticket ID of the assigned ticket
+   * @return boolean indicating if the user is the ticket fixer of the current ticket
+   */
+  private Boolean isTicketFixer(String userEmail, int ticketID) {
+    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+    User currentUser = User.getWithEmail(userEmail);
+    return(ticket.getTicketFixer().equals(currentUser));
+  }
+}
+

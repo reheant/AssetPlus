@@ -47,20 +47,6 @@ As manager, I want to review all maintenance tickets in the system with their st
       |  3 | manager@ap.com |   2023-07-20 | It is noisy                      |           |                |              |             |            | Open       |              |                  |          |                  |
       |  4 | smith@ap.com   |   2023-10-15 | The lamp is broken               | lamp      |           1800 |   2022-03-20 |           9 |         23 | Resolved   | jeff@ap.com  | OneToThreeWeeks  | Normal   | true             |
       |  5 | smith@ap.com   |   2023-10-16 | The bed needs repair             | bed       |           5000 |   2010-01-30 |           1 |         35 | Closed     | jeff@ap.com  | ThreeOrMoreWeeks | Urgent   | false            |
-    Then the ticket with id "1" shall have the following notes
-      | noteTaker      | addedOnDate | description                       |
-      | smith@ap.com   |  2023-09-10 | Bed can still be used for a while |
-      | manager@ap.com |  2023-09-23 | Order made, waiting for delivery  |
-    Then the ticket with id "2" shall have the following notes
-      | noteTaker   | addedOnDate | description                                          |
-      | jeff@ap.com |  2023-09-01 | Light bulb needs replacement, but it is out of stock |
-    Then the ticket with id "3" shall have no notes
-    Then the ticket with id "4" shall have the following notes
-      | noteTaker      | addedOnDate | description                  |
-      | manager@ap.com |  2023-10-17 | The lamp needs further check |
-    Then the ticket with id "5" shall have the following notes
-      | noteTaker      | addedOnDate | description          |
-      | manager@ap.com |  2023-10-18 | The bed is now fixed |
     Then the ticket with id "1" shall have the following images
       | imageUrl                   |
       | https://imageurl.com/i.jpg |

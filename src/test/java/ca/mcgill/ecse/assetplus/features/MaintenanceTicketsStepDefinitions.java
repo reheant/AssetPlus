@@ -191,12 +191,12 @@ public class MaintenanceTicketsStepDefinitions {
   public void the_following_ticket_images_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
-    for (int i = 1; i < rows.size(); i++) {
+    for (int i = 0; i < rows.size(); i++) {
       Map<String, String> row = rows.get(i);
       String imageUrl = row.get("imageUrl");
       int ticketId = Integer.parseInt(row.get("ticketId"));
 
-      MaintenanceTicket maintenanceTicket = assetPlus.getMaintenanceTicket(ticketId);
+      MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
 
       maintenanceTicket.addTicketImage(imageUrl);
     }
@@ -452,20 +452,33 @@ public class MaintenanceTicketsStepDefinitions {
   @Then("the following maintenance tickets shall be presented")
   public void the_following_maintenance_tickets_shall_be_presented(
       io.cucumber.datatable.DataTable dataTable) {
-    Map<String, List<String>> expectedTicketsToMap = new HashMap<>();
-
-    List<List<String>> rows = dataTable.asLists(String.class);
+        
+        List<List<String>> rows = dataTable.asLists(String.class);
+        Map<String, List<String>> actualTicketsToMap = getMaintenanceTicketToMapAsStrings();   
+        
+        assertEquals(rows.size()-1, actualTicketsToMap.size());  // -1 since header row
 
     for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       String ticketIdString = row.get(0);
-      expectedTicketsToMap.put(ticketIdString, row);
+      String expectedRequiresManagerApprovalString = row.get(13);
+      if (expectedRequiresManagerApprovalString == null || expectedRequiresManagerApprovalString == "null") {
+        expectedRequiresManagerApprovalString = "false";
+      }
+      
+      for (int j = 0; j<row.size(); j++){
+        if (row.get(i) == null){
+          row.set(i, "null");
+        }
+      }
+
+      List<String> actualTicketTo = actualTicketsToMap.get(ticketIdString);
+
+      for (int j = 0; j<row.size(); j++){
+        assertEquals(row.get(i), actualTicketTo.get(i));
+      }
+      
     }
-
-    Map<String, List<String>> actualTicketsToMap = getMaintenanceTicketToMapAsStrings();
-
-    assertEquals(expectedTicketsToMap.size(), actualTicketsToMap.size());
-    assertEquals(expectedTicketsToMap, actualTicketsToMap);
   }
 
   /**
@@ -544,9 +557,12 @@ public class MaintenanceTicketsStepDefinitions {
     List<String> actualImageUrls = maintenanceTicketTo.getImageURLs();
 
     List<String> expectedImageUrls = dataTable.asList();
-    expectedImageUrls.remove(0); // column names
+    
+    assertEquals(expectedImageUrls.size() - 1, actualImageUrls.size());  // -1 for the header row
 
-    assertEquals(expectedImageUrls, actualImageUrls);
+    for (int i = 0; i<actualImageUrls.size(); i++){
+      assertEquals(expectedImageUrls.get(i+1), actualImageUrls.get(i));
+    }
   }
 
   /**

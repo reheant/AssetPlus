@@ -11,7 +11,7 @@ import java.util.Objects;
 public class HomeController {
 
     @FXML
-    private VBox mainContentArea; // The fx:id of the main content area in your FXML
+    private VBox mainContentArea;
 
     @FXML
     private void onTicketsClicked() {
@@ -40,8 +40,6 @@ public class HomeController {
 
     private void loadPage(String fxmlFile) {
         try {
-            // Assuming the fxml files are in the same directory as HomeController
-            // Adjust the path if this is not the case
             Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
             mainContentArea.getChildren().setAll(page);
         } catch (IOException e) {

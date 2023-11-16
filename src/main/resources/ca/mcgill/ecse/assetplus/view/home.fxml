@@ -34,6 +34,6 @@
             <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
          </padding>
       </HBox>
-      <VBox layoutX="77.0" layoutY="82.0" prefHeight="271.0" prefWidth="449.0" style="-fx-background-color: #ffffff;" />
+      <VBox fx:id="mainContentArea" layoutX="77.0" layoutY="82.0" prefHeight="271.0" prefWidth="449.0" style="-fx-background-color: #ffffff;" />
    </children>
 </AnchorPane>

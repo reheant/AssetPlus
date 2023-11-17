@@ -17,6 +17,7 @@ public class Home extends Application {
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Home");
+            primaryStage.setResizable(false);
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

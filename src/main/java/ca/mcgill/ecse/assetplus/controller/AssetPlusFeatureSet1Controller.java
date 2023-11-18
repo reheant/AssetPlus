@@ -108,6 +108,28 @@ public class AssetPlusFeatureSet1Controller {
   }
 
   /**
+   * Retrieves information about a manager in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return A string containing an error message if the manager is not found, or the manager's
+   *         name, email, and phone number if the manager is available. The returned string is empty
+   *         if no manager information is available.
+   */
+  public static String getManagerInfo() {
+    String error = assertManagerAvailable();
+    if (!error.isEmpty())
+        return error;
+
+    Manager manager = assetPlus.getManager();
+
+    String name = manager.getName() != null ? manager.getName() : "No name on record";
+    String email = manager.getEmail() != null ? manager.getEmail() : "No email on record";
+    String phoneNumber = manager.getPhoneNumber() != null ? manager.getPhoneNumber() : "No phone number on record";
+
+    return name + "~" + email + "~" + phoneNumber;
+}
+
+  /**
    * Checks if a manager is available in the AssetPlus system.
    * 
    * @author Nicolas Bolouri

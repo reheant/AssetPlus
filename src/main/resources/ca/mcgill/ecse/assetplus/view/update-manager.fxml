@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -30,31 +31,33 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="171.0" layoutY="168.0" prefHeight="37.0" prefWidth="517.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="171.0" layoutY="274.0" prefHeight="37.0" prefWidth="517.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="170.0" layoutY="385.0" prefHeight="37.0" prefWidth="517.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button onMouseClicked="#onCancelButtonClicked" layoutX="171.0" layoutY="527.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Cancel" textFill="WHITE">
+            <Button layoutX="171.0" layoutY="527.0" mnemonicParsing="false" onMouseClicked="#onCancelButtonClicked" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Cancel" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="447.0" layoutY="527.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Save" textFill="WHITE">
+            <Button layoutX="447.0" layoutY="527.0" mnemonicParsing="false" onMouseClicked="#onSavelButtonClicked" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Save" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="171.0" layoutY="453.0" prefHeight="29.0" prefWidth="517.0" textAlignment="CENTER" textFill="#e82f2f">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="oldPassword" layoutX="171.0" layoutY="168.0" prefHeight="37.0" prefWidth="517.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+               <font>
+                  <Font size="24.0" />
+               </font></TextField>
+            <TextField fx:id="newPassword" layoutX="170.0" layoutY="274.0" prefHeight="37.0" prefWidth="517.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+               <font>
+                  <Font size="24.0" />
+               </font></TextField>
+            <TextField fx:id="newPasswordConfirm" layoutX="171.0" layoutY="381.0" prefHeight="37.0" prefWidth="517.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+               <font>
+                  <Font size="24.0" />
+               </font></TextField>
          </children>
       </Pane>
    </children>

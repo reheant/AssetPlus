@@ -1,10 +1,18 @@
 package ca.mcgill.ecse.assetplus.view;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import java.io.IOException;
+import java.util.Objects;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
 
 public class ManagerController {
+
+  @FXML
+  private AnchorPane managerContentArea;
 
   @FXML
   private Label managerName;
@@ -14,6 +22,17 @@ public class ManagerController {
 
   @FXML
   private Label managerPhoneNumber;
+
+  @FXML
+  private void onManagerInfoClicked() {
+    loadPage("update-manager.fxml");
+  }
+
+  @FXML
+  private void onCancelButtonClicked() {
+    managerContentArea.getChildren().clear();
+    initialize();
+  }
 
   @FXML
   public void initialize() {
@@ -28,6 +47,16 @@ public class ManagerController {
       managerName.setText(infoParts[0]);
       managerEmail.setText(infoParts[1]);
       managerPhoneNumber.setText(infoParts[2]);
+    }
+  }
+
+  private void loadPage(String fxmlFile) {
+    try {
+      Node page = FXMLLoader.load(Objects.requireNonNull(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+      managerContentArea.getChildren().setAll(page);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 }

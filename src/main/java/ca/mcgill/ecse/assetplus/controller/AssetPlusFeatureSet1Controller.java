@@ -1,5 +1,6 @@
 package ca.mcgill.ecse.assetplus.controller;
 
+import java.util.List;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
 import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
@@ -128,6 +129,58 @@ public class AssetPlusFeatureSet1Controller {
         manager.getPhoneNumber() != null ? manager.getPhoneNumber() : "No phone number on record";
 
     return name + "~" + email + "~" + phoneNumber;
+  }
+
+  /**
+   * Retrieves the email addresses of all employees in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return An array of strings where each string represents an employee's email address. The size
+   *         of the array is equal to the number of employees in the system.
+   */
+  public static String[] getEmployeeEmails() {
+    List<Employee> employees = assetPlus.getEmployees();
+    String[] employeeEmails = new String[employees.size()];
+
+    for (int i = 0; i < employees.size(); i++) {
+      employeeEmails[i] = employees.get(i).getEmail();
+    }
+
+    return employeeEmails;
+  }
+
+  /**
+   * Retrieves a specific employee's information from the AssetPlus system based on their email.
+   * 
+   * @author Nicolas Bolouri
+   * @param email The email address of the employee whose information is being requested.
+   * @return An array of strings containing the employee's name, phone number, email, and password,
+   *         or null if the information is not available or an exception occurs.
+   */
+  public static String[] getEmployeeInformationByEmail(String email) {
+    try {
+      User employee = User.getWithEmail(email);
+
+      if (employee == null) {
+        return null;
+      }
+
+      if (!(employee instanceof Employee)) {
+        return null;
+      }
+
+      String[] employeeInfo = new String[3];
+      employeeInfo[0] = employee.getName() != null ? employee.getName() : "No name on record";
+      employeeInfo[1] = employee.getEmail() != null ? employee.getEmail() : "No email on record";
+      employeeInfo[2] = employee.getPhoneNumber() != null ? employee.getPhoneNumber()
+          : "No phone number on record";
+      employeeInfo[3] =
+          employee.getPassword() != null ? employee.getPassword() : "No password on record";
+
+      return employeeInfo;
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   /**

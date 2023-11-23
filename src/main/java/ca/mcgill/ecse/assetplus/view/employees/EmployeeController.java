@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 
 public class EmployeeController {
   @FXML
@@ -42,6 +43,13 @@ public class EmployeeController {
   @FXML
   private void onAddEmployeeClicked() {
     loadPage("add-employee.fxml");
+  }
+
+  @FXML
+  private void onDeleteEmployeeClicked() {
+    String email = employeeEmailLabel.getText().strip();
+    AssetPlusFeatureSet6Controller.deleteEmployeeOrGuest(email);
+    loadPage("employees.fxml");
   }
 
   @FXML

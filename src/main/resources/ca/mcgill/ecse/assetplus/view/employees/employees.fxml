@@ -91,7 +91,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="42.0" layoutY="511.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Delete Employee" textFill="WHITE">
+            <Button onMouseClicked="#onDeleteEmployeeClicked" layoutX="42.0" layoutY="511.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Delete Employee" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>

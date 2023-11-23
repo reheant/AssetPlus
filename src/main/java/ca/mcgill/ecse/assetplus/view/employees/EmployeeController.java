@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view;
+package ca.mcgill.ecse.assetplus.view.employees;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

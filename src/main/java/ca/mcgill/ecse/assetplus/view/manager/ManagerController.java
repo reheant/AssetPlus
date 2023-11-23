@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view;
+package ca.mcgill.ecse.assetplus.view.manager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

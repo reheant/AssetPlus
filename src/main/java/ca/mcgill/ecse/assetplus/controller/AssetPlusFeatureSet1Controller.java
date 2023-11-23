@@ -253,7 +253,7 @@ public class AssetPlusFeatureSet1Controller {
     int atIndex = email.indexOf("@");
     int lastAtindex = email.lastIndexOf("@");
     int dotIndex = email.lastIndexOf(".");
-    if (atIndex <= 0 || atIndex != lastAtindex || atIndex >= dotIndex - 1
+    if (atIndex <= 0 || atIndex != lastAtindex || dotIndex <= atIndex + 1
         || dotIndex >= email.length() - 1) {
       return "Invalid email";
     }

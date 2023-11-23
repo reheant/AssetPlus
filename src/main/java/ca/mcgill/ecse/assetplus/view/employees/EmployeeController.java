@@ -162,10 +162,10 @@ public class EmployeeController {
     employeeList.getItems().addAll(employeeEmails);
   }
 
-    private void loadPage(String fxmlFile) {
+  private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(
-          getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees" + fxmlFile)));
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees/" + fxmlFile)));
       employeeContentArea.getChildren().setAll(page);
     } catch (IOException e) {
       e.printStackTrace();

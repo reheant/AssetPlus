@@ -17,12 +17,12 @@
                   <Font name="System Bold" size="40.0" />
                </font>
             </Label>
-            <TextField fx:id="employeeSearchBar" layoutX="14.0" layoutY="97.0" prefHeight="30.0" prefWidth="496.0" promptText="Search for an employee by email" style="-fx-background-color: #E3E1E1; -fx-border-color: black;">
+            <TextField fx:id="employeeSearchBar" layoutX="14.0" layoutY="97.0" prefHeight="37.0" prefWidth="427.0" promptText="Search for an employee by email" style="-fx-background-color: #E3E1E1; -fx-border-color: black;">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button layoutX="521.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#onSearchButtonClicked" prefHeight="37.0" prefWidth="98.0" style="-fx-background-color: #00BFFB; -fx-border-color: black;" text="Search" textFill="WHITE">
+            <Button layoutX="449.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#onSearchButtonClicked" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: #00BFFB; -fx-border-color: black;" text="Search" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -32,6 +32,11 @@
                <ListView fx:id="employeeList" prefWidth="605.0" />
          </content>
       </ScrollPane>
+            <Button onMouseClicked="#onClearButtonClicked" layoutX="537.0" layoutY="97.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: pink; -fx-border-color: black;" text="Clear" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
       </children>
       </AnchorPane>
       <AnchorPane layoutX="690.0" layoutY="27.0" prefHeight="651.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
@@ -66,7 +71,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label id="employeeEmail" fx:id="employeeEmail" layoutX="42.0" layoutY="223.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No employee currently selected">
+            <Label id="employeeEmailLabel" fx:id="employeeEmailLabel" layoutX="42.0" layoutY="223.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No employee currently selected">
                <font>
                   <Font size="18.0" />
                </font>
@@ -76,7 +81,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="42.0" layoutY="390.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No employee currently selected">
+            <Label id="employeePassword" fx:id="employeePassword" layoutX="42.0" layoutY="390.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No employee currently selected">
                <font>
                   <Font size="18.0" />
                </font>

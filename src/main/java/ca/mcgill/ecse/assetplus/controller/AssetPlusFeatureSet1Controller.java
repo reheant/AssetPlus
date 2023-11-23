@@ -169,7 +169,7 @@ public class AssetPlusFeatureSet1Controller {
         return null;
       }
 
-      String[] employeeInfo = new String[3];
+      String[] employeeInfo = new String[4];
       employeeInfo[0] = employee.getName() != null ? employee.getName() : "No name on record";
       employeeInfo[1] = employee.getEmail() != null ? employee.getEmail() : "No email on record";
       employeeInfo[2] = employee.getPhoneNumber() != null ? employee.getPhoneNumber()

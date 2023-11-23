@@ -184,6 +184,57 @@ public class AssetPlusFeatureSet1Controller {
   }
 
   /**
+   * Retrieves the email addresses of all guests in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return An array of strings where each string represents a guest's email address. The size of
+   *         the array is equal to the number of guests in the system.
+   */
+  public static String[] getGuestEmails() {
+    List<Guest> guests = assetPlus.getGuests();
+    String[] guestEmails = new String[guests.size()];
+
+    for (int i = 0; i < guests.size(); i++) {
+      guestEmails[i] = guests.get(i).getEmail();
+    }
+
+    return guestEmails;
+  }
+
+  /**
+   * Retrieves a specific guest's information from the AssetPlus system based on their email.
+   * 
+   * @author Nicolas Bolouri
+   * @param email The email address of the guest whose information is being requested.
+   * @return An array of strings containing the guest's name, phone number, email, and password, or
+   *         null if the information is not available or an exception occurs.
+   */
+  public static String[] getGuestInformationByEmail(String email) {
+    try {
+      User guest = User.getWithEmail(email);
+
+      if (guest == null) {
+        return null;
+      }
+
+      if (!(guest instanceof Guest)) {
+        return null;
+      }
+
+      String[] guestInfo = new String[4];
+      guestInfo[0] = guest.getName() != null ? guest.getName() : "No name on record";
+      guestInfo[1] = guest.getEmail() != null ? guest.getEmail() : "No email on record";
+      guestInfo[2] =
+          guest.getPhoneNumber() != null ? guest.getPhoneNumber() : "No phone number on record";
+      guestInfo[3] = guest.getPassword() != null ? guest.getPassword() : "No password on record";
+
+      return guestInfo;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
    * Retrieves the password of the currently available manager in the AssetPlus system.
    * 
    * @author Nicolas Bolouri

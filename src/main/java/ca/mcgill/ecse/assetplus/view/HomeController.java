@@ -30,7 +30,7 @@ public class HomeController {
 
     @FXML
     private void onGuestsClicked() {
-        loadPage("guests.fxml");
+        loadPage("guests/guests.fxml");
     }
 
     @FXML

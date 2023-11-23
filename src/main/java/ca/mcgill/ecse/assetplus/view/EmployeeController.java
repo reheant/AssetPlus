@@ -3,16 +3,24 @@ package ca.mcgill.ecse.assetplus.view;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
 
 public class EmployeeController {
+  @FXML
+  private AnchorPane employeeContentArea;
+
   @FXML
   private Label employeeName;
 
@@ -30,6 +38,11 @@ public class EmployeeController {
 
   @FXML
   private ListView<String> employeeList;
+
+  @FXML
+  private void onAddEmployeeClicked() {
+    loadPage("add-employee.fxml");
+  }
 
   @FXML
   private void onSearchButtonClicked() {
@@ -147,5 +160,15 @@ public class EmployeeController {
     employeeList.getItems().clear();
     String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
     employeeList.getItems().addAll(employeeEmails);
+  }
+
+    private void loadPage(String fxmlFile) {
+    try {
+      Node page = FXMLLoader.load(Objects.requireNonNull(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees" + fxmlFile)));
+      employeeContentArea.getChildren().setAll(page);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

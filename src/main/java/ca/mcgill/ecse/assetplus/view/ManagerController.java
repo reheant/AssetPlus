@@ -53,7 +53,7 @@ public class ManagerController {
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(
-          getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/manager/" + fxmlFile)));
       managerContentArea.getChildren().setAll(page);
     } catch (IOException e) {
       e.printStackTrace();

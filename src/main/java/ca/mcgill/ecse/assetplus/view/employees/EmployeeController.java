@@ -13,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
@@ -46,6 +45,14 @@ public class EmployeeController {
   }
 
   @FXML
+  private void onUpdateEmployeeClicked() {
+      String selectedEmployeeEmail = employeeList.getSelectionModel().getSelectedItem();
+      if (selectedEmployeeEmail != null && !selectedEmployeeEmail.equals("No search results")) {
+          loadPage("update-employee.fxml");
+      }
+  }  
+
+  @FXML
   private void onDeleteEmployeeClicked() {
     String email = employeeEmailLabel.getText().strip();
     AssetPlusFeatureSet6Controller.deleteEmployeeOrGuest(email);
@@ -76,7 +83,6 @@ public class EmployeeController {
   @FXML
   public void initialize() {
     employeeSearchBar.setFocusTraversable(false);
-
 
     String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
     employeeList.setFixedCellSize(50.0);
@@ -172,11 +178,22 @@ public class EmployeeController {
 
   private void loadPage(String fxmlFile) {
     try {
-      Node page = FXMLLoader.load(Objects.requireNonNull(
-          getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees/" + fxmlFile)));
-      employeeContentArea.getChildren().setAll(page);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees/" + fxmlFile));
+        Node page = loader.load();
+
+        if (fxmlFile.equals("update-employee.fxml")) {
+            UpdateEmployeeController updateController = loader.getController();
+            updateController.setEmployeeUpdateEmail(employeeEmailLabel.getText());
+            updateController.setEmployeeOldName(employeeName.getText());
+            updateController.setEmployeeOldPhoneNumber(employeePhoneNumber.getText());
+            updateController.setEmployeeOldPassword(employeePassword.getText()); 
+            updateController.updateUIWithEmployeeData();
+        }
+
+        employeeContentArea.getChildren().setAll(page);
     } catch (IOException e) {
-      e.printStackTrace();
+        e.printStackTrace();
     }
-  }
+}
+
 }

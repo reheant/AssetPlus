@@ -2,13 +2,14 @@ package ca.mcgill.ecse.assetplus.application;
 
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
+import ca.mcgill.ecse.assetplus.view.Home;
 
 public class AssetPlusApplication {
 
   private static AssetPlus assetPlus;
 
   public static void main(String[] args) {
-    // TODO Start the application user interface here
+    Home.launch(Home.class, args);
   }
 
   public static AssetPlus getAssetPlus() {

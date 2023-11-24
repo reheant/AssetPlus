@@ -15,7 +15,7 @@ public class HomeController {
 
     @FXML
     private void onTicketsClicked() {
-        loadPage("maintenanceTickets/maintenanceTickets.fxml");
+        loadPage("tickets/tickets.fxml");
     }
 
     @FXML

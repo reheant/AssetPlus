@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view.maintenanceTickets;
+package ca.mcgill.ecse.assetplus.view.tickets;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,7 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-public class MaintenanceTicketController {
+public class TicketsController {
 
     @FXML
     private AnchorPane maintenanceTicketContentArea;

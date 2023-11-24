@@ -16,7 +16,6 @@ public class AssetTypeController {
   @FXML
   private void assetPageButtonClicked(){
     loadPage("specificAsset.fxml");
-    System.out.println("detected");
   }
 
   private void loadPage(String fxmlFile) {

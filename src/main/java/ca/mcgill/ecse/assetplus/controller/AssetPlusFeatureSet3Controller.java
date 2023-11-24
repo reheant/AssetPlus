@@ -16,6 +16,9 @@ public class AssetPlusFeatureSet3Controller {
     List<SpecificAsset> specificAssets = assetPlus.getSpecificAssets();
     String[] specificAssetData = new String[specificAssets.size()];
     int currentAssetNumber;
+    int currentRoomNumber;
+    int currentFloorNumber;
+    Date currentDate;
     AssetType currentAssetType;
     String currentAssetTypeString;
 
@@ -23,8 +26,11 @@ public class AssetPlusFeatureSet3Controller {
        currentAssetNumber = specificAssets.get(i).getAssetNumber();
        currentAssetType = specificAssets.get(i).getAssetType();
        currentAssetTypeString = currentAssetType.getName();
+       currentFloorNumber = specificAssets.get(i).getFloorNumber();
+       currentRoomNumber = specificAssets.get(i).getRoomNumber();
+       currentDate = specificAssets.get(i).getPurchaseDate();
 
-       specificAssetData[i] = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber);
+       specificAssetData[i] = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber) + " " + currentFloorNumber + " " + currentRoomNumber + " "+ currentDate ;
     }
 
     return specificAssetData;

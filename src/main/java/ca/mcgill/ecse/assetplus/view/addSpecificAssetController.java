@@ -42,7 +42,6 @@ public class addSpecificAssetController {
   public void addSpecificAssetOnClick(){
     String assetNb = assetNumber.getText().strip(); //TODO: THIS SHOULDNT BE INPUT BY THE USER????
     String purchased = purchasedDate.getText().strip();
-    String lifespan = expectedLifespan.getText().strip(); //TODO: lifespan is not used, smt to look at we lost points for smt first iteration double check that
     String floorNb = floorNumber.getText().strip();
     String roomNb = roomNumber.getText().strip();
 
@@ -51,7 +50,6 @@ public class addSpecificAssetController {
     int intRoomNb = Integer.parseInt(roomNb);
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    //Date datePurchased = dateFormat.parse(purchased);
     java.util.Date utilDate;
     try {
       utilDate = dateFormat.parse(purchased);

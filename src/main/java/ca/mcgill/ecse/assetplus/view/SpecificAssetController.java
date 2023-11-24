@@ -3,6 +3,8 @@ package ca.mcgill.ecse.assetplus.view;
 import java.io.IOException;
 import java.util.Objects;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,6 +20,7 @@ public class SpecificAssetController {
   private AnchorPane specificAssetContentArea;
   @FXML
   private ListView<String> specificAssetList;
+  private String specificAssetInfo;
   @FXML
   public void addSpecificAssetOnClick(){
     loadPage("addSpecificAsset.fxml");
@@ -26,7 +29,7 @@ public class SpecificAssetController {
 
   @FXML
   public void initialize() {
-    String[] assetNumbers = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
     
     specificAssetList.setFixedCellSize(50.0);
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
@@ -43,18 +46,38 @@ public class SpecificAssetController {
     });
     specificAssetList.setPrefHeight(10 * specificAssetList.getFixedCellSize());
     //specificAssetList.setItems(observableList);
-    specificAssetList.getItems().addAll(assetNumbers);
+    specificAssetList.getItems().addAll(assetData);
+
+    specificAssetList.getSelectionModel().selectedItemProperty()
+        .addListener(new ChangeListener<String>() {
+
+          @Override
+          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            System.out.println("ListView selection changed from oldValue = " 
+                    + oldValue + " to newValue = " + newValue);
+            specificAssetInfo = newValue;
+            loadPage("viewSpecificAsset.fxml");
+            
+        }
+        });
 
 
 
   }
 
   private void loadPage(String fxmlFile) {
-        try {
-          Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
-          specificAssetContentArea.getChildren().setAll(page);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile));
+      Node page = loader.load();
+
+      if (fxmlFile.equals("viewSpecificAsset.fxml")) {
+          viewSpecificAssetController updateController = loader.getController();
+          updateController.displayTitle(specificAssetInfo);
+      }
+
+      specificAssetContentArea.getChildren().setAll(page);
+  } catch (IOException e) {
+      e.printStackTrace();
+  }
+}
 }

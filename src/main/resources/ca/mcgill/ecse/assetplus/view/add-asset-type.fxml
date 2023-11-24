@@ -41,7 +41,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="459.0" layoutY="380.0" mnemonicParsing="false" onAction="#onAddAssetTypeButtonClicked" onMouseClicked="#onAddEmployeeButtonClicked" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Save" textFill="WHITE">
+            <Button layoutX="459.0" layoutY="380.0" mnemonicParsing="false" onAction="#onAddAssetTypeButtonClicked" onMouseClicked="#onAddAssetTypeButtonClicked" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Save" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

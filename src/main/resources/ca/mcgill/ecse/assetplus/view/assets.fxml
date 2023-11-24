@@ -27,7 +27,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-        <ScrollPane fx:id="employeeScrollPane" layoutX="14.0" layoutY="142.0" prefWidth="610.0" style="-fx-background-color: white;">
+        <ScrollPane fx:id="assetTypeScrollPane" layoutX="14.0" layoutY="142.0" prefWidth="610.0" style="-fx-background-color: white;">
          <content>
                <ListView fx:id="assetTypeList" prefWidth="605.0" />
          </content>
@@ -56,27 +56,27 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label id="employeeName" fx:id="assetTypeName" layoutX="42.0" layoutY="137.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No asset type currently selected">
+            <Label id="assetTypeName" fx:id="assetTypeName" layoutX="42.0" layoutY="137.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No asset type currently selected">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label id="employeeEmailLabel" fx:id="assetTypeLifespan" layoutX="42.0" layoutY="223.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No asset type currently selected">
+            <Label id="assetTypeLifespan" fx:id="assetTypeLifespan" layoutX="42.0" layoutY="223.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" text="No asset type currently selected">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button layoutX="45.0" layoutY="328.0" mnemonicParsing="false" onAction="#onUpdateAssetTypeClicked" onMouseClicked="#onUpdateEmployeeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Update Asset Type Information" textFill="WHITE">
+            <Button layoutX="45.0" layoutY="328.0" mnemonicParsing="false" onAction="#onUpdateAssetTypeClicked" onMouseClicked="#onUpdateAssetTypeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Update Asset Type Information" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="43.0" layoutY="383.0" mnemonicParsing="false" onAction="#onDeleteAssetTypeClicked" onMouseClicked="#onDeleteEmployeeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Delete Asset Type" textFill="WHITE">
+            <Button layoutX="43.0" layoutY="383.0" mnemonicParsing="false" onAction="#onDeleteAssetTypeClicked" onMouseClicked="#onDeleteAssetTypeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Delete Asset Type" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="43.0" layoutY="438.0" mnemonicParsing="false" onAction="#onAddAssetTypeClicked" onMouseClicked="#onAddEmployeeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Add Asset Type" textFill="WHITE">
+            <Button layoutX="43.0" layoutY="438.0" mnemonicParsing="false" onAction="#onAddAssetTypeClicked" onMouseClicked="#onAddAssetTypeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Add Asset Type" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

@@ -33,7 +33,7 @@ public class AssetTypeController {
   private ListView<String> assetTypeList;
 
   @FXML
-  private void onAddEmployeeClicked() {
+  private void onAddAssetTypeClicked() {
     loadPage("add-asset-type.fxml");
   }
 
@@ -41,7 +41,7 @@ public class AssetTypeController {
   private void onUpdateAssetTypeClicked() {
       String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
       if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
-          loadPage("update-employee.fxml");
+          loadPage("update-asset-type.fxml");
       }
   }  
 
@@ -49,7 +49,7 @@ public class AssetTypeController {
   private void onDeleteAssetTypeClicked() {
     String name = assetTypeName.getText().strip();
     AssetPlusFeatureSet2Controller.deleteAssetType(name);
-    loadPage("employees.fxml");
+    loadPage("assets.fxml");
   }
 
   @FXML
@@ -69,7 +69,7 @@ public class AssetTypeController {
   @FXML
   private void onClearButtonClicked() {
     assetTypeSearchBar.setText("");
-    resetEmployeeList();
+    resetAssetTypeList();
     resetCellFactory();
   }
 
@@ -159,7 +159,7 @@ public class AssetTypeController {
     });
   }
 
-  private void resetEmployeeList() {
+  private void resetAssetTypeList() {
     assetTypeList.getItems().clear();
     String[] assetTypeNames = AssetPlusFeatureSet2Controller.getAssetTypes();
     assetTypeList.getItems().addAll(assetTypeNames);
@@ -167,13 +167,12 @@ public class AssetTypeController {
 
   private void loadPage(String fxmlFile) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees/" + fxmlFile));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile));
         Node page = loader.load();
 
         if (fxmlFile.equals("update-asset-type.fxml")) {
             AssetTypeUpdateController updateController = loader.getController();
-            updateController.setAssetTypeUpdateName(assetTypeName.getText());
-            updateController.setAssetTypeOldName(assetTypeLifespan.getText());
+            updateController.setAssetTypeOldName(assetTypeName.getText());
             updateController.setAssetTypeOldLifespan(assetTypeLifespan.getText());
             updateController.updateUIWithAssetTypeData();
         }

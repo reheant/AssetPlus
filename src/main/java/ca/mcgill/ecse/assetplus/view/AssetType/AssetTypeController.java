@@ -55,7 +55,7 @@ public class AssetTypeController {
   @FXML
   private void onSearchButtonClicked() {
     String searchedName = assetTypeSearchBar.getText();
-    List<String> filteredNames = filterEmployeeList(searchedName);
+    List<String> filteredNames = filterAssetTypeList(searchedName);
 
     assetTypeList.getItems().clear();
     if (filteredNames.isEmpty()) {
@@ -92,7 +92,7 @@ public class AssetTypeController {
       }
     });
     assetTypeList.setPrefHeight(10 * assetTypeList.getFixedCellSize());
-    assetTypeList.getItems().addAll(employeeEmails);
+    assetTypeList.getItems().addAll(assetTypeNames);
 
     assetTypeList.getSelectionModel().selectedItemProperty()
         .addListener(new ChangeListener<String>() {
@@ -100,7 +100,7 @@ public class AssetTypeController {
           @Override
           public void changed(ObservableValue<? extends String> observable, String oldValue,
               String newValue) {
-            setEmployeeInformation(newValue);
+            setInfo(newValue);
           }
         });
   }
@@ -109,7 +109,7 @@ public class AssetTypeController {
     int lifespan = AssetPlusFeatureSet2Controller.getLifespanByName(name);
     if (lifespan != 0) {
       assetTypeName.setText(name);
-      assetTypeLifespan.setText(lifespan);
+      assetTypeLifespan.setText(Integer.toString(lifespan));
     } else {
       assetTypeName.setText("Information not available");
       assetTypeLifespan.setText("Information not available");
@@ -172,8 +172,9 @@ public class AssetTypeController {
 
         if (fxmlFile.equals("update-asset-type.fxml")) {
             AssetTypeUpdateController updateController = loader.getController();
-            updateController.setAssetTypeUpdateName(assetTypeLifespan.getText());
-            updateController.setAssetTypeOldName(assetTypeName.getText());
+            updateController.setAssetTypeUpdateName(assetTypeName.getText());
+            updateController.setAssetTypeOldName(assetTypeLifespan.getText());
+            updateController.setAssetTypeOldLifespan(assetTypeLifespan.getText());
             updateController.updateUIWithAssetTypeData();
         }
 

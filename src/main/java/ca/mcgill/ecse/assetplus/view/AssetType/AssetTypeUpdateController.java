@@ -19,11 +19,11 @@ public class AssetTypeUpdateController {
     this.assetTypeUpdateName = name;
   }
 
-  public void setEmployeeOldName(String name) {
+  public void setAssetTypeOldName(String name) {
     this.assetTypeOldName = name;
   }
 
-  public void setEmployeeOldPhoneNumber(String lifespan) {
+  public void setAssetTypeOldLifespan(String lifespan) {
     this.assetTypeOldLifespan = lifespan;
   }
 

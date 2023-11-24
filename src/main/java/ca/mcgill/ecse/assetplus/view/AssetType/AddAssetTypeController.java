@@ -34,7 +34,7 @@ public class AddAssetTypeController {
     String lifespan = assetTypeLifespan.getText().strip();
 
     String result =
-        AssetPlusFeatureSet2Controller.addAssetType(name, Integer.parseInt(lifespan));
+            AssetPlusFeatureSet2Controller.addAssetType(name, Integer.parseInt(lifespan));
 
     if (!result.equals("")) {
       errorLabel.setText(result);
@@ -47,9 +47,10 @@ public class AddAssetTypeController {
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(
-          getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees/" + fxmlFile)));
+              getClass().getResource("/ca/mcgill/ecse/assetplus/view/employees/" + fxmlFile)));
       assetTypeContentArea.getChildren().setAll(page);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
+}

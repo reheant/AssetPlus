@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="assetTypeContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.employees.AddEmployeeController">
+<AnchorPane fx:id="assetTypeContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.AssetType.AssetTypeUpdateController">
    <children>
       <Pane layoutX="152.0" layoutY="14.0" prefHeight="673.0" prefWidth="866.0" style="-fx-background-color: white; -fx-background-radius: 30px; -fx-border-radius: 30px; -fx-border-color: black; -fx-border-width: 3px;">
          <children>
-            <Label layoutX="286.0" layoutY="14.0" prefHeight="87.0" prefWidth="329.0" text="Add Asset Type" textAlignment="JUSTIFY">
+            <Label layoutX="263.0" layoutY="23.0" prefHeight="87.0" prefWidth="403.0" text="Update Asset Type" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
@@ -41,7 +41,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="459.0" layoutY="380.0" mnemonicParsing="false" onAction="#onAddAssetTypeButtonClicked" onMouseClicked="#onAddEmployeeButtonClicked" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Save" textFill="WHITE">
+            <Button layoutX="459.0" layoutY="380.0" mnemonicParsing="false" onAction="#onUpdateAssetTypeButtonClicked" onMouseClicked="#onAddEmployeeButtonClicked" prefHeight="61.0" prefWidth="241.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Save" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

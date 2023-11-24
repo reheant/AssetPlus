@@ -27,7 +27,7 @@ public class addSpecificAssetController {
   @FXML
   private TextField purchasedDate;
   @FXML
-  private TextField expectedLifespan;
+  private Label assetType;
   @FXML
   private TextField floorNumber;
   @FXML
@@ -37,6 +37,9 @@ public class addSpecificAssetController {
   @FXML
   private Label errorLabel;
 
+  public void setSpecificAssetTypeName(String typeName){
+    assetType.setText(typeName);
+  }
 
   @FXML
   public void addSpecificAssetOnClick(){

@@ -11,16 +11,47 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class SpecificAssetController {
   @FXML
   private Button addSpecificAsset;
   @FXML
+  private Button filterButton;
+  @FXML
   private AnchorPane specificAssetContentArea;
   @FXML
   private ListView<String> specificAssetList;
   private String specificAssetInfo;
+
+  @FXML
+  private TextField purchaseDateFilter;
+  @FXML
+  private TextField assetNbFilter;
+  @FXML
+  private TextField floorNbFilter;
+  @FXML
+  private TextField roomNbFilter;
+
+  @FXML 
+  public void filterButtonOnClick() {
+    
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    for (int i = 0; i<assetData.length; i++) {
+
+      if (!assetNbFilter.getText().isEmpty()){
+
+      }
+    }
+  }
+
+  // private String[] filterSpecificAsset(String purchaseDate, String assetNb, String roomNb, String floorNb){
+
+    
+
+  // }
+
   @FXML
   public void addSpecificAssetOnClick(){
     loadPage("addSpecificAsset.fxml");
@@ -29,6 +60,11 @@ public class SpecificAssetController {
 
   @FXML
   public void initialize() {
+    purchaseDateFilter.setPromptText("YYYY-MM-DD");
+    assetNbFilter.setPromptText("Asset Number");
+    floorNbFilter.setPromptText("Floor Number");
+    roomNbFilter.setPromptText("Room Number");
+    
     String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
     
     specificAssetList.setFixedCellSize(50.0);
@@ -53,8 +89,6 @@ public class SpecificAssetController {
 
           @Override
           public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-            System.out.println("ListView selection changed from oldValue = " 
-                    + oldValue + " to newValue = " + newValue);
             specificAssetInfo = newValue;
             loadPage("viewSpecificAsset.fxml");
             

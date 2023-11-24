@@ -1,7 +1,7 @@
 package ca.mcgill.ecse.assetplus.controller;
 
 import java.sql.Date;
-
+import java.util.List;
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.model.AssetType;
 import ca.mcgill.ecse.assetplus.model.SpecificAsset;
@@ -12,6 +12,23 @@ public class AssetPlusFeatureSet3Controller {
 
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
 
+  public static String[] getSpecificAssetData(){
+    List<SpecificAsset> specificAssets = assetPlus.getSpecificAssets();
+    String[] specificAssetData = new String[specificAssets.size()];
+    int currentAssetNumber;
+    AssetType currentAssetType;
+    String currentAssetTypeString;
+
+    for (int i = 0; i<specificAssets.size(); i++) {
+       currentAssetNumber = specificAssets.get(i).getAssetNumber();
+       currentAssetType = specificAssets.get(i).getAssetType();
+       currentAssetTypeString = currentAssetType.getName();
+
+       specificAssetData[i] = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber);
+    }
+
+    return specificAssetData;
+  }
   /**
    * Adds a specific asset to the system with the given details.
    * 

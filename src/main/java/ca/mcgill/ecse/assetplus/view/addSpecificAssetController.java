@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet2Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,7 @@ public class addSpecificAssetController {
   public void addSpecificAssetOnClick(){
     String assetNb = assetNumber.getText().strip(); //TODO: THIS SHOULDNT BE INPUT BY THE USER????
     String purchased = purchasedDate.getText().strip();
-    String lifespan = expectedLifespan.getText().strip();
+    String lifespan = expectedLifespan.getText().strip(); //TODO: lifespan is not used, smt to look at we lost points for smt first iteration double check that
     String floorNb = floorNumber.getText().strip();
     String roomNb = roomNumber.getText().strip();
 
@@ -55,11 +56,13 @@ public class addSpecificAssetController {
     try {
       utilDate = dateFormat.parse(purchased);
       java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-      String result =
-        AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, "Tiffany"); //TODO: TIFFANY ASSET TYPE
-      if (result.equals("")) {
+      AssetPlusFeatureSet2Controller.addAssetType("Tiffany", 23);
+      //String result =
+      AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, "Tiffany"); //TODO: TIFFANY ASSET TYPE
+      //if (result.equals("")) {
+      //System.out.println(AssetPlusFeatureSet3Controller.getSpecificAssetNumbers()[0]);
       loadPage("SpecificAsset.fxml");
-    } 
+      //} 
     } catch (ParseException e) {
       e.printStackTrace();
     }

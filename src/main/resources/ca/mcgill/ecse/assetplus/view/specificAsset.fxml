@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.SpecificAssetController">
+<AnchorPane fx:id="specificAssetContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.SpecificAssetController">
    <children>
-      <Label layoutX="28.0" layoutY="27.0" prefHeight="27.0" prefWidth="201.0" text="Specific Asset">
+      <Label layoutX="496.0" layoutY="45.0" prefHeight="27.0" prefWidth="201.0" text="Specific Asset">
          <font>
             <Font size="30.0" />
          </font>
@@ -34,9 +34,9 @@
                   <ScrollBar layoutX="928.0" layoutY="5.0" orientation="VERTICAL" prefHeight="315.0" prefWidth="15.0" />
                   <Pane layoutX="8.0" layoutY="20.0" prefHeight="51.0" prefWidth="918.0" style="-fx-background-color: E3E1E1; -fx-background-radius: 30px;">
                      <children>
-                        <Button fx:id="testButton" layoutX="774.0" layoutY="11.0" mnemonicParsing="false" onAction="#testButtonClicked" prefHeight="27.0" prefWidth="124.0" text="Button" />
                      </children></Pane>
                </children></Pane>
+            <Button fx:id="addSpecificAsset" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" layoutX="975.0" layoutY="3.0" mnemonicParsing="false" onAction="#addSpecificAssetOnClick" text="Add" />
          </children></Pane>
    </children>
 </AnchorPane>

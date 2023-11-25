@@ -167,7 +167,7 @@ public class AssetTypeController {
 
   private void loadPage(String fxmlFile) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/assetTypes/" + fxmlFile));
         Node page = loader.load();
 
         if (fxmlFile.equals("update-asset-type.fxml")) {

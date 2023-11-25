@@ -20,16 +20,16 @@
          <children>
             <Pane layoutX="29.0" layoutY="20.0" prefHeight="134.0" prefWidth="962.0" style="-fx-background-color: E3E1E1; -fx-background-radius: 30px;">
                <children>
-                  <Label layoutX="364.0" layoutY="24.0" text="Asset ID:" />
-                  <TextField fx:id="purchaseDateFilter" layoutX="133.0" layoutY="20.0" />
-                  <TextField fx:id="assetNbFilter" layoutX="420.0" layoutY="20.0" />
-                  <Label layoutX="40.0" layoutY="24.0" text="Purchase Date:" />
-                  <TextField fx:id="floorNbFilter" layoutX="762.0" layoutY="20.0" />
-                  <Label layoutX="716.0" layoutY="24.0" text="Floor:" />
-                  <Label layoutX="29.0" layoutY="87.0" text="Expected Lifespan:" />
-                  <Label layoutX="364.0" layoutY="87.0" text="Room:" />
-                  <TextField fx:id="roomNbFilter" layoutX="420.0" layoutY="84.0" />
-                  <Button fx:id="filterButton" layoutX="762.0" layoutY="84.0" mnemonicParsing="false" onAction="#filterButtonOnClick" prefHeight="25.0" prefWidth="138.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Filter" />
+                  <Label layoutX="422.0" layoutY="24.0" text="Asset ID:" />
+                  <TextField fx:id="purchaseDateFilter" layoutX="161.0" layoutY="20.0" />
+                  <TextField fx:id="assetNbFilter" layoutX="481.0" layoutY="20.0" />
+                  <Label layoutX="70.0" layoutY="24.0" text="Purchase Date:" />
+                  <TextField fx:id="floorNbFilter" layoutX="161.0" layoutY="83.0" />
+                  <Label layoutX="123.0" layoutY="87.0" text="Floor:" />
+                  <Label layoutX="429.0" layoutY="87.0" text="Room:" />
+                  <TextField fx:id="roomNbFilter" layoutX="481.0" layoutY="83.0" />
+                  <Button fx:id="filterButton" layoutX="759.0" layoutY="20.0" mnemonicParsing="false" onAction="#filterButtonOnClick" prefHeight="25.0" prefWidth="138.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Search" />
+                  <Button fx:id="clearButton" layoutX="759.0" layoutY="83.0" mnemonicParsing="false" onAction="#clearButtonOnClick" prefHeight="25.0" prefWidth="138.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Clear" />
                </children></Pane>
             <Button fx:id="addSpecificAsset" layoutX="975.0" layoutY="3.0" mnemonicParsing="false" onAction="#addSpecificAssetOnClick" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Add" />
             <ScrollPane layoutX="15.0" layoutY="163.0" prefHeight="391.0" prefWidth="973.0">

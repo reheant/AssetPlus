@@ -1,7 +1,8 @@
 package ca.mcgill.ecse.assetplus.view;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +21,8 @@ public class SpecificAssetController {
   @FXML
   private Button filterButton;
   @FXML
+  private Button clearButton;
+  @FXML
   private AnchorPane specificAssetContentArea;
   @FXML
   private ListView<String> specificAssetList;
@@ -35,22 +38,91 @@ public class SpecificAssetController {
   private TextField roomNbFilter;
 
   @FXML 
-  public void filterButtonOnClick() {
+  public List<String> filterList(String searchedDate, String searchedAssetNb, String searchedFloorNb, String searchedRoomNb) {
     
     String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    List<String> finalData = new ArrayList<>();     
     for (int i = 0; i<assetData.length; i++) {
+      String[] parsedString = assetData[i].split("\\s+");
+      if (parsedString[4].equals(searchedDate) &&
+            (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb)) &&
+            (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb)) &&
+            (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
+            finalData.add(assetData[i]);
+        }
+    }
+    return finalData;
+  }
 
-      if (!assetNbFilter.getText().isEmpty()){
+  @FXML
+  private void filterButtonOnClick() {
+    String searchedDate = purchaseDateFilter.getText();
+    String searchedAssetNb = assetNbFilter.getText();
+    String searchedFloorNb = floorNbFilter.getText();
+    String searchedRoomNb = roomNbFilter.getText();
+    List<String> filteredDates = filterList(searchedDate, searchedAssetNb, searchedFloorNb, searchedRoomNb);
 
-      }
+    specificAssetList.getItems().clear();
+    if (filteredDates.isEmpty()) {
+      displayNoSearchResults();
+    } else {
+      specificAssetList.getItems().addAll(filteredDates);
+      resetCellFactory();
     }
   }
 
-  // private String[] filterSpecificAsset(String purchaseDate, String assetNb, String roomNb, String floorNb){
+  @FXML 
+  private void clearButtonOnClick() {
+    purchaseDateFilter.setText("");
+    assetNbFilter.setText("");
+    roomNbFilter.setText("");
+    floorNbFilter.setText("");
+    resetSpecificAssetList();
+    resetCellFactory();
+  }
 
-    
+  private void resetCellFactory() {
+    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(item);
+          setStyle("-fx-font-size: 16pt;");
+        }
+      }
+    });
+  }
 
-  // }
+  private void displayNoSearchResults() {
+    specificAssetList.getItems().add("No search results");
+    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty || item == null) {
+          setText(null);
+          setGraphic(null);
+        } else {
+          setText(item);
+          if (item.equals("No search results")) {
+            setDisable(true);
+            setStyle("-fx-font-style: italic;");
+            setStyle("-fx-font-size: 16pt;");
+          }
+        }
+      }
+    });
+  }
+
+
+  private void resetSpecificAssetList() {
+    specificAssetList.getItems().clear();
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    specificAssetList.getItems().addAll(assetData);
+  }
 
   @FXML
   public void addSpecificAssetOnClick(){
@@ -81,8 +153,11 @@ public class SpecificAssetController {
       }
     });
     specificAssetList.setPrefHeight(10 * specificAssetList.getFixedCellSize());
-    //specificAssetList.setItems(observableList);
     specificAssetList.getItems().addAll(assetData);
+
+    for (int i = 0; i<assetData.length; i++) {
+      System.out.println(assetData[i]);
+    }
 
     specificAssetList.getSelectionModel().selectedItemProperty()
         .addListener(new ChangeListener<String>() {

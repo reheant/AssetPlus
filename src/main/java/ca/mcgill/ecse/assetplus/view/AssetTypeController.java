@@ -20,7 +20,7 @@ public class AssetTypeController {
 
   private void loadPage(String fxmlFile) {
         try {
-          Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+          Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile)));
           AssetTypeMainContent.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();

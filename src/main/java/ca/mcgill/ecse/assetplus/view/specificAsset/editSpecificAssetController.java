@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view;
+package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -70,7 +70,7 @@ public class editSpecificAssetController {
 
   private void loadPage(String fxmlFile) {
         try {
-          Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+          Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile)));
           editSpecificAssetContentArea.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();

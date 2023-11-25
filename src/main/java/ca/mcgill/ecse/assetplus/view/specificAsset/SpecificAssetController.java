@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view;
+package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +23,8 @@ public class SpecificAssetController {
   @FXML
   private Button clearButton;
   @FXML
+  private Button backButton;
+  @FXML
   private AnchorPane specificAssetContentArea;
   @FXML
   private ListView<String> specificAssetList;
@@ -44,7 +46,7 @@ public class SpecificAssetController {
     List<String> finalData = new ArrayList<>();     
     for (int i = 0; i<assetData.length; i++) {
       String[] parsedString = assetData[i].split("\\s+");
-      if (parsedString[4].equals(searchedDate) &&
+      if (parsedString[4].equals(searchedDate) || searchedDate.isEmpty() &&
             (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb)) &&
             (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb)) &&
             (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
@@ -131,6 +133,11 @@ public class SpecificAssetController {
   }
 
   @FXML
+  public void backButtonOnClick(){
+    loadPage("../assets.fxml");
+  }
+
+  @FXML
   public void initialize() {
     purchaseDateFilter.setPromptText("YYYY-MM-DD");
     assetNbFilter.setPromptText("Asset Number");
@@ -176,7 +183,7 @@ public class SpecificAssetController {
 
   private void loadPage(String fxmlFile) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
       Node page = loader.load();
 
       if (fxmlFile.equals("viewSpecificAsset.fxml")) {

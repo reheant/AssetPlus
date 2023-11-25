@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view;
+package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -63,7 +63,7 @@ public class viewSpecificAssetController {
 
   private void loadPage(String fxmlFile) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
       Node page = loader.load();
 
       if (fxmlFile.equals("editSpecificAsset.fxml")) {

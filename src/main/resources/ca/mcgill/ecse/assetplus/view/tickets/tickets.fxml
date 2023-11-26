@@ -28,6 +28,7 @@
                <ListView fx:id="maintenanceTicketList" prefWidth="605.0" />
          </content>
       </ScrollPane>
+            <Button mnemonicParsing="false" onMouseClicked="#onGoToPageClicked" text="GoToPage" />
             <Button layoutX="537.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#onClearButtonClicked" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: pink; -fx-border-color: black;" text="Clear" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -57,17 +58,17 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <TextField layoutX="42.0" layoutY="137.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" promptText="No staff currently selected">
+            <TextField layoutX="42.0" layoutY="137.0" prefHeight="30.0" prefWidth="400.0" promptText="No staff currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField layoutX="42.0" layoutY="223.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" promptText="mm/dd/yyyy">
+            <TextField layoutX="42.0" layoutY="223.0" prefHeight="30.0" prefWidth="400.0" promptText="mm/dd/yyyy" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField layoutX="42.0" layoutY="304.0" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;" promptText="mm/dd/yyyy">
+            <TextField layoutX="42.0" layoutY="304.0" prefHeight="30.0" prefWidth="400.0" promptText="mm/dd/yyyy" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                <font>
                   <Font size="18.0" />
                </font>

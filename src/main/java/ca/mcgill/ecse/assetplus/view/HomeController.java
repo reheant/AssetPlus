@@ -25,17 +25,17 @@ public class HomeController {
 
     @FXML
     private void onEmployeesClicked() {
-        loadPage("employees.fxml");
+        loadPage("employees/employees.fxml");
     }
 
     @FXML
     private void onGuestsClicked() {
-        loadPage("guests.fxml");
+        loadPage("guests/guests.fxml");
     }
 
     @FXML
     private void onManagerClicked() {
-        loadPage("manager.fxml");
+        loadPage("manager/manager.fxml");
     }
 
     private void loadPage(String fxmlFile) {

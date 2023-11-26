@@ -14,12 +14,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;;
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;;
 
 public class TicketsController {
-
-    private int last_ticket_id = 7;
-
     @FXML
     private AnchorPane maintenanceTicketContentArea;
 
@@ -85,35 +83,25 @@ public class TicketsController {
     }
 
     @FXML
-    private void onAddTicketClicked() {
-        System.out.println("hi there " + String.valueOf(last_ticket_id));
-
-        
-        Date current_date = new Date(System.currentTimeMillis());
-        
+    private void onAddTicketClicked() {        
+        int new_ticket_id = AssetPlusFeatureSet6Controller.getMaxTicketId()+1;
+        Date current_date = new Date(System.currentTimeMillis());        
         String result =
-            AssetPlusFeatureSet4Controller.addMaintenanceTicket(last_ticket_id, current_date, "placeholder description", "bob@ap.com", -1);
-    
+            AssetPlusFeatureSet4Controller.addMaintenanceTicket(new_ticket_id, current_date, "Add a description...", "bob@ap.com", -1);
             
         if (!result.equals("")) {
             System.out.println(result);
             errorLabel.setText(result);
             return;
-        } else {
-            
-            
+        } else {        
             FXMLLoader loader = loadPage("tickets/update-ticket.fxml");
             TicketUpdateController ticketUpdateController = loader.getController();
             
-            ticketUpdateController.setViewedTicketId(last_ticket_id);
-            ticketUpdateController.initialize();
-            
-            // set ticket number
-            
+            ticketUpdateController.setTicketId(new_ticket_id);
+            ticketUpdateController.initialize();           
         }
-        
-        last_ticket_id++;
     }
+
 
     // Initialize method if needed
     @FXML

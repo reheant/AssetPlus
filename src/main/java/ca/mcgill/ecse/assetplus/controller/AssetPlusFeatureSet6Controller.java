@@ -105,6 +105,16 @@ public class AssetPlusFeatureSet6Controller {
     return null;
   }
 
+  public static int getMaxTicketId() {
+    int max = -1;
+    List<TOMaintenanceTicket> allMaintenanceTickets = getTickets();
+    for (TOMaintenanceTicket ticket: allMaintenanceTickets){
+      if (ticket.getId() > max){
+        max = ticket.getId();
+      }
+    }
+    return max;
+  }
 
   /**
    * Extracts a list of ticket image URLs from a maintenance ticket images.

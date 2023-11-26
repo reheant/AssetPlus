@@ -67,6 +67,12 @@ class MaintenanceTicket {
     ticket.setPriority(priority);
     ticket.setTicketFixer(hotelStaff);
     ticket.setTimeToResolve(timeToResolve);
+    if (approvalRequired) {
+      AssetPlus assetPlus = ticket.getAssetPlus();
+      Manager manager = assetPlus.getManager();
+      ticket.setFixApprover(manager);
+    }
+    
 
   }
   /**

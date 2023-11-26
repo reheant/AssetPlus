@@ -73,7 +73,7 @@ public class TicketsController {
     }
 
     @FXML
-    private void onGoToPageClicked() {
+    private void onAddTicketClicked(){
         loadPage("tickets/update-ticket.fxml");
     }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Objects;
 
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet5Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -91,7 +92,7 @@ public class TicketUpdateController {
   @FXML
   public void initialize() {
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
-
+    this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
     this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
   }
@@ -122,8 +123,12 @@ public class TicketUpdateController {
       // Traditional way to get the response value.
       Optional<String> result = dialog.showAndWait();
       result.ifPresent(url -> {
-          // Here you would probably want to validate the URL
-          imageListView.getItems().add(url);
+          String errorMessage = AssetPlusFeatureSet5Controller.addImageToMaintenanceTicket(url, ticketId);
+          if (errorMessage.isEmpty()) {
+              imageListView.getItems().add(url);
+          } else {
+              showAlert("Invalid Image URL: ", errorMessage);
+          }
       });
   }
 
@@ -131,14 +136,18 @@ public class TicketUpdateController {
     private void onDeleteImageButtonClicked() {
         String selectedUrl = imageListView.getSelectionModel().getSelectedItem();
         if (selectedUrl != null) {
+            AssetPlusFeatureSet5Controller.deleteImageFromMaintenanceTicket(selectedUrl, ticketId);
             imageListView.getItems().remove(selectedUrl);
         } else {
-            // No item is selected, show an alert or disable the delete button
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("No Selection");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select an image URL to delete.");
-            alert.showAndWait();
+            showAlert("No Selection", "Please select an image URL to delete.");
         }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

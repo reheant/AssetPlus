@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
@@ -37,6 +38,12 @@ public class TicketUpdateController {
   
   @FXML
   private TextArea descriptionTextArea;
+
+  @FXML
+  private TextField ticketRaiserTextField;
+
+  @FXML
+  private TextField raisedOnDateTextField;
   
   
   private TOMaintenanceTicket currentMaintenanceTicket;
@@ -59,8 +66,8 @@ public class TicketUpdateController {
   public void onSaveTicketClicked(){
     String newDescription = descriptionTextArea.getText();
 
-    Date newRaisedOnDate = currentMaintenanceTicket.getRaisedOnDate();
-    String newTicketRaiserEmail = currentMaintenanceTicket.getRaisedByEmail();
+    Date newRaisedOnDate = Date.valueOf(raisedOnDateTextField.getText());
+    String newTicketRaiserEmail = ticketRaiserTextField.getText();
     int newAssetNumber = -1;
 
     String result = AssetPlusFeatureSet4Controller.updateMaintenanceTicket(ticketId, newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
@@ -80,9 +87,11 @@ public class TicketUpdateController {
   @FXML
   public void initialize() {
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
-
+    
     this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
+    this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
+    this.raisedOnDateTextField.setText(String.valueOf(currentMaintenanceTicket.getRaisedOnDate()));
   }
 
 

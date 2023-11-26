@@ -95,6 +95,17 @@ public class AssetPlusFeatureSet6Controller {
 
   }
 
+  public static TOMaintenanceTicket getTicketWithId(int id) {
+    List<TOMaintenanceTicket> allMaintenanceTickets = getTickets();
+    for (TOMaintenanceTicket ticket: allMaintenanceTickets){
+      if (ticket.getId() == id){
+        return ticket;
+      }
+    }
+    return null;
+  }
+
+
   /**
    * Extracts a list of ticket image URLs from a maintenance ticket images.
    *

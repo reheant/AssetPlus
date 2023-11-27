@@ -1,29 +1,57 @@
-
 class MaintenanceTicket {
-  possible_state{
+
+  status {
     Open {
-      assignStaff(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID, String userEmail) [isManager(userEmail)] / {
-        doAssign(priority, timeEstimate, ticketFixer, ticketID);
+      assignHotelStaff(HotelStaff hotelStaff, TimeEstimate timeToResolve, PriorityLevel priority, boolean approvalRequired) / {
+        doAssignHotelStaff(hotelStaff, timeToResolve, priority, approvalRequired);
       } -> Assigned;
+      startTask() / {rejectStart("Open");} -> Open;
+      completeTask() / {rejectComplete("Open");} -> Open;
+      disapprove(Date date, String reason) / {rejectDisapprove("Open");} -> Open;
+      approve() / {rejectApprove("Open");} -> Open;
     }
-    
     Assigned {
-      startedToWork(String userEmail) [isHotelStaff(userEmail)] -> InProgress;
+      startTask() -> InProgress;
+      assignHotelStaff(HotelStaff hotelStaff, TimeEstimate timeToResolve, PriorityLevel priority, boolean approvalRequired) / {
+        rejectAssign("Assigned");
+      } -> Assigned;
+      completeTask() / {rejectComplete("Assigned");} -> Assigned;
+      disapprove(Date date, String reason) / {rejectDisapprove("Assigned");} -> Assigned;
+      approve() / {rejectApprove("Assigned");} -> Assigned;
+
     }
-    
     InProgress {
-      resolve(String userEmail, int ticketID) [isTicketFixer(userEmail, ticketID)]-> Resolved;
+      completeTask() [isApprovalRequired()] -> Resolved;
+      completeTask() [!isApprovalRequired()] -> Closed;
+      assignHotelStaff(HotelStaff hotelStaff, TimeEstimate timeToResolve, PriorityLevel priority, boolean approvalRequired) / {
+        rejectAssign("InProgress");
+      } -> InProgress;
+      startTask() / {rejectStart("InProgress");} -> InProgress;
+      disapprove(Date date, String reason) / {rejectDisapprove("InProgress");} -> InProgress;
+      approve() / {rejectApprove("InProgress");} -> InProgress;
     }
-    
     Resolved {
-      close(int ticketID) [!requireManagerApproval(ticketID)] -> Closed;
-      approve(String userEmail) [isManager(userEmail)] -> Closed;
-      disapprove(String userEmail) [isManager(userEmail)] -> InProgress;
+      approve() -> Closed;
+      disapprove(Date date, String reason) / {
+        doAddMaintenanceNote(date, reason);
+      } -> InProgress;
+      assignHotelStaff(HotelStaff hotelStaff, TimeEstimate timeToResolve, PriorityLevel priority, boolean approvalRequired) / {
+        rejectAssign("Resolved");
+      } -> Resolved;
+      startTask() / {rejectStart("Resolved");} -> Resolved;
+      completeTask() / {rejectComplete("Resolved");} -> Resolved;
     }
-    
-    Closed { }
+    Closed {
+      assignHotelStaff(HotelStaff hotelStaff, TimeEstimate timeToResolve, PriorityLevel priority, boolean approvalRequired) / {
+        rejectAssign("Closed");
+      } -> Closed;
+      startTask() / {rejectStart("Closed");} -> Closed;
+      completeTask() / {rejectComplete("Closed");} -> Closed;
+      disapprove(Date date, String reason) / {rejectDisapprove("Closed");} -> Closed;
+      approve() / {rejectApprove("Closed");} -> Closed;
+    }
   }
-  
+
   /**
    * Assigns maintenance ticket to a  hotel staff
    * 
@@ -31,64 +59,140 @@ class MaintenanceTicket {
    * @param priority The priority level of the ticket
    * @param timeEstimate The time estimate of the ticket
    * @param ticketFixer The assigned hotel staff
-   * @param ticketID The ticket ID of the assigned ticket
+   * @param approvalRequired Boolean if manager approval is required or not
    */
-  private void doAssign(PriorityLevel priority, TimeEstimate timeEstimate, HotelStaff ticketFixer, int ticketID) {
-    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
-    ticket.setPriority(priority);
-    ticket.setTimeToResolve(timeEstimate);
-    ticket.setTicketFixer(ticketFixer);
-    
-  }
 
+  private void doAssignHotelStaff(HotelStaff hotelStaff, TimeEstimate timeToResolve, PriorityLevel priority, boolean approvalRequired) {
+    MaintenanceTicket ticket = this;
+    ticket.setPriority(priority);
+    ticket.setTicketFixer(hotelStaff);
+    ticket.setTimeToResolve(timeToResolve);
+    if (approvalRequired) {
+      AssetPlus assetPlus = ticket.getAssetPlus();
+      Manager manager = assetPlus.getManager();
+      ticket.setFixApprover(manager);
+    }
+    
+
+  }
   /**
-   * Verifies if a ticket requires manager approval
+   * Assigns maintenance ticket to a  hotel staff
    * 
    * @author Rehean Thillainathalingam
-   * @param ticketID The ticket ID of the assigned ticket
    * @return boolean indicating if the ticket has an approver
    */
-  private Boolean requireManagerApproval(int ticketID) {
-    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+  private boolean isApprovalRequired() {
+    MaintenanceTicket ticket = this;
     return ticket.hasFixApprover();
   }
 
   /**
-   * Verifies if the user is a manager
+   * Assigns maintenance ticket to a  hotel staff
    * 
    * @author Rehean Thillainathalingam
-   * @param userEmail The email of the current user
-   * @return boolean indicating if the user's email is that of the manager
+   * @param date Date note was created
+   * @param reason Maintenance note description
    */
-  private Boolean isManager(String userEmail) {
-    User currentUser = User.getWithEmail(userEmail);
-    return (currentUser.getEmail().equals("manager@ap.com"));
+  private void doAddMaintenanceNote(Date date, String reason) {
+    MaintenanceTicket ticket = this;
+    HotelStaff hotelStaff = ticket.getTicketFixer();
+    ticket.addTicketNote(date, reason, hotelStaff);
   }
 
   /**
-   * Verifies if the user is a hotel staff
+   * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param userEmail The email of the current user
-   * @return boolean indicating if the user's email is that of a hotel staff
+   * @param string State string in which the function was called
    */
-  private Boolean isHotelStaff(String userEmail) {
-    User currentUser = User.getWithEmail(userEmail);
-    return(currentUser.getEmail().endsWith("@ap.com"));
-  }
-
+  private void rejectAssign(String state) {
+        String message = "";
+        if (state.equals("Assigned")) {
+          message = "The maintenance ticket is already assigned.";
+        } else if (state.equals("Resolved")) {
+          message = "Cannot assign a maintenance ticket which is resolved.";
+        } else if (state.equals("Closed")) {
+          message = "Cannot assign a maintenance ticket which is closed.";
+        } else if (state.equals("InProgress")) {
+          message = "Cannot assign a maintenance ticket which is in progress.";
+        }
+        throw new RuntimeException(message);
+    }
   /**
-   * Verifies if the user is a ticket fixer
+   * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param userEmail The email of the current user
-   * @param ticketID The ticket ID of the assigned ticket
-   * @return boolean indicating if the user is the ticket fixer of the current ticket
+   * @param string State string in which the function was called
    */
-  private Boolean isTicketFixer(String userEmail, int ticketID) {
-    MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
-    User currentUser = User.getWithEmail(userEmail);
-    return(ticket.getTicketFixer().equals(currentUser));
-  }
+  private void rejectStart(String state) {
+        String message = "";
+        if (state.equals("Open")) {
+          message = "Cannot start a maintenance ticket which is open.";
+        } else if (state.equals("Resolved")) {
+          message = "Cannot start a maintenance ticket which is resolved.";
+        } else if (state.equals("Closed")) {
+          message = "Cannot start a maintenance ticket which is closed.";
+        } else if (state.equals("InProgress")) {
+          message = "The maintenance ticket is already in progress.";
+        }
+        throw new RuntimeException(message);
+    }
+  /**
+   * Error handling for transitions  
+   * 
+   * @author Rehean Thillainathalingam
+   * @param string State string in which the function was called
+   */
+  private void rejectComplete(String state) {
+        String message = "";
+        if (state.equals("Open")) {
+          message = "Cannot complete a maintenance ticket which is open.";
+        } else if (state.equals("Assigned")) {
+          message = "Cannot complete a maintenance ticket which is assigned.";
+        } else if (state.equals("Closed")) {
+          message = "The maintenance ticket is already closed.";
+        } else if (state.equals("Resolved")) {
+          message = "The maintenance ticket is already resolved.";
+        }
+        throw new RuntimeException(message);
+    }
+  /**
+   * Error handling for transitions  
+   * 
+   * @author Rehean Thillainathalingam
+   * @param string State string in which the function was called
+   */
+  private void rejectDisapprove(String state) {
+        String message = "";
+        if (state.equals("Open")) {
+          message = "Cannot disapprove a maintenance ticket which is open.";
+        } else if (state.equals("Assigned")) {
+          message = "Cannot disapprove a maintenance ticket which is assigned.";
+        } else if (state.equals("Closed")) {
+          message = "Cannot disapprove a maintenance ticket which is closed.";
+        } else if (state.equals("InProgress")) {
+          message = "Cannot disapprove a maintenance ticket which is in progress.";
+        }
+        throw new RuntimeException(message);
+    }
+  /**
+   * Error handling for transitions  
+   * 
+   * @author Rehean Thillainathalingam
+   * @param string State string in which the function was called
+   */
+  private void rejectApprove(String state) {
+        String message = "";
+        if (state.equals("Open")) {
+          message = "Cannot approve a maintenance ticket which is open.";
+        } else if (state.equals("Assigned")) {
+          message = "Cannot approve a maintenance ticket which is assigned.";
+        } else if (state.equals("Closed")) {
+          message = "The maintenance ticket is already closed.";
+        } else if (state.equals("InProgress")) {
+          message = "Cannot approve a maintenance ticket which is in progress.";
+        }
+        throw new RuntimeException(message);
+    }
+
 }
-

@@ -127,6 +127,49 @@
                 ]
               }
             ]
+          },
+          {
+            "name": "chair",
+            "expectedLifeSpan": 12,
+            "assetPlus": {
+              "@reference": "../../.."
+            },
+            "specificAssets": [
+              {
+                "SpecificAsset": [
+                  {
+                    "assetNumber": 987,
+                    "floorNumber": 12,
+                    "roomNumber": 1,
+                    "purchaseDate": "1999-11-11",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
+                  },
+                  {
+                    "assetNumber": 19,
+                    "floorNumber": 1,
+                    "roomNumber": 1,
+                    "purchaseDate": "1998-11-11",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -151,6 +194,12 @@
           },
           {
             "@reference": "../../assetTypes/AssetType/specificAssets/SpecificAsset[4]"
+          },
+          {
+            "@reference": "../../assetTypes/AssetType[3]/specificAssets/SpecificAsset"
+          },
+          {
+            "@reference": "../../assetTypes/AssetType[3]/specificAssets/SpecificAsset[2]"
           }
         ]
       }

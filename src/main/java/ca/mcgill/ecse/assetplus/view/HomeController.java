@@ -20,7 +20,7 @@ public class HomeController {
 
     @FXML
     private void onAssetsClicked() {
-        loadPage("assets.fxml");
+        loadPage("assetTypes/assets.fxml");
     }
 
     @FXML

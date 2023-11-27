@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -38,6 +39,23 @@ public class SpecificAssetController {
   private TextField floorNbFilter;
   @FXML
   private TextField roomNbFilter;
+
+  private String assetTypeString;
+
+  public void setAssetTypeString(String string) {
+    assetTypeString = string;
+    //specificAssetTitle.setText(string);
+    // System.out.println("0.2 "+assetTypeString);
+  }
+
+  // public String[] filterByAssetType(String[] assetData) {
+  //   for (int i = 0; i<assetData.length; i++) {
+  //     String[] parsedString = assetData[i].split("\\s+");
+  //     if (parsedString[0].equals(assetTypeString)) {
+
+  //     }
+  //   }
+  // }
 
   @FXML 
   public List<String> filterList(String searchedDate, String searchedAssetNb, String searchedFloorNb, String searchedRoomNb) {
@@ -134,7 +152,7 @@ public class SpecificAssetController {
 
   @FXML
   public void backButtonOnClick(){
-    loadPage("../assets.fxml");
+    loadPage("../assetTypes/assets.fxml");
   }
 
   @FXML
@@ -145,7 +163,10 @@ public class SpecificAssetController {
     roomNbFilter.setPromptText("Room Number");
     
     String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
-    
+    //System.out.println("0.3: "+specificAssetTitle.getText());
+    for (int i = 0; i<assetData.length; i++) {
+      System.out.println(assetData[i]);
+    }
     specificAssetList.setFixedCellSize(50.0);
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -163,7 +184,7 @@ public class SpecificAssetController {
     specificAssetList.getItems().addAll(assetData);
 
     for (int i = 0; i<assetData.length; i++) {
-      System.out.println(assetData[i]);
+      //System.out.println(assetData[i]);
     }
 
     specificAssetList.getSelectionModel().selectedItemProperty()
@@ -190,6 +211,11 @@ public class SpecificAssetController {
           viewSpecificAssetController updateController = loader.getController();
           updateController.displayTitle(specificAssetInfo);
       }
+      if (fxmlFile.equals("addSpecificAsset.fxml")) {
+        addSpecificAssetController updateController = loader.getController();
+        updateController.setAssetTypeString(assetTypeString);
+      }
+      
 
       specificAssetContentArea.getChildren().setAll(page);
   } catch (IOException e) {

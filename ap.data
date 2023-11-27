@@ -11,59 +11,146 @@
     ],
     "assetTypes": [
       {
-        "AssetType": {
-          "name": "Tiffany",
-          "expectedLifeSpan": 23,
-          "assetPlus": {
-            "@reference": "../../.."
+        "AssetType": [
+          {
+            "name": "werg",
+            "expectedLifeSpan": 23,
+            "assetPlus": {
+              "@reference": "../../.."
+            },
+            "specificAssets": [
+              {
+                "SpecificAsset": [
+                  {
+                    "assetNumber": 123,
+                    "floorNumber": 12,
+                    "roomNumber": 12,
+                    "purchaseDate": "2020-11-11",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
+                  },
+                  {
+                    "assetNumber": 56,
+                    "floorNumber": 12,
+                    "roomNumber": 12,
+                    "purchaseDate": "2020-11-11",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
+                  },
+                  {
+                    "assetNumber": 166,
+                    "floorNumber": 13,
+                    "roomNumber": 13,
+                    "purchaseDate": "2021-11-11",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
+                  },
+                  {
+                    "assetNumber": 99,
+                    "floorNumber": 1,
+                    "roomNumber": 1,
+                    "purchaseDate": "1999-12-12",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "specificAssets": [
-            {
-              "SpecificAsset": [
-                {
-                  "assetNumber": 12,
-                  "floorNumber": 1,
-                  "roomNumber": 1,
-                  "purchaseDate": "2020-11-11",
-                  "assetPlus": {
-                    "@reference": "../../../../.."
+          {
+            "name": "Tiffany",
+            "expectedLifeSpan": 23,
+            "assetPlus": {
+              "@reference": "../../.."
+            },
+            "specificAssets": [
+              {
+                "SpecificAsset": [
+                  {
+                    "assetNumber": 12,
+                    "floorNumber": 12,
+                    "roomNumber": 12,
+                    "purchaseDate": "2020-11-11",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
                   },
-                  "maintenanceTickets": [
-                    ""
-                  ],
-                  "assetType": {
-                    "@reference": "../../.."
+                  {
+                    "assetNumber": 3,
+                    "floorNumber": 12,
+                    "roomNumber": 12,
+                    "purchaseDate": "1798-12-12",
+                    "assetPlus": {
+                      "@reference": "../../../../.."
+                    },
+                    "maintenanceTickets": [
+                      ""
+                    ],
+                    "assetType": {
+                      "@reference": "../../.."
+                    }
                   }
-                },
-                {
-                  "assetNumber": 13,
-                  "floorNumber": 12,
-                  "roomNumber": 1,
-                  "purchaseDate": "2020-11-11",
-                  "assetPlus": {
-                    "@reference": "../../../../.."
-                  },
-                  "maintenanceTickets": [
-                    ""
-                  ],
-                  "assetType": {
-                    "@reference": "../../.."
-                  }
-                }
-              ]
-            }
-          ]
-        }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ],
     "specificAssets": [
       {
         "SpecificAsset": [
           {
+            "@reference": "../../assetTypes/AssetType[2]/specificAssets/SpecificAsset"
+          },
+          {
             "@reference": "../../assetTypes/AssetType/specificAssets/SpecificAsset"
           },
           {
+            "@reference": "../../assetTypes/AssetType[2]/specificAssets/SpecificAsset[2]"
+          },
+          {
+            "@reference": "../../assetTypes/AssetType/specificAssets/SpecificAsset[3]"
+          },
+          {
             "@reference": "../../assetTypes/AssetType/specificAssets/SpecificAsset[2]"
+          },
+          {
+            "@reference": "../../assetTypes/AssetType/specificAssets/SpecificAsset[4]"
           }
         ]
       }

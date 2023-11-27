@@ -70,10 +70,6 @@ public class viewSpecificAssetController {
           editSpecificAssetController updateController = loader.getController();
           updateController.setTextFields(values[1], values[4], values[2], values[3], values[0]);
       }
-      if (fxmlFile.equals("addSpecificAsset.fxml")) {
-          addSpecificAssetController updateController = loader.getController();
-          updateController.setSpecificAssetTypeName(values[0]);
-      }
 
       viewSpecificAssetContentArea.getChildren().setAll(page);
   } catch (IOException e) {

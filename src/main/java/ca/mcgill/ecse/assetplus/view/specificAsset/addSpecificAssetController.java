@@ -35,6 +35,13 @@ public class addSpecificAssetController {
   @FXML
   private Label errorLabel;
 
+  private String assetTypeString;
+
+  public void setAssetTypeString(String string) {
+    assetTypeString = string;
+    System.out.println(assetTypeString);
+  }
+
   public void setSpecificAssetTypeName(String typeName){
     assetType.setText(typeName);
   }
@@ -55,9 +62,9 @@ public class addSpecificAssetController {
     try {
       utilDate = dateFormat.parse(purchased);
       java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-      AssetPlusFeatureSet2Controller.addAssetType("Tiffany", 23);
+      // AssetPlusFeatureSet2Controller.addAssetType("Tiffany", 23);
       //String result =
-      AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, "Tiffany"); //TODO: TIFFANY ASSET TYPE
+      AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); //TODO: TIFFANY ASSET TYPE
       //if (result.equals("")) {
       //System.out.println(AssetPlusFeatureSet3Controller.getSpecificAssetNumbers()[0]);
       loadPage("SpecificAsset.fxml");

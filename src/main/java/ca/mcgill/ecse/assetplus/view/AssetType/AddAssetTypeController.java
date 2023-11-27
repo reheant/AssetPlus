@@ -35,7 +35,7 @@ public class AddAssetTypeController {
     String result = "";
     try{
       int lifeInt = Integer.parseInt(lifespan);
-      result += AssetPlusFeatureSet2Controller.addAssetType(name, Integer.parseInt(lifespan));
+      result += AssetPlusFeatureSet2Controller.addAssetType(name, lifeInt);
     }
     catch (Exception e){
       result += "Please insert a valid integer";

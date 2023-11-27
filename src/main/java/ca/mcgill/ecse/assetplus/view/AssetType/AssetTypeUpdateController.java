@@ -53,8 +53,14 @@ public class AssetTypeUpdateController {
         assetTypeLifespan.getText().strip().equals("") ? this.assetTypeOldLifespan
             : assetTypeLifespan.getText().strip();
 
-    String result =
-        AssetPlusFeatureSet2Controller.updateAssetType(assetTypeOldName, name, Integer.parseInt(lifespan));
+    String result = "";
+    try{
+      int lifeInt = Integer.parseInt(lifespan);
+      result += AssetPlusFeatureSet2Controller.updateAssetType(assetTypeOldName, name, Integer.parseInt(lifespan));
+    }
+    catch (Exception e){
+      result += "Please insert a valid integer";
+    }
 
     if (!result.equals("")) {
       errorLabel.setText(result);

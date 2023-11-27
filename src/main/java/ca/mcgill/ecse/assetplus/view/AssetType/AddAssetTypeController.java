@@ -32,9 +32,14 @@ public class AddAssetTypeController {
   private void onAddAssetTypeButtonClicked() {
     String name = assetTypeName.getText().strip();
     String lifespan = assetTypeLifespan.getText().strip();
-
-    String result =
-            AssetPlusFeatureSet2Controller.addAssetType(name, Integer.parseInt(lifespan));
+    String result = "";
+    try{
+      int lifeInt = Integer.parseInt(lifespan);
+      result += AssetPlusFeatureSet2Controller.addAssetType(name, Integer.parseInt(lifespan));
+    }
+    catch (Exception e){
+      result += "Please insert a valid integer";
+    }
 
     if (!result.equals("")) {
       errorLabel.setText(result);

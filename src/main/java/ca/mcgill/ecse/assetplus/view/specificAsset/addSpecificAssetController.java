@@ -85,7 +85,13 @@ public class addSpecificAssetController {
 
   private void loadPage(String fxmlFile) {
         try {
-          Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile)));
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
+          Node page = loader.load();
+
+          if (fxmlFile.equals("SpecificAsset.fxml")) {
+            SpecificAssetController updateController = loader.getController();
+            updateController.initialize(assetTypeString);
+          }
           addSpecificAssetContentArea.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();

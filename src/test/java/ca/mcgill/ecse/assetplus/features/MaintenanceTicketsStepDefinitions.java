@@ -332,7 +332,7 @@ public class MaintenanceTicketsStepDefinitions {
     int ticketId = Integer.parseInt(ticketIdString);
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
 
-    String actualStateString = maintenanceTicket.getPossible_stateFullName();
+    String actualStateString = maintenanceTicket.getStatusFullName();
     assertEquals(expectedStateString, actualStateString);
   }
 
@@ -682,7 +682,7 @@ public class MaintenanceTicketsStepDefinitions {
   private void setMaintenanceTicketAsState(MaintenanceTicket maintenanceTicket, String state,
       String fixedByEmail, String timeToResolveString, String priorityString,
       Boolean approvalRequired) {
-    if (!maintenanceTicket.getPossible_stateFullName().equals("Open")) {
+    if (!maintenanceTicket.getStatusFullName().equals("Open")) {
       throw new InvalidParameterException("ticket must start in open state");
     }
     switch (state) {
@@ -699,7 +699,7 @@ public class MaintenanceTicketsStepDefinitions {
         break;
       case "Resolved":
         setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString,
-            priorityString, approvalRequired);
+            priorityString, true);  // need approval required to go in resolved
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
         setInProgressMaintenanceTicketAsResolved(maintenanceTicket, fixedByEmail);
         break;
@@ -728,8 +728,7 @@ public class MaintenanceTicketsStepDefinitions {
       ticketFixer = (HotelStaff) HotelStaff.getWithEmail(fixedByEmail);
     }
 
-    maintenanceTicket.assignStaff(priority, timeEstimate, ticketFixer, maintenanceTicket.getId(),
-        "manager@ap.com");
+    maintenanceTicket.assignHotelStaff(ticketFixer, timeEstimate, priority, approvalRequired);
 
     if (approvalRequired) {
       Manager manager = (Manager) Manager.getWithEmail("manager@ap.com");
@@ -741,22 +740,19 @@ public class MaintenanceTicketsStepDefinitions {
   private void setAssignedMaintenanceTicketAsInProgress(MaintenanceTicket maintenanceTicket) {
     // we're not given a user email to say started to work,
     // and I don't want to create a new user (could mess with the tests)
-    if (maintenanceTicket.getPossible_stateFullName().equals("Assigned")) {
-      maintenanceTicket.startedToWork("manager@ap.com");
+    if (maintenanceTicket.getStatusFullName().equals("Assigned")) {
+      maintenanceTicket.startTask();
     }
   }
 
   private void setInProgressMaintenanceTicketAsResolved(MaintenanceTicket maintenanceTicket,
       String fixedByEmail) {
-    if (fixedByEmail == null) {
-      fixedByEmail = "manager@ap.com";
-    }
-    maintenanceTicket.resolve(fixedByEmail, maintenanceTicket.getId());
+    maintenanceTicket.completeTask();
   }
 
   private void setResolvedMaintenanceticketAsClosed(MaintenanceTicket maintenanceTicket) {
-    if (maintenanceTicket.getPossible_stateFullName().equals("Resolved")) {
-      maintenanceTicket.approve("manager@ap.com");
+    if (maintenanceTicket.getStatusFullName().equals("Resolved")) {
+      maintenanceTicket.approve();
     }
   }
 

@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -35,11 +36,23 @@ public class AssetTypeController {
   @FXML
   private ListView<String> assetTypeList;
 
+  @FXML
+  private Button viewAssetType;
+
   private String assetTypeString;
 
   @FXML
   private void onAddAssetTypeClicked() {
     loadPage("add-asset-type.fxml");
+  }
+
+  @FXML
+  private void onViewAssetTypeClicked() {
+    String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
+      if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
+          loadPage("../specificAsset/specificAsset.fxml");
+      }
+    
   }
 
   @FXML
@@ -107,7 +120,6 @@ public class AssetTypeController {
               String newValue) {
             setInfo(newValue);
             assetTypeString = newValue;
-            loadPage("../specificAsset/specificAsset.fxml");
           }
         });
   }
@@ -185,11 +197,9 @@ public class AssetTypeController {
         }
 
         if (fxmlFile.equals("../specificAsset/specificAsset.fxml")) {
-            SpecificAssetController updateController = loader.getController();
-            updateController.setAssetTypeString(assetTypeString);
-          //addSpecificAssetController updateController = loader.getController();
-          //updateController.setAssetTypeString(assetTypeString);
-      }
+          SpecificAssetController updateController = loader.getController();
+          updateController.initialize(assetTypeString);
+        }
 
         assetTypeContentArea.getChildren().setAll(page);
     } catch (IOException e) {

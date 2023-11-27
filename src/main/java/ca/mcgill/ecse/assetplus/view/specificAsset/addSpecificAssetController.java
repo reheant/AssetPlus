@@ -39,7 +39,6 @@ public class addSpecificAssetController {
 
   public void setAssetTypeString(String string) {
     assetTypeString = string;
-    System.out.println(assetTypeString);
   }
 
   public void setSpecificAssetTypeName(String typeName){

@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import ca.mcgill.ecse.assetplus.model.AssetPlus;
 import ca.mcgill.ecse.assetplus.model.AssetType;
@@ -11,6 +12,38 @@ import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 public class AssetPlusFeatureSet3Controller {
 
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
+
+  public static String[] getSpecificAssetDataByAssetType(String assetType) {
+    int currentAssetNumber;
+    int currentRoomNumber;
+    int currentFloorNumber;
+    Date currentDate;
+    String currentAssetTypeString;
+    AssetType currentAssetType;
+    String specificAssetInfo;
+    List<SpecificAsset> specificAssets = assetPlus.getSpecificAssets();
+    //String[] assetTypeData = new String[specificAssets.size()];
+    List<String> assetTypeData = new ArrayList<>();
+    //System.out.println("entered the controller method");
+    for (int i = 0; i<specificAssets.size(); i++) {
+       if (specificAssets.get(i).getAssetType().getName().equals(assetType))
+       {
+          //System.out.println("inside the Tiffany if statement");
+          currentAssetNumber = specificAssets.get(i).getAssetNumber();
+          currentAssetType = specificAssets.get(i).getAssetType();
+          currentAssetTypeString = currentAssetType.getName();
+          currentFloorNumber = specificAssets.get(i).getFloorNumber();
+          currentRoomNumber = specificAssets.get(i).getRoomNumber();
+          currentDate = specificAssets.get(i).getPurchaseDate();
+
+          specificAssetInfo = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber) + " " + currentFloorNumber + " " + currentRoomNumber + " "+ currentDate ;
+          assetTypeData.add(specificAssetInfo);
+       }
+    }
+
+    String[] finalAssetTypeData = assetTypeData.toArray(new String[assetTypeData.size()]);
+    return finalAssetTypeData;
+  }
 
   public static String[] getSpecificAssetData(){
     List<SpecificAsset> specificAssets = assetPlus.getSpecificAssets();

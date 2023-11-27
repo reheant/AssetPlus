@@ -42,25 +42,11 @@ public class SpecificAssetController {
 
   private String assetTypeString;
 
-  public void setAssetTypeString(String string) {
-    assetTypeString = string;
-    //specificAssetTitle.setText(string);
-    // System.out.println("0.2 "+assetTypeString);
-  }
-
-  // public String[] filterByAssetType(String[] assetData) {
-  //   for (int i = 0; i<assetData.length; i++) {
-  //     String[] parsedString = assetData[i].split("\\s+");
-  //     if (parsedString[0].equals(assetTypeString)) {
-
-  //     }
-  //   }
-  // }
 
   @FXML 
   public List<String> filterList(String searchedDate, String searchedAssetNb, String searchedFloorNb, String searchedRoomNb) {
     
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString);
     List<String> finalData = new ArrayList<>();     
     for (int i = 0; i<assetData.length; i++) {
       String[] parsedString = assetData[i].split("\\s+");
@@ -140,7 +126,7 @@ public class SpecificAssetController {
 
   private void resetSpecificAssetList() {
     specificAssetList.getItems().clear();
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString);
     specificAssetList.getItems().addAll(assetData);
   }
 
@@ -156,17 +142,16 @@ public class SpecificAssetController {
   }
 
   @FXML
-  public void initialize() {
+  public void initialize(String assetType) {
     purchaseDateFilter.setPromptText("YYYY-MM-DD");
     assetNbFilter.setPromptText("Asset Number");
     floorNbFilter.setPromptText("Floor Number");
     roomNbFilter.setPromptText("Room Number");
     
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
-    //System.out.println("0.3: "+specificAssetTitle.getText());
-    for (int i = 0; i<assetData.length; i++) {
-      System.out.println(assetData[i]);
-    }
+    //String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
+    System.out.println("2.5: " + assetTypeString);
+    this.assetTypeString = assetType;
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType);
     specificAssetList.setFixedCellSize(50.0);
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
       @Override

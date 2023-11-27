@@ -805,8 +805,8 @@ public class MaintenanceTicket
    * 
    * @author Rehean Thillainathalingam
    * @param priority The priority level of the ticket
-   * @param timeEstimate The time estimate of the ticket
-   * @param ticketFixer The assigned hotel staff
+   * @param timeToResolve The time estimate of the ticket
+   * @param hotelStaff The assigned hotel staff
    * @param approvalRequired Boolean if manager approval is required or not
    */
   // line 66 "../../../../../AssetPlusStates.ump"
@@ -858,7 +858,7 @@ public class MaintenanceTicket
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   // line 109 "../../../../../AssetPlusStates.ump"
    private void rejectAssign(String state){
@@ -881,7 +881,7 @@ public class MaintenanceTicket
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   // line 128 "../../../../../AssetPlusStates.ump"
    private void rejectStart(String state){
@@ -904,7 +904,7 @@ public class MaintenanceTicket
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   // line 147 "../../../../../AssetPlusStates.ump"
    private void rejectComplete(String state){
@@ -927,7 +927,7 @@ public class MaintenanceTicket
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   // line 166 "../../../../../AssetPlusStates.ump"
    private void rejectDisapprove(String state){
@@ -950,7 +950,7 @@ public class MaintenanceTicket
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   // line 185 "../../../../../AssetPlusStates.ump"
    private void rejectApprove(String state){

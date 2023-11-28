@@ -1,7 +1,6 @@
 package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
-import java.util.Objects;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,16 +32,16 @@ public class viewSpecificAssetController {
   private Button deleteSpecificAsset1;
   @FXML
   private AnchorPane viewSpecificAssetContentArea;
-  private String[] values;
+  private String[] specificData;
+  private String titleLabelString;
 
-  public void displayTitle(String assetInfo){
-    values = assetInfo.split("\\s+");
-    titleLabel.setText(values[0]+ " " + values[1]);
-    assetNumber.setText(values[1]);
-    purchasedDate.setText(values[4]);
-    floorNumber.setText(values[2]);
-    roomNumber.setText(values[3]);
-    assetType.setText(values[0]);
+  public void displayTitle(String[] specificData){
+    titleLabel.setText(specificData[0]+ " #" + specificData[1]);
+    assetNumber.setText(specificData[1]);
+    purchasedDate.setText(specificData[4]);
+    floorNumber.setText(specificData[2]);
+    roomNumber.setText(specificData[3]);
+    assetType.setText(specificData[0]);
   }
 
   public void backButtonOnClick() {
@@ -54,12 +53,18 @@ public class viewSpecificAssetController {
   }
 
   public void deleteSpecificAssetOnClick() {
-    AssetPlusFeatureSet3Controller.deleteSpecificAsset(Integer.parseInt(values[1].substring(1)));
+    AssetPlusFeatureSet3Controller.deleteSpecificAsset(Integer.parseInt(specificData[1]));
     loadPage("SpecificAsset.fxml");
   }
 
-
-
+@FXML
+  public void initialize(String titleLabelString) {
+    
+    this.titleLabelString = titleLabelString;
+    specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
+    displayTitle(specificData);
+    
+  }
 
   private void loadPage(String fxmlFile) {
     try {
@@ -68,11 +73,11 @@ public class viewSpecificAssetController {
 
       if (fxmlFile.equals("editSpecificAsset.fxml")) {
           editSpecificAssetController updateController = loader.getController();
-          updateController.setTextFields(values[1], values[4], values[2], values[3], values[0]);
+          updateController.setTextFields(specificData[1], specificData[4], specificData[2], specificData[3], specificData[0], titleLabelString);
       }
       if (fxmlFile.equals("SpecificAsset.fxml")) {
         SpecificAssetController updateController = loader.getController();
-        updateController.initialize(values[0]);
+        updateController.initialize(specificData[0]);
       }
 
       viewSpecificAssetContentArea.getChildren().setAll(page);
@@ -80,8 +85,4 @@ public class viewSpecificAssetController {
       e.printStackTrace();
   }
 }
-
-
-
-
 }

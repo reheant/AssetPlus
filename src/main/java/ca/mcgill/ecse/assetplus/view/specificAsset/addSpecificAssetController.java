@@ -3,8 +3,6 @@ package ca.mcgill.ecse.assetplus.view.specificAsset;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet2Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,15 +37,12 @@ public class addSpecificAssetController {
 
   public void setAssetTypeString(String string) {
     assetTypeString = string;
-  }
-
-  public void setSpecificAssetTypeName(String typeName){
-    assetType.setText(typeName);
+    assetType.setText(assetTypeString);
   }
 
   @FXML
   public void addSpecificAssetOnClick(){
-    String assetNb = assetNumber.getText().strip(); //TODO: THIS SHOULDNT BE INPUT BY THE USER????
+    String assetNb = assetNumber.getText().strip(); 
     String purchased = purchasedDate.getText().strip();
     String floorNb = floorNumber.getText().strip();
     String roomNb = roomNumber.getText().strip();
@@ -61,20 +56,11 @@ public class addSpecificAssetController {
     try {
       utilDate = dateFormat.parse(purchased);
       java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-      // AssetPlusFeatureSet2Controller.addAssetType("Tiffany", 23);
-      //String result =
-      AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); //TODO: TIFFANY ASSET TYPE
-      //if (result.equals("")) {
-      //System.out.println(AssetPlusFeatureSet3Controller.getSpecificAssetNumbers()[0]);
+      AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); 
       loadPage("SpecificAsset.fxml");
-      //} 
     } catch (ParseException e) {
       e.printStackTrace();
     }
-    
-
-    
-
   }
 
   @FXML

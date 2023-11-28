@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet2Controller;
 import ca.mcgill.ecse.assetplus.view.specificAsset.SpecificAssetController;
-import ca.mcgill.ecse.assetplus.view.specificAsset.addSpecificAssetController;
-import ca.mcgill.ecse.assetplus.view.specificAsset.viewSpecificAssetController;
 
 public class AssetTypeController {
   @FXML

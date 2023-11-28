@@ -3,7 +3,6 @@ package ca.mcgill.ecse.assetplus.view.specificAsset;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,19 +29,21 @@ public class editSpecificAssetController {
   private Button backButton;
   @FXML
   private Button confirmSpecificAsset;
+  @FXML
+  private Label titleLabel;
 
   @FXML
   public void backButtonOnClick(){
     loadPage("SpecificAsset.fxml");
-
   }
 
-  public void setTextFields(String originalAssetNb, String originalPurchaseDate, String originalFloorNb, String originalRoomNb,String originalAssetType){
+  public void setTextFields(String originalAssetNb, String originalPurchaseDate, String originalFloorNb, String originalRoomNb,String originalAssetType, String label){
     assetNumber.setText(originalAssetNb);
     purchaseDate.setText(originalPurchaseDate);
     floorNb.setText(originalFloorNb);
     roomNb.setText(originalRoomNb);
     assetType.setText(originalAssetType);
+    titleLabel.setText(label);
   }
 
   @FXML
@@ -52,21 +53,13 @@ public class editSpecificAssetController {
     try {
       utilDate = dateFormat.parse(purchaseDate.getText());
       java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-      AssetPlusFeatureSet3Controller.updateSpecificAsset(Integer.parseInt(assetNumber.getText().substring(1)), Integer.parseInt(floorNb.getText()),Integer.parseInt(roomNb.getText()), sqlDate, assetType.getText());
+      AssetPlusFeatureSet3Controller.updateSpecificAsset(Integer.parseInt(assetNumber.getText()), Integer.parseInt(floorNb.getText()),Integer.parseInt(roomNb.getText()), sqlDate, assetType.getText());
       loadPage("SpecificAsset.fxml");
     } catch (ParseException e) {
       e.printStackTrace();
     }
 
   }
-
-
-
-
-
-
-
-
 
   private void loadPage(String fxmlFile) {
         try {
@@ -81,8 +74,4 @@ public class editSpecificAssetController {
             e.printStackTrace();
         }
     }
-
-
-
-
 }

@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -29,8 +28,6 @@ public class SpecificAssetController {
   private AnchorPane specificAssetContentArea;
   @FXML
   private ListView<String> specificAssetList;
-  private String specificAssetInfo;
-
   @FXML
   private TextField purchaseDateFilter;
   @FXML
@@ -39,22 +36,22 @@ public class SpecificAssetController {
   private TextField floorNbFilter;
   @FXML
   private TextField roomNbFilter;
-
+  private String specificAssetInfo;
   private String assetTypeString;
 
 
   @FXML 
   public List<String> filterList(String searchedDate, String searchedAssetNb, String searchedFloorNb, String searchedRoomNb) {
     
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString);
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, false);
     List<String> finalData = new ArrayList<>();     
     for (int i = 0; i<assetData.length; i++) {
       String[] parsedString = assetData[i].split("\\s+");
-      if (parsedString[4].equals(searchedDate) || searchedDate.isEmpty() &&
+      if ((parsedString[4].equals(searchedDate) || searchedDate.isEmpty()) &&
             (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb)) &&
             (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb)) &&
             (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
-            finalData.add(assetData[i]);
+            finalData.add(parsedString[0] +" "+ parsedString[1]);
         }
     }
     return finalData;
@@ -123,10 +120,9 @@ public class SpecificAssetController {
     });
   }
 
-
   private void resetSpecificAssetList() {
     specificAssetList.getItems().clear();
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString);
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, true);
     specificAssetList.getItems().addAll(assetData);
   }
 
@@ -147,11 +143,8 @@ public class SpecificAssetController {
     assetNbFilter.setPromptText("Asset Number");
     floorNbFilter.setPromptText("Floor Number");
     roomNbFilter.setPromptText("Room Number");
-    
-    //String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetData();
-    System.out.println("2.5: " + assetTypeString);
     this.assetTypeString = assetType;
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType);
+    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType, true);
     specificAssetList.setFixedCellSize(50.0);
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -167,41 +160,28 @@ public class SpecificAssetController {
     });
     specificAssetList.setPrefHeight(10 * specificAssetList.getFixedCellSize());
     specificAssetList.getItems().addAll(assetData);
-
-    for (int i = 0; i<assetData.length; i++) {
-      //System.out.println(assetData[i]);
-    }
-
     specificAssetList.getSelectionModel().selectedItemProperty()
         .addListener(new ChangeListener<String>() {
-
           @Override
           public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
             specificAssetInfo = newValue;
             loadPage("viewSpecificAsset.fxml");
-            
         }
         });
-
-
-
   }
 
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
       Node page = loader.load();
-
       if (fxmlFile.equals("viewSpecificAsset.fxml")) {
           viewSpecificAssetController updateController = loader.getController();
-          updateController.displayTitle(specificAssetInfo);
+          updateController.initialize(specificAssetInfo);
       }
       if (fxmlFile.equals("addSpecificAsset.fxml")) {
         addSpecificAssetController updateController = loader.getController();
         updateController.setAssetTypeString(assetTypeString);
       }
-      
-
       specificAssetContentArea.getChildren().setAll(page);
   } catch (IOException e) {
       e.printStackTrace();

@@ -12,8 +12,15 @@ import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 public class AssetPlusFeatureSet3Controller {
 
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
-
-  public static String[] getSpecificAssetDataByAssetType(String assetType) {
+  /**
+   * Adds a specific asset from a title string 
+   * 
+   * @author Rehean Thillainathalingam
+   * @param assetType AssetType name string 
+   * @param isListValue boolean indicating if the result from this function is to be inputted into the view list or not
+   * @return A string array with the specific asset data for the assetType
+   */
+  public static String[] getSpecificAssetDataByAssetType(String assetType, boolean isListValue) {
     int currentAssetNumber;
     int currentRoomNumber;
     int currentFloorNumber;
@@ -22,13 +29,10 @@ public class AssetPlusFeatureSet3Controller {
     AssetType currentAssetType;
     String specificAssetInfo;
     List<SpecificAsset> specificAssets = assetPlus.getSpecificAssets();
-    //String[] assetTypeData = new String[specificAssets.size()];
     List<String> assetTypeData = new ArrayList<>();
-    //System.out.println("entered the controller method");
     for (int i = 0; i<specificAssets.size(); i++) {
        if (specificAssets.get(i).getAssetType().getName().equals(assetType))
        {
-          //System.out.println("inside the Tiffany if statement");
           currentAssetNumber = specificAssets.get(i).getAssetNumber();
           currentAssetType = specificAssets.get(i).getAssetType();
           currentAssetTypeString = currentAssetType.getName();
@@ -36,7 +40,11 @@ public class AssetPlusFeatureSet3Controller {
           currentRoomNumber = specificAssets.get(i).getRoomNumber();
           currentDate = specificAssets.get(i).getPurchaseDate();
 
-          specificAssetInfo = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber) + " " + currentFloorNumber + " " + currentRoomNumber + " "+ currentDate ;
+          if (isListValue) { 
+            specificAssetInfo = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber);
+          } else {
+            specificAssetInfo = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber) + " " + currentFloorNumber + " " + currentRoomNumber + " "+ currentDate ;
+          }
           assetTypeData.add(specificAssetInfo);
        }
     }
@@ -44,10 +52,18 @@ public class AssetPlusFeatureSet3Controller {
     String[] finalAssetTypeData = assetTypeData.toArray(new String[assetTypeData.size()]);
     return finalAssetTypeData;
   }
-
-  public static String[] getSpecificAssetData(){
+  
+  /**
+   * Adds a specific asset from a title string 
+   * 
+   * @author Rehean Thillainathalingam
+   * @param titleString Title string from view (ex: Chair #12)
+   * @return A string array with the specific asset data for that specific asset
+   */
+  public static String[] getSpecificAssetFromTitle(String titleString){
+    String[] splitString = titleString.split(" ");
     List<SpecificAsset> specificAssets = assetPlus.getSpecificAssets();
-    String[] specificAssetData = new String[specificAssets.size()];
+    String[] specificAssetData = new String[5];
     int currentAssetNumber;
     int currentRoomNumber;
     int currentFloorNumber;
@@ -56,16 +72,20 @@ public class AssetPlusFeatureSet3Controller {
     String currentAssetTypeString;
 
     for (int i = 0; i<specificAssets.size(); i++) {
-       currentAssetNumber = specificAssets.get(i).getAssetNumber();
-       currentAssetType = specificAssets.get(i).getAssetType();
-       currentAssetTypeString = currentAssetType.getName();
-       currentFloorNumber = specificAssets.get(i).getFloorNumber();
-       currentRoomNumber = specificAssets.get(i).getRoomNumber();
-       currentDate = specificAssets.get(i).getPurchaseDate();
-
-       specificAssetData[i] = currentAssetTypeString + " #" + Integer.toString(currentAssetNumber) + " " + currentFloorNumber + " " + currentRoomNumber + " "+ currentDate ;
+      if (specificAssets.get(i).getAssetType().getName().equals(splitString[0]) && specificAssets.get(i).getAssetNumber() == Integer.parseInt(splitString[1].substring(1))){
+        currentAssetNumber = specificAssets.get(i).getAssetNumber();
+        currentAssetType = specificAssets.get(i).getAssetType();
+        currentAssetTypeString = currentAssetType.getName();
+        currentFloorNumber = specificAssets.get(i).getFloorNumber();
+        currentRoomNumber = specificAssets.get(i).getRoomNumber();
+        currentDate = specificAssets.get(i).getPurchaseDate();
+        specificAssetData[0] = currentAssetTypeString;
+        specificAssetData[1] = Integer.toString(currentAssetNumber);
+        specificAssetData[2] = Integer.toString(currentFloorNumber);
+        specificAssetData[3] = Integer.toString(currentRoomNumber);
+        specificAssetData[4] = currentDate.toString();
+      }
     }
-
     return specificAssetData;
   }
   /**

@@ -25,12 +25,12 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="280.0" layoutY="319.0" text="AssetType">
+            <Label layoutX="280.0" layoutY="319.0" text="AssetType:">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="279.0" layoutY="395.0" text="Floor and Room Number">
+            <Label layoutX="279.0" layoutY="395.0" text="Floor and Room Number:">
                <font>
                   <Font size="24.0" />
                </font>

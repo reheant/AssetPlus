@@ -74,13 +74,22 @@ public class TicketUpdateController {
 
     Date newRaisedOnDate = Date.valueOf(raisedOnDateTextField.getText());
     String newTicketRaiserEmail = ticketRaiserTextField.getText();
-    int newAssetNumber = Integer.parseInt(assetNumberTextField.getText());
+    String newAssetNumberString = assetNumberTextField.getText();
+    int newAssetNumber;
+    if (newAssetNumberString.isEmpty()){
+      System.out.println("asset number empty");
+      newAssetNumber = -1;
+    }
+    else{
+      newAssetNumber = Integer.parseInt(newAssetNumberString);
+    }
 
     String result = AssetPlusFeatureSet4Controller.updateMaintenanceTicket(ticketId, newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
     if (!result.equals("")) {
       System.out.println(result);
       errorLabel.setText(result);
     }
+    reinitialize();
     System.out.println("saved");
   }
 
@@ -98,7 +107,7 @@ public class TicketUpdateController {
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
     this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
     this.raisedOnDateTextField.setText(String.valueOf(currentMaintenanceTicket.getRaisedOnDate()));
-    this.assetNameLabel.setText(currentMaintenanceTicket.getAssetName());
+    this.assetNameLabel.setText("Current Asset Name: " + currentMaintenanceTicket.getAssetName());
   }
 
 

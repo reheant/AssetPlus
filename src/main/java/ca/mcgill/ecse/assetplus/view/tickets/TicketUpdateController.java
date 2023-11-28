@@ -146,9 +146,17 @@ public class TicketUpdateController {
 
                 Optional<MaintenanceTicket.TimeEstimate> timeResult = timeDialog.showAndWait();
                 timeResult.ifPresent(timeEstimate -> {
-                    // Now, we have all the information we need to assign the staff to the ticket
-                    String errorMessage = AssetPlusStateController.assignTicket(
-                            ticketId, email, timeEstimate, priorityLevel, false); // Adjust the last parameter as needed
+                    // Prompt for manager approval
+                    List<String> approvalOptions = Arrays.asList("Yes", "No");
+                    ChoiceDialog<String> approvalDialog = new ChoiceDialog<>("No", approvalOptions);
+                    approvalDialog.setTitle("Manager Approval Required");
+                    approvalDialog.setHeaderText(null);
+                    approvalDialog.setContentText("Does this assignment require manager approval?");
+
+                    Optional<String> approvalResult = approvalDialog.showAndWait();
+                    boolean requiresManagerApproval = approvalResult.isPresent() && approvalResult.get().equals("Yes");
+
+                    String errorMessage = AssetPlusStateController.assignTicket(ticketId, email, timeEstimate, priorityLevel, requiresManagerApproval);
                     if (errorMessage.isEmpty()) {
                         staffListView.getItems().add(email);
                     } else {

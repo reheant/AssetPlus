@@ -1,5 +1,6 @@
 package ca.mcgill.ecse.assetplus.controller;
 
+import java.util.List;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 import ca.mcgill.ecse.assetplus.model.*;
 import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
@@ -108,6 +109,148 @@ public class AssetPlusFeatureSet1Controller {
   }
 
   /**
+   * Retrieves information about a manager in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return A string containing an error message if the manager is not found, or the manager's
+   *         name, email, and phone number if the manager is available. The returned string is empty
+   *         if no manager information is available.
+   */
+  public static String getManagerInfo() {
+    String error = assertManagerAvailable();
+    if (!error.isEmpty())
+      return error;
+
+    Manager manager = assetPlus.getManager();
+
+    String name = manager.getName() != null ? manager.getName() : "No name on record";
+    String email = manager.getEmail() != null ? manager.getEmail() : "No email on record";
+    String phoneNumber =
+        manager.getPhoneNumber() != null ? manager.getPhoneNumber() : "No phone number on record";
+
+    return name + "~" + email + "~" + phoneNumber;
+  }
+
+  /**
+   * Retrieves the email addresses of all employees in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return An array of strings where each string represents an employee's email address. The size
+   *         of the array is equal to the number of employees in the system.
+   */
+  public static String[] getEmployeeEmails() {
+    List<Employee> employees = assetPlus.getEmployees();
+    String[] employeeEmails = new String[employees.size()];
+
+    for (int i = 0; i < employees.size(); i++) {
+      employeeEmails[i] = employees.get(i).getEmail();
+    }
+
+    return employeeEmails;
+  }
+
+  /**
+   * Retrieves a specific employee's information from the AssetPlus system based on their email.
+   * 
+   * @author Nicolas Bolouri
+   * @param email The email address of the employee whose information is being requested.
+   * @return An array of strings containing the employee's name, phone number, email, and password,
+   *         or null if the information is not available or an exception occurs.
+   */
+  public static String[] getEmployeeInformationByEmail(String email) {
+    try {
+      User employee = User.getWithEmail(email);
+
+      if (employee == null) {
+        return null;
+      }
+
+      if (!(employee instanceof Employee)) {
+        return null;
+      }
+
+      String[] employeeInfo = new String[4];
+      employeeInfo[0] = employee.getName() != null ? employee.getName() : "No name on record";
+      employeeInfo[1] = employee.getEmail() != null ? employee.getEmail() : "No email on record";
+      employeeInfo[2] = employee.getPhoneNumber() != null ? employee.getPhoneNumber()
+          : "No phone number on record";
+      employeeInfo[3] =
+          employee.getPassword() != null ? employee.getPassword() : "No password on record";
+
+      return employeeInfo;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * Retrieves the email addresses of all guests in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return An array of strings where each string represents a guest's email address. The size of
+   *         the array is equal to the number of guests in the system.
+   */
+  public static String[] getGuestEmails() {
+    List<Guest> guests = assetPlus.getGuests();
+    String[] guestEmails = new String[guests.size()];
+
+    for (int i = 0; i < guests.size(); i++) {
+      guestEmails[i] = guests.get(i).getEmail();
+    }
+
+    return guestEmails;
+  }
+
+  /**
+   * Retrieves a specific guest's information from the AssetPlus system based on their email.
+   * 
+   * @author Nicolas Bolouri
+   * @param email The email address of the guest whose information is being requested.
+   * @return An array of strings containing the guest's name, phone number, email, and password, or
+   *         null if the information is not available or an exception occurs.
+   */
+  public static String[] getGuestInformationByEmail(String email) {
+    try {
+      User guest = User.getWithEmail(email);
+
+      if (guest == null) {
+        return null;
+      }
+
+      if (!(guest instanceof Guest)) {
+        return null;
+      }
+
+      String[] guestInfo = new String[4];
+      guestInfo[0] = guest.getName() != null ? guest.getName() : "No name on record";
+      guestInfo[1] = guest.getEmail() != null ? guest.getEmail() : "No email on record";
+      guestInfo[2] =
+          guest.getPhoneNumber() != null ? guest.getPhoneNumber() : "No phone number on record";
+      guestInfo[3] = guest.getPassword() != null ? guest.getPassword() : "No password on record";
+
+      return guestInfo;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * Retrieves the password of the currently available manager in the AssetPlus system.
+   * 
+   * @author Nicolas Bolouri
+   * @return A string containing an error message if the manager is not available, or the manager's
+   *         password if the manager is available
+   */
+  public static String getManagerPassword() {
+    String error = assertManagerAvailable();
+    if (!error.isEmpty())
+      return error;
+
+    Manager manager = assetPlus.getManager();
+    return manager.getPassword();
+  }
+
+  /**
    * Checks if a manager is available in the AssetPlus system.
    * 
    * @author Nicolas Bolouri
@@ -161,7 +304,7 @@ public class AssetPlusFeatureSet1Controller {
     int atIndex = email.indexOf("@");
     int lastAtindex = email.lastIndexOf("@");
     int dotIndex = email.lastIndexOf(".");
-    if (atIndex <= 0 || atIndex != lastAtindex || atIndex >= dotIndex - 1
+    if (atIndex <= 0 || atIndex != lastAtindex || dotIndex <= atIndex + 1
         || dotIndex >= email.length() - 1) {
       return "Invalid email";
     }

@@ -1,21 +1,24 @@
 package ca.mcgill.ecse.assetplus.view.tickets;
 
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Objects;
 
 public class TicketsController {
 
     @FXML
     private AnchorPane maintenanceTicketContentArea;
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     private TextField maintenanceTicketSearchBar;
@@ -48,6 +51,8 @@ public class TicketsController {
     @FXML
     private Button applyFilterButton;
 
+    private int new_ticket_id;
+
     // Event handler for the search button
     @FXML
     private void onSearchButtonClicked() {
@@ -73,8 +78,19 @@ public class TicketsController {
     }
 
     @FXML
-    private void onAddTicketClicked(){
-        loadPage("tickets/update-ticket.fxml");
+    private void onAddTicketClicked() {
+        this.new_ticket_id = AssetPlusFeatureSet6Controller.getMaxTicketId()+1;
+        Date current_date = new Date(System.currentTimeMillis());
+        String result =
+                AssetPlusFeatureSet4Controller.addMaintenanceTicket(new_ticket_id, current_date, "Add a description...", "luke.freund@ap.com", -1);
+
+        if (!result.equals("")) {
+            System.out.println(result);
+            errorLabel.setText(result);
+            return;
+        } else {
+            loadPage("tickets/update-ticket.fxml");
+        }
     }
 
     // Initialize method if needed
@@ -85,10 +101,19 @@ public class TicketsController {
 
     private void loadPage(String fxmlFile) {
         try {
-            Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+            Node page = loader.load();
             maintenanceTicketContentArea.getChildren().setAll(page);
+
+            if (fxmlFile.equals("tickets/update-ticket.fxml")){
+                TicketUpdateController ticketUpdateController = loader.getController();
+                ticketUpdateController.setTicketId(new_ticket_id);
+                ticketUpdateController.initialize();
+            }
         } catch (IOException e) {
+            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             e.printStackTrace();
+            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         }
     }
 }

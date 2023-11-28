@@ -101,6 +101,7 @@ public class TicketUpdateController {
   @FXML
   public void initialize() {
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
+    System.out.println(this.currentMaintenanceTicket);
     this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
 
     this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));

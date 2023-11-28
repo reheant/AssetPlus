@@ -3,6 +3,7 @@ package ca.mcgill.ecse.assetplus.view.tickets;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
+import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet5Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
 
@@ -20,7 +25,10 @@ import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
 public class TicketUpdateController {
   @FXML
   private AnchorPane mainContentArea;
-  
+
+  @FXML
+  private ListView<String> imageListView;
+
   @FXML
   private Label errorLabel;
   
@@ -45,9 +53,10 @@ public class TicketUpdateController {
   @FXML
   private TextField raisedOnDateTextField;
   
-  
   private TOMaintenanceTicket currentMaintenanceTicket;
+
   private int ticketId;
+
   private String ticketDescription;
 
 

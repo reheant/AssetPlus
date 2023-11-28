@@ -44,7 +44,13 @@ public class TicketUpdateController {
 
   @FXML
   private TextField raisedOnDateTextField;
-  
+
+  @FXML
+  private Label assetNameLabel;
+
+  @FXML 
+  private TextField assetNumberTextField;
+
   
   private TOMaintenanceTicket currentMaintenanceTicket;
   private int ticketId;
@@ -68,7 +74,7 @@ public class TicketUpdateController {
 
     Date newRaisedOnDate = Date.valueOf(raisedOnDateTextField.getText());
     String newTicketRaiserEmail = ticketRaiserTextField.getText();
-    int newAssetNumber = -1;
+    int newAssetNumber = Integer.parseInt(assetNumberTextField.getText());
 
     String result = AssetPlusFeatureSet4Controller.updateMaintenanceTicket(ticketId, newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
     if (!result.equals("")) {
@@ -83,7 +89,7 @@ public class TicketUpdateController {
     loadPage("tickets/tickets.fxml");
   }
 
-  // Initialize method if needed
+  // reinitialize method if needed
   @FXML
   public void reinitialize() {
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
@@ -92,6 +98,7 @@ public class TicketUpdateController {
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
     this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
     this.raisedOnDateTextField.setText(String.valueOf(currentMaintenanceTicket.getRaisedOnDate()));
+    this.assetNameLabel.setText(currentMaintenanceTicket.getAssetName());
   }
 
 

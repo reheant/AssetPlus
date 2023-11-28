@@ -89,8 +89,12 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidTicketDescription(newDescription);
     error += assertValidAssetNumber(newAssetNumber);
 
+
     User newTicketRaiser = User.getWithEmail(newEmail);
-    if (newTicketRaiser == null) {
+    if (newEmail.equals("manager@ap.com")){
+      newTicketRaiser = assetPlus.getManager();
+    }
+    else if (newTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
 

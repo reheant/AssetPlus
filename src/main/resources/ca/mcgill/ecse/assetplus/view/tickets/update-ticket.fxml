@@ -76,11 +76,12 @@
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Button layoutX="10.0" layoutY="63.0" mnemonicParsing="false" prefHeight="124.0" prefWidth="300.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-color: #E3E1E1; -fx-border-radius: 15; -fx-border-width: 5;" text="+ Link Asset" textFill="#e3e1e1">
+            <TextField fx:id="assetNumberTextField" layoutX="18.0" layoutY="133.0" prefHeight="31.0" prefWidth="284.0" promptText="New Asset Number" />
+            <Label fx:id="assetNameLabel" alignment="CENTER" layoutX="14.0" layoutY="72.0" prefHeight="27.0" prefWidth="284.0" text="Currently: None" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
-            </Button>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="851.0" layoutY="255.0" prefHeight="184.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20px;">

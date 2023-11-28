@@ -47,7 +47,7 @@ public class AssetPlusFeatureSet6Controller {
       Date raisedOnDate = maintenanceTicket.getRaisedOnDate();
       String description = maintenanceTicket.getDescription();
       String raisedByEmail = maintenanceTicket.getTicketRaiser().getEmail();
-      String status = maintenanceTicket.getPossible_stateFullName();
+      String status = maintenanceTicket.getStatusFullName();
       String fixedByEmail = null;
       String timeToResolve = null;
       String priority = null;

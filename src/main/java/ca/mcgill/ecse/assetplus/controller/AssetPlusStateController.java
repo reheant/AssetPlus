@@ -42,7 +42,7 @@ public class AssetPlusStateController {
             }
 
             Manager manager = assetPlus.getManager();
-            ticket.assignStaff(priorityLevel, timeEstimate, employee, ticketID, manager.getEmail());
+            ticket.assignHotelStaff(employee, timeEstimate, priorityLevel, requiresManagerApproval);
             if (requiresManagerApproval) {
                 ticket.setFixApprover(manager);
             }
@@ -80,8 +80,7 @@ public class AssetPlusStateController {
                 return error.trim();
             }
 
-            String employeeEmail = ticketFixer.getEmail();
-            ticket.startedToWork(employeeEmail);
+            ticket.startTask();
 
             AssetPlusPersistence.save();
         } catch (Exception e) {
@@ -118,12 +117,7 @@ public class AssetPlusStateController {
                 return error.trim();
             }
 
-            String userEmail = ticketFixer.getEmail();
-            ticket.resolve(userEmail, ticketId);
-
-            if (!ticket.hasFixApprover()) {
-                ticket.close(ticketId);
-            }
+            ticket.completeTask();
 
             AssetPlusPersistence.save();
         } catch (Exception e) {
@@ -156,7 +150,7 @@ public class AssetPlusStateController {
             }
 
             Manager manager = assetPlus.getManager();
-            ticket.disapprove(manager.getEmail());
+            ticket.disapprove(date, reason);
             ticket.addTicketNote(date, reason, manager);
             AssetPlusPersistence.save();
         } catch (Exception e) {
@@ -186,7 +180,7 @@ public class AssetPlusStateController {
                 return error.trim();
             }
 
-            ticket.approve(assetPlus.getManager().getEmail());
+            ticket.approve();
             AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to disapprove a ticket"
@@ -233,16 +227,16 @@ public class AssetPlusStateController {
      */
     private static String assertTicketAssignable(MaintenanceTicket ticket) {
         if (ticket != null) {
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Assigned) {
                 return "The maintenance ticket is already assigned.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Resolved) {
                 return "Cannot assign a maintenance ticket which is resolved.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Closed) {
                 return "Cannot assign a maintenance ticket which is closed.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.InProgress) {
                 return "Cannot assign a maintenance ticket which is in progress.";
             }
         }
@@ -258,16 +252,16 @@ public class AssetPlusStateController {
      */
     private static String assertTicketStartable(MaintenanceTicket ticket) {
         if (ticket != null) {
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Open) {
                 return "Cannot start a maintenance ticket which is open.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Resolved) {
                 return "Cannot start a maintenance ticket which is resolved.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Closed) {
                 return "Cannot start a maintenance ticket which is closed.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.InProgress) {
                 return "The maintenance ticket is already in progress.";
             }
         }
@@ -283,16 +277,16 @@ public class AssetPlusStateController {
      */
     private static String assertTicketCompletable(MaintenanceTicket ticket) {
         if (ticket != null) {
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Open) {
                 return "Cannot complete a maintenance ticket which is open.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Assigned) {
                 return "Cannot complete a maintenance ticket which is assigned.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Closed) {
                 return "The maintenance ticket is already closed.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Resolved) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Resolved) {
                 return "The maintenance ticket is already resolved.";
             }
         }
@@ -309,16 +303,16 @@ public class AssetPlusStateController {
      */
     private static String assertTicketDisapprovable(MaintenanceTicket ticket) {
         if (ticket != null) {
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Open) {
                 return "Cannot disapprove a maintenance ticket which is open.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Assigned) {
                 return "Cannot disapprove a maintenance ticket which is assigned.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Closed) {
                 return "Cannot disapprove a maintenance ticket which is closed.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.InProgress) {
                 return "Cannot disapprove a maintenance ticket which is in progress.";
             }
         }
@@ -335,16 +329,16 @@ public class AssetPlusStateController {
      */
     private static String assertTicketApprovable(MaintenanceTicket ticket) {
         if (ticket != null) {
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Open) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Open) {
                 return "Cannot approve a maintenance ticket which is open.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Assigned) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Assigned) {
                 return "Cannot approve a maintenance ticket which is assigned.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.Closed) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.Closed) {
                 return "The maintenance ticket is already closed.";
             }
-            if (ticket.getPossible_state() == MaintenanceTicket.Possible_state.InProgress) {
+            if (ticket.getStatus() == MaintenanceTicket.Status.InProgress) {
                 return "Cannot approve a maintenance ticket which is in progress.";
             }
         }

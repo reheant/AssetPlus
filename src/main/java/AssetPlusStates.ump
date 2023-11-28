@@ -57,8 +57,8 @@ class MaintenanceTicket {
    * 
    * @author Rehean Thillainathalingam
    * @param priority The priority level of the ticket
-   * @param timeEstimate The time estimate of the ticket
-   * @param ticketFixer The assigned hotel staff
+   * @param timeToResolve The time estimate of the ticket
+   * @param hotelStaff The assigned hotel staff
    * @param approvalRequired Boolean if manager approval is required or not
    */
 
@@ -103,7 +103,7 @@ class MaintenanceTicket {
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   private void rejectAssign(String state) {
         String message = "";
@@ -122,7 +122,7 @@ class MaintenanceTicket {
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   private void rejectStart(String state) {
         String message = "";
@@ -141,7 +141,7 @@ class MaintenanceTicket {
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   private void rejectComplete(String state) {
         String message = "";
@@ -160,7 +160,7 @@ class MaintenanceTicket {
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   private void rejectDisapprove(String state) {
         String message = "";
@@ -179,7 +179,7 @@ class MaintenanceTicket {
    * Error handling for transitions  
    * 
    * @author Rehean Thillainathalingam
-   * @param string State string in which the function was called
+   * @param state String in which the function was called
    */
   private void rejectApprove(String state) {
         String message = "";

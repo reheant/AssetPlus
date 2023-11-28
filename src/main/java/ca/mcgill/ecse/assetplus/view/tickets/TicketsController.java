@@ -85,9 +85,9 @@ public class TicketsController {
     @FXML
     private void onAddTicketClicked() {        
         int new_ticket_id = AssetPlusFeatureSet6Controller.getMaxTicketId()+1;
-        Date current_date = new Date(System.currentTimeMillis());        
+        Date current_date = new Date(System.currentTimeMillis());    
         String result =
-            AssetPlusFeatureSet4Controller.addMaintenanceTicket(new_ticket_id, current_date, "Add a description...", "bob@ap.com", -1);
+            AssetPlusFeatureSet4Controller.addMaintenanceTicket(new_ticket_id, current_date, "Add a description...", "manager@ap.com", -1);
             
         if (!result.equals("")) {
             System.out.println(result);
@@ -98,7 +98,7 @@ public class TicketsController {
             TicketUpdateController ticketUpdateController = loader.getController();
             
             ticketUpdateController.setTicketId(new_ticket_id);
-            ticketUpdateController.initialize();           
+            ticketUpdateController.reinitialize();           
         }
     }
 

@@ -85,7 +85,7 @@ public class TicketUpdateController {
 
   // Initialize method if needed
   @FXML
-  public void initialize() {
+  public void reinitialize() {
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
     
     this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));

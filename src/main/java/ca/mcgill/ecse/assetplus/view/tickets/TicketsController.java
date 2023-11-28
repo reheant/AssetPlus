@@ -58,6 +58,8 @@ public class TicketsController {
     @FXML
     private Button addTicketButton;
 
+    private int new_ticket_id;
+
     // Event handler for the search button
     @FXML
     private void onSearchButtonClicked() {
@@ -83,25 +85,20 @@ public class TicketsController {
     }
 
     @FXML
-    private void onAddTicketClicked() {        
-        int new_ticket_id = AssetPlusFeatureSet6Controller.getMaxTicketId()+1;
-        Date current_date = new Date(System.currentTimeMillis());        
+    private void onAddTicketClicked() {
+        this.new_ticket_id = AssetPlusFeatureSet6Controller.getMaxTicketId()+1;
+        Date current_date = new Date(System.currentTimeMillis());
         String result =
-            AssetPlusFeatureSet4Controller.addMaintenanceTicket(new_ticket_id, current_date, "Add a description...", "bob@ap.com", -1);
-            
+                AssetPlusFeatureSet4Controller.addMaintenanceTicket(new_ticket_id, current_date, "Add a description...", "luke.freund@ap.com", -1);
+
         if (!result.equals("")) {
             System.out.println(result);
             errorLabel.setText(result);
             return;
-        } else {        
-            FXMLLoader loader = loadPage("tickets/update-ticket.fxml");
-            TicketUpdateController ticketUpdateController = loader.getController();
-            
-            ticketUpdateController.setTicketId(new_ticket_id);
-            ticketUpdateController.initialize();           
+        } else {
+            loadPage("tickets/update-ticket.fxml");
         }
     }
-
 
     // Initialize method if needed
     @FXML
@@ -109,17 +106,21 @@ public class TicketsController {
         // Initialization code
     }
 
-    private FXMLLoader loadPage(String fxmlFile) {
+    private void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
             Node page = loader.load();
             maintenanceTicketContentArea.getChildren().setAll(page);
-            return loader;
+
+            if (fxmlFile.equals("tickets/update-ticket.fxml")){
+                TicketUpdateController ticketUpdateController = loader.getController();
+                ticketUpdateController.setTicketId(new_ticket_id);
+                ticketUpdateController.initialize();
+            }
         } catch (IOException e) {
             System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             e.printStackTrace();
             System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         }
-        return null;
     }
 }

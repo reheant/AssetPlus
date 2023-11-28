@@ -32,7 +32,7 @@
                <ListView fx:id="employeeList" prefWidth="605.0" />
          </content>
       </ScrollPane>
-            <Button onMouseClicked="#onClearButtonClicked" layoutX="537.0" layoutY="97.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: pink; -fx-border-color: black;" text="Clear" textFill="WHITE">
+            <Button layoutX="537.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#onClearButtonClicked" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: pink; -fx-border-color: black;" text="Clear" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -86,17 +86,17 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button onMouseClicked="#onUpdateEmployeeClicked" layoutX="42.0" layoutY="453.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Update Employee Information" textFill="WHITE">
+            <Button layoutX="42.0" layoutY="453.0" mnemonicParsing="false" onMouseClicked="#onUpdateEmployeeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Update Employee Information" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button onMouseClicked="#onDeleteEmployeeClicked" layoutX="42.0" layoutY="511.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Delete Employee" textFill="WHITE">
+            <Button layoutX="42.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#onDeleteEmployeeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Delete Employee" textFill="WHITE">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button onMouseClicked="#onAddEmployeeClicked" layoutX="42.0" layoutY="569.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Add Employee" textFill="WHITE">
+            <Button layoutX="42.0" layoutY="569.0" mnemonicParsing="false" onMouseClicked="#onAddEmployeeClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Add Employee" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

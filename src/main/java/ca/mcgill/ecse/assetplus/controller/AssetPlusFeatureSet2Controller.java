@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.controller;
 
 import ca.mcgill.ecse.assetplus.model.*;
+import java.util.List;
 import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 import ca.mcgill.ecse.assetplus.application.AssetPlusApplication;
 
@@ -99,6 +100,43 @@ public class AssetPlusFeatureSet2Controller {
             assetType.delete();
             AssetPlusPersistence.save();
         }
+    }
+    
+    /**
+     * Gets asset type names from asset plus application 
+     * 
+     * @author Tiffany Miller
+     */
+    public static String[] getAssetTypes() {
+    	List<AssetType> assetTypes = assetPlus.getAssetTypes();
+    	String[] typeNames = new String[assetTypes.size()];
+    	
+    	for (int i=0; i< assetTypes.size(); i++) {
+    		typeNames[i] = assetTypes.get(i).getName();
+    	}
+    	
+    	return typeNames;
+    }
+    
+    /**
+     * Gets asset type lifespan by name from asset plus application 
+     * 
+     * @author Tiffany Miller
+     */
+    public static int getLifespanByName(String name) {
+    	try {
+    	      AssetType assetType = AssetType.getWithName(name);
+
+    	      if (assetType == null) {
+    	        return 0;
+    	      }
+    	      
+    	      int specificLifespan;
+    	      specificLifespan = assetType.getExpectedLifeSpan();
+    	      return specificLifespan;
+    } catch (Exception e) {
+        return 0;
+      }
     }
 
     /**

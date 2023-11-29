@@ -34,6 +34,7 @@ public class addSpecificAssetController {
   private Label errorLabel;
 
   private String assetTypeString;
+  private java.sql.Date sqlDate;
 
   public void setAssetTypeString(String string) {
     assetTypeString = string;
@@ -46,21 +47,35 @@ public class addSpecificAssetController {
     String purchased = purchasedDate.getText().strip();
     String floorNb = floorNumber.getText().strip();
     String roomNb = roomNumber.getText().strip();
+    String result = "";
+    int intAssetnb = -1;
+    int intFloorNb = -1;
+    int intRoomNb = -2;
 
-    int intAssetnb = Integer.parseInt(assetNb);
-    int intFloorNb = Integer.parseInt(floorNb);
-    int intRoomNb = Integer.parseInt(roomNb);
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     java.util.Date utilDate;
     try {
       utilDate = dateFormat.parse(purchased);
-      java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-      AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); 
-      loadPage("SpecificAsset.fxml");
+      sqlDate = new java.sql.Date(utilDate.getTime());
     } catch (ParseException e) {
+      result += "Please enter a valid date. (yyyy-mm-dd) ";
       e.printStackTrace();
     }
+    try {
+      intAssetnb = Integer.parseInt(assetNb);
+      intFloorNb = Integer.parseInt(floorNb);
+      intRoomNb = Integer.parseInt(roomNb);
+    } catch (Exception e) {
+      result += "Please enter valid numbers with no characters ";
+    }
+    result += AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); 
+      if (!result.equals("")) {
+        errorLabel.setText(result);
+        return;
+      } else {
+        loadPage("SpecificAsset.fxml");
+      }
   }
 
   @FXML

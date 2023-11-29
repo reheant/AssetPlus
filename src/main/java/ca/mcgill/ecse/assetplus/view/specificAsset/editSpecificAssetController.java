@@ -31,6 +31,9 @@ public class editSpecificAssetController {
   private Button confirmSpecificAsset;
   @FXML
   private Label titleLabel;
+  @FXML
+  private Label errorLabel;
+  private java.sql.Date sqlDate;
 
   @FXML
   public void backButtonOnClick(){
@@ -48,16 +51,33 @@ public class editSpecificAssetController {
 
   @FXML
   public void confirmSpecificAssetOnClick() {
+    String result = "";
+    int intAssetnb = -1;
+    int intFloorNb = -1;
+    int intRoomNb = -2;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     java.util.Date utilDate;
     try {
       utilDate = dateFormat.parse(purchaseDate.getText());
-      java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-      AssetPlusFeatureSet3Controller.updateSpecificAsset(Integer.parseInt(assetNumber.getText()), Integer.parseInt(floorNb.getText()),Integer.parseInt(roomNb.getText()), sqlDate, assetType.getText());
-      loadPage("SpecificAsset.fxml");
+      sqlDate = new java.sql.Date(utilDate.getTime());
     } catch (ParseException e) {
+      result += "Please enter a valid date. (yyyy-mm-dd) ";
       e.printStackTrace();
     }
+    try {
+      intAssetnb = Integer.parseInt(assetNumber.getText());
+      intFloorNb = Integer.parseInt(floorNb.getText());
+      intRoomNb = Integer.parseInt(roomNb.getText());
+    } catch (Exception e) {
+      result += "Please enter valid numbers with no characters ";
+    }
+    result += AssetPlusFeatureSet3Controller.updateSpecificAsset(intAssetnb, intFloorNb,intRoomNb, sqlDate, assetType.getText());
+      if (!result.equals("")) {
+        errorLabel.setText(result);
+        return;
+      } else {
+        loadPage("SpecificAsset.fxml");
+      }
 
   }
 

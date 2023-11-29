@@ -35,7 +35,7 @@ public class AssetTypeController {
   private ListView<String> assetTypeList;
 
   @FXML
-  private Button viewAssetType;
+  private Button viewAllSpecificAssets;
 
   private String assetTypeString;
 
@@ -45,7 +45,7 @@ public class AssetTypeController {
   }
 
   @FXML
-  private void onViewAssetTypeClicked() {
+  private void viewAllSpecificAssetsClicked() {
     String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
       if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
           loadPage("../specificAsset/specificAsset.fxml");

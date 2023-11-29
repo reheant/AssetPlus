@@ -41,6 +41,11 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="148.0" layoutY="469.0" prefHeight="29.0" prefWidth="517.0" textAlignment="CENTER" textFill="#e82f2f">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <TextField fx:id="assetNumber" layoutX="273.0" layoutY="175.0" />
             <TextField fx:id="purchasedDate" layoutX="276.0" layoutY="262.0" />
             <Label fx:id="assetType" layoutX="279.0" layoutY="338.0" prefHeight="36.0" prefWidth="152.0" style="-fx-background-color: E3E1E1; -fx-border-radius: 20px;" />

@@ -122,7 +122,7 @@ public class TicketsController {
         this.newTicketId = AssetPlusFeatureSet6Controller.getMaxTicketId() + 1;
         Date currentDate = new Date(System.currentTimeMillis());
         String result = AssetPlusFeatureSet4Controller.addMaintenanceTicket(newTicketId,
-                currentDate, "Add a description...", "luke.freund@ap.com", -1);
+                currentDate, "Add a description...", "manager@ap.com", -1);
 
         if (!result.equals("")) {
             System.out.println(result);
@@ -163,6 +163,8 @@ public class TicketsController {
             // newValuue = ticket id that has been selected as a string
             // do logic here to see ticket details
             System.out.println("Ticket id: " + newValue);
+            newTicketId = Integer.parseInt(newValue);
+            loadPage("tickets/update-ticket.fxml");
         }
         });
     }

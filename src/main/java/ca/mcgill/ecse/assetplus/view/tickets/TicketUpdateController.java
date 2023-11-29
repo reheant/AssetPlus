@@ -67,6 +67,7 @@ public class TicketUpdateController {
   private TOMaintenanceTicket currentMaintenanceTicket;
   private int ticketId;
   private String ticketDescription;
+  private int assetNumber;
 
 
   public void setTicketId(int newViewedTicketId){
@@ -90,7 +91,7 @@ public class TicketUpdateController {
     int newAssetNumber;
     if (newAssetNumberString.isEmpty()){
       System.out.println("asset number empty");
-      newAssetNumber = -1;
+      newAssetNumber = assetNumber;
     }
     else{
       newAssetNumber = Integer.parseInt(newAssetNumberString);
@@ -121,7 +122,18 @@ public class TicketUpdateController {
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
     this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
     this.raisedOnDateTextField.setText(String.valueOf(currentMaintenanceTicket.getRaisedOnDate()));
-    this.assetNameLabel.setText("Current Asset Name: " + currentMaintenanceTicket.getAssetName());
+    
+    String currentAssetName = currentMaintenanceTicket.getAssetName();
+    if (currentAssetName == null){
+      currentAssetName = "None";
+    }
+    this.assetNameLabel.setText("Current Asset Name: " + currentAssetName);
+
+    assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
+    System.out.println("new asset number: " + String.valueOf(assetNumber));
+    if (assetNumber != -1){
+      this.assetNumberTextField.setText(String.valueOf(assetNumber));
+    }
   }
 
 

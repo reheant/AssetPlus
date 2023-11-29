@@ -116,6 +116,21 @@ public class AssetPlusFeatureSet6Controller {
     return max;
   }
 
+
+  public static int getAssetNumber(int ticketId) {
+    MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
+    if (maintenanceTicket == null) {
+      return -1;
+    }
+    SpecificAsset asset = maintenanceTicket.getAsset();
+    if (asset == null){
+      return -1;
+    } else {
+      return asset.getAssetNumber();
+    }
+  }
+
+
   /**
    * Extracts a list of ticket image URLs from a maintenance ticket images.
    *

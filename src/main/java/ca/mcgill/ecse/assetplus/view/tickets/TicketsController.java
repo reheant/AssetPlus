@@ -160,7 +160,7 @@ public class TicketsController {
         @Override
         public void changed(ObservableValue<? extends String> observable, String oldValue,
         String newValue) {
-            // newValuue = ticket id that has been selected as a string
+            // newValue = ticket id that has been selected as a string
             // do logic here to see ticket details
             System.out.println("Ticket id: " + newValue);
             newTicketId = Integer.parseInt(newValue);

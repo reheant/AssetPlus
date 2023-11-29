@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -56,6 +57,8 @@ public class TicketUpdateController {
 
   @FXML
   private TextField raisedOnDateTextField;
+  @FXML
+  private Button viewAndEditStatus;
 
   @FXML
   private Label assetNameLabel;
@@ -70,9 +73,17 @@ public class TicketUpdateController {
   private int assetNumber;
 
 
+
+
   public void setTicketId(int newViewedTicketId){
     ticketId = newViewedTicketId;
   }
+
+  @FXML
+  public void viewAndEditStatusOnClick(){
+    loadPage("tickets/view-edit-status.fxml");
+  }
+
 
 
   @FXML
@@ -141,6 +152,10 @@ public class TicketUpdateController {
         try {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
             Node page = loader.load();
+            if (fxmlFile.equals("tickets/view-edit-status.fxml")) {
+              ViewAndEditStatusController updateController = loader.getController();
+              updateController.initialize(ticketId);
+            }
             mainContentArea.getChildren().setAll(page);
             return loader;
         } catch (IOException e) {

@@ -34,62 +34,40 @@ public class ViewAndEditStatusController {
   @FXML
   private RadioButton startedRadioButton, completedRadioButton;
 
-  //private int ticketId;
-  private String currentTicketStatus;
+  private int ticketID;
   private TOMaintenanceTicket ticket;
   
 
   @FXML
   public void initialize(int ticketID) {
     this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
-    
+    this.ticketID = ticketID;
     if (ticket.getFixedByEmail() == null){
       startedRadioButton.setDisable(true);
       completedRadioButton.setDisable(true);
       ticketStatusMessage.setText("ticket must be assigned before starting or completing");
-    } else {
-      
+    } else if (ticket.getStatus().equals("Assigned")){
+      completedRadioButton.setDisable(true);
+      ticketStatusMessage.setText("ticket can only be started, once started it can be completed");
     }
   }
 
   public void manageCompleteAndStarted(ActionEvent event) {
-   // while (startedRadioButton)
-    // if (!startedRadioButton.isSelected() && !completedRadioButton.isSelected() && currentTicketStatus.equals("Open")) {
-    //   startedRadioButton.setDisable(true);
-    //   completedRadioButton.setDisable(true);
-    //   ticketStatusMessage.setText("ticket must be assigned before starting or completing");
-    // }
 
-    // if (currentTicketStatus.equals("Assigned")) {
-    //   completedRadioButton.setDisable(true);
-    //   if (startedRadioButton.isSelected()) {
-    //     AssetPlusStateController.startTicket(ticketId);
-    //   }
-
-    // }
-
-    // if (currentTicketStatus.equals("InProgress")) {
-    //   startedRadioButton.setDisable(true);
-    //   if (completedRadioButton.isSelected()) {
-    //     AssetPlusStateController.resolveTicket(ticketId);
-    //   }
-    // }
-
-    // if(startedRadioButton.isSelected()) {
-    //   //String error = AssetPlusStateController.assignTicket(ticketId, "bob@ap.com", TimeEstimate.LessThanADay, PriorityLevel.Normal, false); //TODO: am manually assigning ticket until luke does asssignstaff
-    //   AssetPlusStateController.startTicket(ticketId);
-    //   //System.out.println("error:"+error);
-    //   System.out.print("maintenance tivcket status; " +MaintenanceTicket.getWithId(ticketId).getStatusFullName());
-      
-      
-      
-    // }
-
-    // else if (completedRadioButton.isSelected()){
-    //   AssetPlusStateController.resolveTicket(ticketId);
-    //   System.out.print("maintenance tivcket status; " +MaintenanceTicket.getWithId(ticketId).getStatusFullName());
-      
-    // }
+    if (startedRadioButton.isSelected()){
+      startedRadioButton.setDisable(true);
+      completedRadioButton.setDisable(false);
+      AssetPlusStateController.startTicket(ticketID);
+      ticketStatusMessage.setText("ticket has been started, press complete to complete it");
+    } else if (completedRadioButton.isSelected() && ticket.getApprovalRequired()){
+      completedRadioButton.setDisable(true);
+      AssetPlusStateController.resolveTicket(ticketID);
+      ticketStatusMessage.setText("ticket has been reolved, awaiting manager's approval");
+    } else if (completedRadioButton.isSelected() && !ticket.getApprovalRequired()){
+      completedRadioButton.setDisable(true);
+      AssetPlusStateController.resolveTicket(ticketID);
+      ticketStatusMessage.setText("ticket has been completed, good job");
+    }
 
   }
 
@@ -101,6 +79,11 @@ public class ViewAndEditStatusController {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/tickets/" + fxmlFile));
       Node page = loader.load();
+      if (fxmlFile.equals("update-ticket.fxml")) {
+        TicketUpdateController ticketUpdateController = loader.getController();
+        ticketUpdateController.setTicketId(ticketID);
+        ticketUpdateController.reinitialize();
+    }
       
       viewEditStatusContentArea.getChildren().setAll(page);
   } catch (IOException e) {

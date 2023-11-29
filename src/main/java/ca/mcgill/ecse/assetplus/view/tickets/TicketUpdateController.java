@@ -2,24 +2,18 @@ package ca.mcgill.ecse.assetplus.view.tickets;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet5Controller;
+import ca.mcgill.ecse.assetplus.controller.*;
+import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.scene.Node;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
-import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
 
 
 import java.io.IOException;
@@ -30,9 +24,11 @@ public class TicketUpdateController {
   @FXML
   private AnchorPane mainContentArea;
 
-
   @FXML
   private ListView<String> imageListView;
+
+  @FXML
+  private ListView<String> staffListView;
 
   @FXML
   private Label errorLabel;
@@ -68,7 +64,9 @@ public class TicketUpdateController {
 
   
   private TOMaintenanceTicket currentMaintenanceTicket;
+
   private int ticketId;
+
   private String ticketDescription;
   private int assetNumber;
 
@@ -122,7 +120,70 @@ public class TicketUpdateController {
     loadPage("tickets/tickets.fxml");
   }
 
-  // reinitialize method if needed
+
+    @FXML
+    private void onDeleteImageButtonClicked() {
+        String selectedUrl = imageListView.getSelectionModel().getSelectedItem();
+        if (selectedUrl != null) {
+            AssetPlusFeatureSet5Controller.deleteImageFromMaintenanceTicket(selectedUrl, ticketId);
+            imageListView.getItems().remove(selectedUrl);
+        } else {
+            showAlert("No Selection", "Please select an image URL to delete.");
+        }
+    }
+
+    @FXML
+    private void onAssignStaffClicked() {
+        // First prompt for the employee email
+        TextInputDialog emailDialog = new TextInputDialog();
+        emailDialog.setTitle("Assign Staff");
+        emailDialog.setHeaderText(null);
+        emailDialog.setContentText("Please enter the staff's email:");
+
+        Optional<String> emailResult = emailDialog.showAndWait();
+        emailResult.ifPresent(email -> {
+            // Then ask for the priority level
+            List<MaintenanceTicket.PriorityLevel> priorityLevels = Arrays.asList(MaintenanceTicket.PriorityLevel.values());
+            ChoiceDialog<MaintenanceTicket.PriorityLevel> priorityDialog = new ChoiceDialog<>(MaintenanceTicket.PriorityLevel.Normal, priorityLevels);
+            priorityDialog.setTitle("Priority Level");
+            priorityDialog.setHeaderText(null);
+            priorityDialog.setContentText("Choose the priority level:");
+
+            Optional<MaintenanceTicket.PriorityLevel> priorityResult = priorityDialog.showAndWait();
+            priorityResult.ifPresent(priorityLevel -> {
+                // Finally, ask for the time estimate
+                List<MaintenanceTicket.TimeEstimate> timeEstimates = Arrays.asList(MaintenanceTicket.TimeEstimate.values());
+                ChoiceDialog<MaintenanceTicket.TimeEstimate> timeDialog = new ChoiceDialog<>(MaintenanceTicket.TimeEstimate.OneToThreeDays, timeEstimates);
+                timeDialog.setTitle("Time Estimate");
+                timeDialog.setHeaderText(null);
+                timeDialog.setContentText("Choose the time estimate:");
+
+                Optional<MaintenanceTicket.TimeEstimate> timeResult = timeDialog.showAndWait();
+                timeResult.ifPresent(timeEstimate -> {
+                    // Prompt for manager approval
+                    List<String> approvalOptions = Arrays.asList("Yes", "No");
+                    ChoiceDialog<String> approvalDialog = new ChoiceDialog<>("No", approvalOptions);
+                    approvalDialog.setTitle("Manager Approval Required");
+                    approvalDialog.setHeaderText(null);
+                    approvalDialog.setContentText("Does this assignment require manager approval?");
+
+                    Optional<String> approvalResult = approvalDialog.showAndWait();
+                    boolean requiresManagerApproval = approvalResult.isPresent() && approvalResult.get().equals("Yes");
+
+                    String errorMessage = AssetPlusStateController.assignTicket(ticketId, email, timeEstimate, priorityLevel, requiresManagerApproval);
+                    if (errorMessage.isEmpty()) {
+                        staffListView.getItems().add(email);
+                    } else {
+                        showAlert("Error Assigning Ticket: ", errorMessage);
+                    }
+                });
+            });
+        });
+    }
+
+  
+
+
   @FXML
   public void reinitialize() {
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
@@ -186,16 +247,7 @@ public class TicketUpdateController {
       });
   }
 
-    @FXML
-    private void onDeleteImageButtonClicked() {
-        String selectedUrl = imageListView.getSelectionModel().getSelectedItem();
-        if (selectedUrl != null) {
-            AssetPlusFeatureSet5Controller.deleteImageFromMaintenanceTicket(selectedUrl, ticketId);
-            imageListView.getItems().remove(selectedUrl);
-        } else {
-            showAlert("No Selection", "Please select an image URL to delete.");
-        }
-    }
+    
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -123,7 +123,6 @@ public class TicketsController {
         Date currentDate = new Date(System.currentTimeMillis());
         String result = AssetPlusFeatureSet4Controller.addMaintenanceTicket(newTicketId,
                 currentDate, "Add a description...", "manager@ap.com", -1);
-
         if (!result.equals("")) {
             System.out.println(result);
             errorLabel.setText(result);
@@ -133,6 +132,7 @@ public class TicketsController {
         }
     }
 
+    // Initialize method if needed
     @FXML
     public void initialize() {
         maintenanceTicketSearchBar.setFocusTraversable(false);

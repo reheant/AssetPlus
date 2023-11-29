@@ -45,10 +45,17 @@ public class ViewAndEditStatusController {
     if (ticket.getFixedByEmail() == null){
       startedRadioButton.setDisable(true);
       completedRadioButton.setDisable(true);
-      ticketStatusMessage.setText("ticket must be assigned before starting or completing");
+      ticketStatusMessage.setText("Ticket must be assigned before starting or completing");
     } else if (ticket.getStatus().equals("Assigned")){
       completedRadioButton.setDisable(true);
-      ticketStatusMessage.setText("ticket can only be started, once started it can be completed");
+      ticketStatusMessage.setText("Ticket can only be started, once started it can be completed");
+    } else if (ticket.getStatus().equals("Closed")){
+      startedRadioButton.setDisable(true);
+      completedRadioButton.setDisable(true);
+      ticketStatusMessage.setText("Ticket has been closed");
+    } else {
+      startedRadioButton.setDisable(true);
+      completedRadioButton.setDisable(true);
     }
   }
 
@@ -58,15 +65,15 @@ public class ViewAndEditStatusController {
       startedRadioButton.setDisable(true);
       completedRadioButton.setDisable(false);
       AssetPlusStateController.startTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been started, press complete to complete it");
+      ticketStatusMessage.setText("Ticket has been started, press complete to complete it");
     } else if (completedRadioButton.isSelected() && ticket.getApprovalRequired()){
       completedRadioButton.setDisable(true);
       AssetPlusStateController.resolveTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been reolved, awaiting manager's approval");
+      ticketStatusMessage.setText("Ticket has been reolved, awaiting manager's approval");
     } else if (completedRadioButton.isSelected() && !ticket.getApprovalRequired()){
       completedRadioButton.setDisable(true);
       AssetPlusStateController.resolveTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been completed, good job");
+      ticketStatusMessage.setText("Ticket has been completed, good job");
     }
 
   }

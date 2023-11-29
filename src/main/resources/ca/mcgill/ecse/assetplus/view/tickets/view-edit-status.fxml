@@ -33,7 +33,7 @@
                <font>
                   <Font size="14.0" />
                </font></RadioButton>
-            <Label fx:id="ticketStatusMessage" layoutX="19.0" layoutY="244.0" text="Ticket infomration will display here once a vlid ticket is chosen">
+            <Label fx:id="ticketStatusMessage" layoutX="33.0" layoutY="243.0" text="Ticket infomration will display here once a vlid ticket is chosen">
                <font>
                   <Font size="14.0" />
                </font></Label>

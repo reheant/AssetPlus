@@ -154,7 +154,6 @@ public class TicketsController {
         maintenanceTicketList.setPrefHeight(10 * maintenanceTicketList.getFixedCellSize());
         maintenanceTicketList.getItems().addAll(ticketIdKs);
 
-        // !!! THIS IS WHAT / WHERE THE LOGIC WOULD BE WHEN TICKET IS CLICKED !!!
         maintenanceTicketList.getSelectionModel().selectedItemProperty()
             .addListener(new ChangeListener<String>() {
 

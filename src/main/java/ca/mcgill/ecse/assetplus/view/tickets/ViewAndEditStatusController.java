@@ -27,12 +27,19 @@ import java.io.IOException;
 public class ViewAndEditStatusController {
   @FXML
   private Label ticketStatusMessage;
+
+  @FXML
+  private Label approvalStatusMessage;
+
   @FXML
   private Button backButton;
   @FXML 
   private AnchorPane viewEditStatusContentArea;
   @FXML
   private RadioButton startedRadioButton, completedRadioButton;
+
+  @FXML
+  private RadioButton approvedButton, disapprovedButton;
 
   private int ticketID;
   private TOMaintenanceTicket ticket;
@@ -50,7 +57,19 @@ public class ViewAndEditStatusController {
       completedRadioButton.setDisable(true);
       ticketStatusMessage.setText("ticket can only be started, once started it can be completed");
     }
+    System.out.println(ticket.getStatus());
+    if (!ticket.isApprovalRequired()){
+      approvedButton.setDisable(true);
+      disapprovedButton.setDisable(true);
+      approvalStatusMessage.setText("Ticket does not require manager's approval upon completion");
+    }
+    else if (!ticket.getStatus().equals("Resolved")){
+      approvedButton.setDisable(true);
+      disapprovedButton.setDisable(true);
+      approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager");
+    }
   }
+
 
   public void manageCompleteAndStarted(ActionEvent event) {
 
@@ -62,12 +81,36 @@ public class ViewAndEditStatusController {
     } else if (completedRadioButton.isSelected() && ticket.getApprovalRequired()){
       completedRadioButton.setDisable(true);
       AssetPlusStateController.resolveTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been reolved, awaiting manager's approval");
+      ticketStatusMessage.setText("ticket has been resolved, awaiting manager's approval");
+      if (approvedButton.isSelected()) {
+        approvedButton.setDisable(true);
+        disapprovedButton.setDisable(true);
+        AssetPlusStateController.approveTicket(ticketID);
+        approvalStatusMessage.setText("Ticket has been approved.");
+      }
+      else if (disapprovedButton.isSelected()) {
+        approvedButton.setDisable(true);
+        disapprovedButton.setDisable(true);
+        AssetPlusStateController.approveTicket(ticketID);
+        approvalStatusMessage.setText("Ticket has been disapproved.");
+      }
     } else if (completedRadioButton.isSelected() && !ticket.getApprovalRequired()){
       completedRadioButton.setDisable(true);
       AssetPlusStateController.resolveTicket(ticketID);
       ticketStatusMessage.setText("ticket has been completed, good job");
     }
+    System.out.println(ticket.getStatus());
+    if (!ticket.isApprovalRequired()){
+      approvedButton.setDisable(true);
+      disapprovedButton.setDisable(true);
+      approvalStatusMessage.setText("Ticket does not require manager's approval upon completion");
+    }
+    else if (!ticket.getStatus().equals("Resolved")){
+      approvedButton.setDisable(true);
+      disapprovedButton.setDisable(true);
+      approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager");
+    }
+
 
   }
 

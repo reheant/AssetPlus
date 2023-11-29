@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="viewEditStatusContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewAndEditStatusController">
+<AnchorPane fx:id="viewEditStatusContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewAndEditStatusController">
    <children>
       <Pane layoutX="161.0" layoutY="16.0" prefHeight="673.0" prefWidth="866.0" style="-fx-background-color: white; -fx-background-radius: 30px; -fx-border-radius: 30px; -fx-border-color: black; -fx-border-width: 3px;">
          <children>
@@ -33,7 +33,7 @@
                <font>
                   <Font size="14.0" />
                </font></RadioButton>
-            <Label fx:id="ticketStatusMessage" layoutX="19.0" layoutY="244.0" text="Ticket infomration will display here once a vlid ticket is chosen">
+            <Label fx:id="ticketStatusMessage" layoutX="19.0" layoutY="244.0" text="Ticket information will display here once a valid ticket is chosen">
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -42,6 +42,30 @@
                   <Font size="15.0" />
                </font>
             </Label>
+            <Label fx:id="ticketStatusMessage11" layoutX="45.0" layoutY="337.0" prefHeight="37.0" prefWidth="165.0" text="Modify Approval Status:">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="approvedButton" layoutX="118.0" layoutY="384.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Approved">
+               <toggleGroup>
+                  <ToggleGroup fx:id="approval" />
+               </toggleGroup>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="disapprovedButton" layoutX="118.0" layoutY="426.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Disapproved" toggleGroup="$approval">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
+            <Label fx:id="approvalStatusMessage" layoutX="34.0" layoutY="490.0" text="Ticket  information will display here after approval status is completed">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+
          </children></Pane>
    </children>
 </AnchorPane>

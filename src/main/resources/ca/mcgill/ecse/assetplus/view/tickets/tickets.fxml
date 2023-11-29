@@ -41,51 +41,46 @@
         </AnchorPane>
         <AnchorPane layoutX="690.0" layoutY="27.0" prefHeight="427.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
             <children>
-                <Label alignment="CENTER" layoutX="194.0" layoutY="14.0" text="Filter">
+                <Label alignment="CENTER" layoutX="174.0" layoutY="14.0" text="Filter By">
                     <font>
                         <Font name="System Bold" size="40.0" />
                     </font>
                 </Label>
-                <Label layoutX="42.0" layoutY="72.0" text="Staff email">
+                <Label layoutX="42.0" layoutY="87.0" text="Staff email">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Label>
-                <Label layoutX="41.0" layoutY="159.0" text="Start Date">
+                <Label layoutX="41.0" layoutY="205.0" text="Raised on Date">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Label>
-                <Label layoutX="42.0" layoutY="241.0" text="End Date">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Label>
-                <TextField layoutX="42.0" layoutY="109.0" prefHeight="30.0" prefWidth="400.0" promptText="No staff currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+                <TextField id="staffEmailTextField" fx:id="staffEmailTextField" layoutX="42.0" layoutY="124.0" prefHeight="30.0" prefWidth="400.0" promptText="No staff currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </TextField>
-                <TextField layoutX="42.0" layoutY="195.0" prefHeight="30.0" prefWidth="400.0" promptText="mm/dd/yyyy" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+                <TextField id="raisedOnDateTextField" fx:id="raisedOnDateTextField" layoutX="42.0" layoutY="241.0" prefHeight="30.0" prefWidth="400.0" promptText="yyyy-mm-dd" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </TextField>
-                <TextField layoutX="42.0" layoutY="276.0" prefHeight="30.0" prefWidth="400.0" promptText="mm/dd/yyyy" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </TextField>
-                <Button layoutX="42.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#onClearFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Clear Filter" textFill="WHITE">
+                <Button layoutX="42.0" layoutY="307.0" mnemonicParsing="false" onMouseClicked="#onClearFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Clear Filter" textFill="WHITE">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Button>
-                <Button layoutX="42.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#onApplyFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Apply Filter" textFill="WHITE">
+                <Button layoutX="42.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#onApplyFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Apply Filter" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
+            <Label layoutX="213.0" layoutY="168.0" prefHeight="23.0" prefWidth="57.0" text="and / or">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
         <AnchorPane layoutX="690.0" layoutY="477.0" prefHeight="210.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">

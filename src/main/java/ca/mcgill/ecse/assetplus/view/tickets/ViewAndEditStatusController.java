@@ -52,12 +52,15 @@ public class ViewAndEditStatusController {
     if (ticket.getFixedByEmail() == null){
       startedRadioButton.setDisable(true);
       completedRadioButton.setDisable(true);
-      ticketStatusMessage.setText("ticket must be assigned before starting or completing");
-    } else if (ticket.getStatus().equals("Assigned")){
+      approvedButton.setDisable(true);
+      disapprovedButton.setDisable(true);
+      ticketStatusMessage.setText("Ticket must be assigned before starting or completing");
+      approvalStatusMessage.setText("Ticket must be assigned before approval");
+
+    } else if (ticket.getStatus().equals("Assigned")) {
       completedRadioButton.setDisable(true);
       ticketStatusMessage.setText("ticket can only be started, once started it can be completed");
     }
-    System.out.println(ticket.getStatus());
     if (!ticket.isApprovalRequired()){
       approvedButton.setDisable(true);
       disapprovedButton.setDisable(true);
@@ -85,11 +88,11 @@ public class ViewAndEditStatusController {
       startedRadioButton.setDisable(true);
       completedRadioButton.setDisable(false);
       AssetPlusStateController.startTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been started, press complete to complete it");
+      ticketStatusMessage.setText("Ticket has been started, press complete to complete it");
     } else if (completedRadioButton.isSelected() && ticket.getApprovalRequired()){
       completedRadioButton.setDisable(true);
       AssetPlusStateController.resolveTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been resolved, awaiting manager's approval");
+      ticketStatusMessage.setText("Ticket has been resolved, awaiting manager's approval");
       if (approvedButton.isSelected()) {
         approvedButton.setDisable(true);
         disapprovedButton.setDisable(true);
@@ -118,8 +121,6 @@ public class ViewAndEditStatusController {
       disapprovedButton.setDisable(true);
       approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager");
     }
-
-
   }
 
   public void backButtonOnClick() {

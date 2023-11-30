@@ -111,6 +111,11 @@ public class TicketUpdateController {
   }
 
   @FXML
+  private void onViewTicketNotesClicked(){
+      loadPage("tickets/view-ticket-notes.fxml");
+  }
+
+  @FXML
   private void onAssignStaffClicked() {
       TextInputDialog emailDialog = new TextInputDialog();
       emailDialog.setTitle("Assign Staff");
@@ -191,14 +196,17 @@ public class TicketUpdateController {
           if (fxmlFile.equals("tickets/view-edit-status.fxml")) {
               ViewAndEditStatusController updateController = loader.getController();
               updateController.initialize(ticketId);
+          } else if (fxmlFile.equals("tickets/view-ticket-notes.fxml")) {
+              ViewTicketNotesController notesController = loader.getController();
+              notesController.setCurrentMaintenanceTicket(this.currentMaintenanceTicket);
           }
           mainContentArea.getChildren().setAll(page);
           return loader;
       } catch (IOException e) {
           e.printStackTrace();
       }
-        return null;
-    }
+      return null;
+  }
 
   @FXML
   private void onAddImageButtonClicked() {

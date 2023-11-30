@@ -31,6 +31,10 @@ public class AssetPlusStateController {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
+            if (employeeEmail == "manager@ap.com"){
+                employee = assetPlus.getManager();
+                System.out.println("MANAGER HERE");
+            }
 
             var error = "";
             error += assertTicketExists(ticket);

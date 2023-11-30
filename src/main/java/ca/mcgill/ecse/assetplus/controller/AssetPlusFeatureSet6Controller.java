@@ -95,6 +95,13 @@ public class AssetPlusFeatureSet6Controller {
 
   }
 
+  /**
+   * Gets a Maintenance Ticket transfer object for the maintenance ticket with the corresponding ID.
+   * 
+   * @author Julien Audet
+   * @param id The id of the maintenance ticket to view.
+   * @return Returns a Maintenance Ticket transfer object for the maintenance ticket with the corresponding ID.
+   */
   public static TOMaintenanceTicket getTicketWithId(int id) {
     List<TOMaintenanceTicket> allMaintenanceTickets = getTickets();
     for (TOMaintenanceTicket ticket: allMaintenanceTickets){
@@ -105,6 +112,13 @@ public class AssetPlusFeatureSet6Controller {
     return null;
   }
 
+
+  /**
+   * Gets the largest ticket id amongst all tickets.
+   * 
+   * @authod Julien Audet
+   * @return Returns the largest ticket id amongst all tickets.
+   */
   public static int getMaxTicketId() {
     int max = -1;
     List<TOMaintenanceTicket> allMaintenanceTickets = getTickets();
@@ -117,6 +131,13 @@ public class AssetPlusFeatureSet6Controller {
   }
 
 
+  /**
+   * Gets the asset number of the asset assigned to ticket with corresponding id (if any).
+   * 
+   * @author Julien Audet
+   * @param ticketId The id of the corresponding ticket.
+   * @return The asset number of the asset assigned to the ticket with corresponding id (if any).
+   */
   public static int getAssetNumber(int ticketId) {
     MaintenanceTicket maintenanceTicket = MaintenanceTicket.getWithId(ticketId);
     if (maintenanceTicket == null) {

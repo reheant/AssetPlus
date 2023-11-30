@@ -16,10 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
-
 public class TicketUpdateController {
   @FXML
   private AnchorPane mainContentArea;
@@ -53,6 +49,7 @@ public class TicketUpdateController {
 
   @FXML
   private TextField raisedOnDateTextField;
+  
   @FXML
   private Button viewAndEditStatus;
 

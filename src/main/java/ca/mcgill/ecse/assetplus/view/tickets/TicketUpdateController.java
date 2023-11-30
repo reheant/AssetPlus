@@ -2,6 +2,7 @@ package ca.mcgill.ecse.assetplus.view.tickets;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class TicketUpdateController {
   private TextField ticketRaiserTextField;
 
   @FXML
-  private TextField raisedOnDateTextField;
+  private DatePicker raisedOnDateDatePicker;
   
   @FXML
   private Button viewAndEditStatus;
@@ -74,14 +75,12 @@ public class TicketUpdateController {
 
   @FXML
   public void onSaveTicketClicked(){
-    String newDescription = descriptionTextArea.getText();
-
-    Date newRaisedOnDate = Date.valueOf(raisedOnDateTextField.getText());
+    String newDescription = descriptionTextArea.getText();    
+    Date newRaisedOnDate = Date.valueOf(raisedOnDateDatePicker.getValue());
     String newTicketRaiserEmail = ticketRaiserTextField.getText();
     String newAssetNumberString = assetNumberTextField.getText();
     int newAssetNumber;
     if (newAssetNumberString.isEmpty()){
-      System.out.println("asset number empty");
       newAssetNumber = assetNumber;
     }
     else {
@@ -94,7 +93,6 @@ public class TicketUpdateController {
       errorLabel.setText(result);
     }
     reinitialize();
-    System.out.println("saved");
   }
 
   @FXML
@@ -176,7 +174,7 @@ public class TicketUpdateController {
     this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
     this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
-    this.raisedOnDateTextField.setText(String.valueOf(currentMaintenanceTicket.getRaisedOnDate()));
+    this.raisedOnDateDatePicker.setValue(currentMaintenanceTicket.getRaisedOnDate().toLocalDate());
     this.staffTextField.setText(this.currentMaintenanceTicket.getFixedByEmail());
 
       String currentAssetName = currentMaintenanceTicket.getAssetName();

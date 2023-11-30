@@ -4,7 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "type": "java",
+            "name": "AssetPlusApplication",
+            "request": "launch",
+            "mainClass": "ca.mcgill.ecse.assetplus.application.AssetPlusApplication",
+            "projectName": "ca.mcgill.ecse.assetplus"
+        },
         {
             "type": "java",
             "name": "Current File",

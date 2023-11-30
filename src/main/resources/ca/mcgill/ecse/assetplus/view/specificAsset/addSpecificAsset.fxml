@@ -41,7 +41,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Label fx:id="errorLabel" alignment="CENTER" layoutX="148.0" layoutY="469.0" prefHeight="29.0" prefWidth="517.0" textAlignment="CENTER" textFill="#e82f2f">
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="148.0" layoutY="469.0" prefHeight="141.0" prefWidth="517.0" textAlignment="CENTER" textFill="#e82f2f">
                <font>
                   <Font size="18.0" />
                </font>

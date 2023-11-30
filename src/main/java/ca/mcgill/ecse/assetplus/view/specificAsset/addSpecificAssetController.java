@@ -55,11 +55,14 @@ public class addSpecificAssetController {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     java.util.Date utilDate;
-    try {
+    if (assetNb.equals("") || purchased.equals("") || floorNb.equals("") || roomNb.equals("")){
+      result += "Please do not leave any empty values";
+    } else {
+      try {
       utilDate = dateFormat.parse(purchased);
       sqlDate = new java.sql.Date(utilDate.getTime());
     } catch (ParseException e) {
-      result += "Please enter a valid date. (yyyy-mm-dd) ";
+      result += "Please enter a valid date. (yyyy-mm-dd) \n";
       e.printStackTrace();
     }
     try {
@@ -67,15 +70,18 @@ public class addSpecificAssetController {
       intFloorNb = Integer.parseInt(floorNb);
       intRoomNb = Integer.parseInt(roomNb);
     } catch (Exception e) {
-      result += "Please enter valid numbers with no characters ";
+      result += "Please enter valid numbers with no characters \n";
     }
-    result += AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); 
-      if (!result.equals("")) {
-        errorLabel.setText(result);
-        return;
-      } else {
-        loadPage("SpecificAsset.fxml");
-      }
+
+    if (result.equals("")) {
+      result += AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); 
+    }}
+    if (!result.equals("")) {
+      errorLabel.setText(result);
+      return;
+    } else {
+      loadPage("SpecificAsset.fxml");
+    }
   }
 
   @FXML

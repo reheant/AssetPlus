@@ -1,18 +1,8 @@
 package ca.mcgill.ecse.assetplus.view.tickets;
 
-import com.google.common.base.Objects;
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusStateController;
 import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
-import ca.mcgill.ecse.assetplus.model.MaintenanceTicket;
-import ca.mcgill.ecse.assetplus.model.MaintenanceTicket.PriorityLevel;
-import ca.mcgill.ecse.assetplus.model.MaintenanceTicket.Status;
-import ca.mcgill.ecse.assetplus.model.MaintenanceTicket.TimeEstimate;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -51,6 +41,10 @@ public class ViewAndEditStatusController {
     updateApprovalView();
   }
 
+  public void backButtonOnClick() {
+    loadPage("update-ticket.fxml");
+  }
+
   private void updateView() {
     this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
     String status = ticket.getStatus();
@@ -79,7 +73,6 @@ public class ViewAndEditStatusController {
       }
       default -> {
       }
-      // Handle unexpected status
     }
   }
 
@@ -109,7 +102,6 @@ public class ViewAndEditStatusController {
         }
         default -> {
         }
-        // Handle unexpected status
       }
     }
   }
@@ -146,10 +138,6 @@ public class ViewAndEditStatusController {
     });
     updateView();
     updateApprovalView();
-  }
-
-  public void backButtonOnClick() {
-    loadPage("update-ticket.fxml");
   }
 
   private void loadPage(String fxmlFile) {

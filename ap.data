@@ -1,0 +1,50 @@
+{
+  "AssetPlus": {
+    "employees": [
+      ""
+    ],
+    "guests": [
+      ""
+    ],
+    "maintenanceTickets": [
+      ""
+    ],
+    "assetTypes": [
+      {
+        "AssetType": {
+          "name": "chair",
+          "expectedLifeSpan": 123,
+          "assetPlus": {
+            "@reference": "../../.."
+          },
+          "specificAssets": [
+            {
+              "SpecificAsset": {
+                "assetNumber": 12,
+                "floorNumber": 8,
+                "roomNumber": 9,
+                "purchaseDate": "2020-12-12",
+                "assetPlus": {
+                  "@reference": "../../../../.."
+                },
+                "maintenanceTickets": [
+                  ""
+                ],
+                "assetType": {
+                  "@reference": "../../.."
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "specificAssets": [
+      {
+        "SpecificAsset": {
+          "@reference": "../../assetTypes/AssetType/specificAssets/SpecificAsset"
+        }
+      }
+    ]
+  }
+}

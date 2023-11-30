@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet2Controller;
+import ca.mcgill.ecse.assetplus.view.specificAsset.SpecificAssetController;
 
 public class AssetTypeController {
   @FXML
@@ -38,6 +40,11 @@ public class AssetTypeController {
    * @author Tiffany Miller
    */
   @FXML
+  private Button viewAllSpecificAssets;
+
+  private String assetTypeString;
+
+  @FXML
   private void onAddAssetTypeClicked() {
     loadPage("add-asset-type.fxml");
   }
@@ -47,6 +54,15 @@ public class AssetTypeController {
    *
    * @author Tiffany Miller
    */
+  @FXML
+  private void viewAllSpecificAssetsClicked() {
+    String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
+      if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
+          loadPage("../specificAsset/specificAsset.fxml");
+      }
+    
+  }
+
   @FXML
   private void onUpdateAssetTypeClicked() {
       String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
@@ -131,6 +147,7 @@ public class AssetTypeController {
           public void changed(ObservableValue<? extends String> observable, String oldValue,
               String newValue) {
             setInfo(newValue);
+            assetTypeString = newValue;
           }
         });
   }
@@ -237,6 +254,11 @@ public class AssetTypeController {
             updateController.setAssetTypeOldName(assetTypeName.getText());
             updateController.setAssetTypeOldLifespan(assetTypeLifespan.getText());
             updateController.updateUIWithAssetTypeData();
+        }
+
+        if (fxmlFile.equals("../specificAsset/specificAsset.fxml")) {
+          SpecificAssetController updateController = loader.getController();
+          updateController.initialize(assetTypeString);
         }
 
         assetTypeContentArea.getChildren().setAll(page);

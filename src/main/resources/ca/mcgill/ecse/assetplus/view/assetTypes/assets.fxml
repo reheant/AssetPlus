@@ -81,6 +81,11 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
+            <Button fx:id="viewAllSpecificAssets" layoutX="45.0" layoutY="493.0" mnemonicParsing="false" onAction="#viewAllSpecificAssetsClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="View Asset Type" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

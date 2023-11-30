@@ -16,12 +16,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Optional;
 
 
 public class ViewAndEditStatusController {
@@ -32,14 +31,13 @@ public class ViewAndEditStatusController {
   private Label approvalStatusMessage;
 
   @FXML
-  private Button backButton;
+  private Button actionButton;
+
   @FXML 
   private AnchorPane viewEditStatusContentArea;
-  @FXML
-  private RadioButton startedRadioButton, completedRadioButton;
 
   @FXML
-  private RadioButton approvedButton, disapprovedButton;
+  private Button approveButton, disapproveButton;
 
   private int ticketID;
 
@@ -49,78 +47,105 @@ public class ViewAndEditStatusController {
   public void initialize(int ticketID) {
     this.ticketID = ticketID;
     this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
-    if (ticket.getFixedByEmail() == null){
-      startedRadioButton.setDisable(true);
-      completedRadioButton.setDisable(true);
-      approvedButton.setDisable(true);
-      disapprovedButton.setDisable(true);
-      ticketStatusMessage.setText("Ticket must be assigned before starting or completing");
-      approvalStatusMessage.setText("Ticket must be assigned before approval");
+    updateView();
+    updateApprovalView();
+  }
 
-    } else if (ticket.getStatus().equals("Assigned")) {
-      completedRadioButton.setDisable(true);
-      ticketStatusMessage.setText("ticket can only be started, once started it can be completed");
-    }
-    if (!ticket.isApprovalRequired()){
-      approvedButton.setDisable(true);
-      disapprovedButton.setDisable(true);
-      approvalStatusMessage.setText("Ticket does not require manager's approval upon completion");
-    }
-    else if (!ticket.getStatus().equals("Resolved")){
-      approvedButton.setDisable(true);
-      disapprovedButton.setDisable(true);
-      approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager");
-    }
-    else if (ticket.getStatus().equals("Closed")){
-      startedRadioButton.setDisable(true);
-      completedRadioButton.setDisable(true);
-      ticketStatusMessage.setText("Ticket has been closed");
-    } else {
-      startedRadioButton.setDisable(true);
-      completedRadioButton.setDisable(true);
+  private void updateView() {
+    this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
+    String status = ticket.getStatus();
+    switch (status) {
+      case "Open" -> {
+        actionButton.setDisable(true);
+        actionButton.setText("Start");
+        ticketStatusMessage.setText("Ticket must be assigned before starting or completing.");
+      }
+      case "Assigned" -> {
+        actionButton.setDisable(false);
+        actionButton.setText("Start");
+        ticketStatusMessage.setText("Ticket ready to be started.");
+      }
+      case "InProgress" -> {
+        actionButton.setDisable(false);
+        actionButton.setText("Complete");
+        ticketStatusMessage.setText("Ticket has been started.");
+      }
+      case "Resolved", "Closed" -> {
+        actionButton.setDisable(true);
+        actionButton.setText("Complete");
+        ticketStatusMessage.setText(status.equals("Resolved") ?
+                "Ticket has been resolved, awaiting manager's approval." :
+                "Ticket is closed.");
+      }
+      default -> {
+      }
+      // Handle unexpected status
     }
   }
 
-
-  public void manageCompleteAndStarted(ActionEvent event) {
-
-    if (startedRadioButton.isSelected()){
-      startedRadioButton.setDisable(true);
-      completedRadioButton.setDisable(false);
-      AssetPlusStateController.startTicket(ticketID);
-      ticketStatusMessage.setText("Ticket has been started, press complete to complete it");
-    } else if (completedRadioButton.isSelected() && ticket.getApprovalRequired()){
-      completedRadioButton.setDisable(true);
-      AssetPlusStateController.resolveTicket(ticketID);
-      ticketStatusMessage.setText("Ticket has been resolved, awaiting manager's approval");
-      if (approvedButton.isSelected()) {
-        approvedButton.setDisable(true);
-        disapprovedButton.setDisable(true);
-        AssetPlusStateController.approveTicket(ticketID);
-        approvalStatusMessage.setText("Ticket has been approved.");
+  private void updateApprovalView() {
+    this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
+    if (!ticket.getApprovalRequired()) {
+      approveButton.setDisable(true);
+      disapproveButton.setDisable(true);
+      approvalStatusMessage.setText("Ticket does not require manager's approval.");
+    } else {
+      String status = ticket.getStatus();
+      switch (status) {
+        case "Open", "Assigned", "InProgress" -> {
+          approveButton.setDisable(true);
+          disapproveButton.setDisable(true);
+          approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager.");
+        }
+        case "Resolved" -> {
+          approveButton.setDisable(false);
+          disapproveButton.setDisable(false);
+          approvalStatusMessage.setText("Approve or disapprove ticket completion.");
+        }
+        case "Closed" -> {
+          approveButton.setDisable(true);
+          disapproveButton.setDisable(true);
+          approvalStatusMessage.setText("Ticket approved and closed.");
+        }
+        default -> {
+        }
+        // Handle unexpected status
       }
-      else if (disapprovedButton.isSelected()) {
-        approvedButton.setDisable(true);
-        disapprovedButton.setDisable(true);
-        AssetPlusStateController.approveTicket(ticketID);
-        approvalStatusMessage.setText("Ticket has been disapproved.");
-      }
-    } else if (completedRadioButton.isSelected() && !ticket.getApprovalRequired()){
-      completedRadioButton.setDisable(true);
-      AssetPlusStateController.resolveTicket(ticketID);
-      ticketStatusMessage.setText("ticket has been completed, good job");
     }
-    System.out.println(ticket.getStatus());
-    if (!ticket.isApprovalRequired()){
-      approvedButton.setDisable(true);
-      disapprovedButton.setDisable(true);
-      approvalStatusMessage.setText("Ticket does not require manager's approval upon completion");
+  }
+
+  @FXML
+  private void handleActionButton() {
+    if ("Start".equals(actionButton.getText())) {
+      AssetPlusStateController.startTicket(ticket.getId());
+    } else if ("Complete".equals(actionButton.getText())) {
+      AssetPlusStateController.resolveTicket(ticket.getId());
     }
-    else if (!ticket.getStatus().equals("Resolved")){
-      approvedButton.setDisable(true);
-      disapprovedButton.setDisable(true);
-      approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager");
-    }
+    updateView();
+    updateApprovalView();
+  }
+
+  @FXML
+  private void handleApproveButton() {
+    AssetPlusStateController.approveTicket(ticket.getId());
+    updateView();
+    updateApprovalView();
+  }
+
+  @FXML
+  private void handleDisapproveButton() {
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("Disapprove Reason");
+    dialog.setHeaderText("Disapprove Ticket");
+    dialog.setContentText("Please enter the reason for disapproving the ticket:");
+
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(reason -> {
+      Date currentDate = new Date(System.currentTimeMillis());
+      AssetPlusStateController.disapproveTicket(ticket.getId(), currentDate, reason);
+    });
+    updateView();
+    updateApprovalView();
   }
 
   public void backButtonOnClick() {
@@ -138,7 +163,8 @@ public class ViewAndEditStatusController {
     }
       
       viewEditStatusContentArea.getChildren().setAll(page);
-  } catch (IOException e) {
-      e.printStackTrace();
-  }}
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+  }
 }

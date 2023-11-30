@@ -94,7 +94,6 @@ public class AssetPlusStateController {
      * Completes the work on a maintenance ticket.
      *
      * @author Luke Freund
-     * @param userEmail The email of the user resolving the ticket
      * @param ticketId The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */

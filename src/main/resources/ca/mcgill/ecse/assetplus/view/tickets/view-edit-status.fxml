@@ -24,20 +24,18 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <RadioButton fx:id="approvedButton" layoutX="27.0" layoutY="93.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Approved">
+                  <Button fx:id="approveButton" layoutX="103.0" layoutY="95.0" mnemonicParsing="false" onAction="#handleApproveButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" text="Approve" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="approval" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="disapprovedButton" layoutX="27.0" layoutY="164.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Disapproved" toggleGroup="$approval">
+                  </Button>
+
+                  <Button fx:id="disapproveButton" layoutX="104.0" layoutY="156.0" mnemonicParsing="false" onAction="#handleDisapproveButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" text="Disapprove" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </RadioButton>
-                  <Label fx:id="approvalStatusMessage" layoutX="27.0" layoutY="247.0" prefHeight="61.0" prefWidth="289.0" text="Ticket  information will display here after approval status is completed">
+                  </Button>
+                  <Label fx:id="approvalStatusMessage" layoutX="35.0" layoutY="272.0" prefHeight="61.0" prefWidth="289.0" text="Ticket  information will display here after approval status is completed">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -46,25 +44,17 @@
             </AnchorPane>
             <AnchorPane layoutX="62.0" layoutY="169.0" prefHeight="436.0" prefWidth="358.0" style="-fx-border-color: grey; -fx-border-radius: 20; -fx-border-width: 3;">
                <children>
-                  <RadioButton fx:id="completedRadioButton" layoutX="18.0" layoutY="166.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Completed">
+                  <Button fx:id="actionButton" layoutX="103.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleActionButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="CompleteAndStart" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="startedRadioButton" layoutX="23.0" layoutY="95.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="95.0" text="Started" toggleGroup="$CompleteAndStart">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </RadioButton>
-                  <Label fx:id="ticketStatusMessage" layoutX="23.0" layoutY="287.0" prefHeight="18.0" prefWidth="267.0" text="Ticket information will display here once a valid ticket is chosen">
+                  </Button>
+                  <Label fx:id="ticketStatusMessage" layoutX="23.0" layoutY="287.0" prefHeight="18.0" prefWidth="315.0" text="Ticket information will display here once a valid ticket is chosen">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="ticketStatusMessage1" layoutX="94.0" layoutY="14.0" prefHeight="37.0" prefWidth="207.0" text="Modify Ticket Progress:">
+                  <Label fx:id="ticketStatusMessage1" layoutX="76.0" layoutY="14.0" prefHeight="37.0" prefWidth="207.0" text="Modify Ticket Progress:">
                      <font>
                         <Font size="20.0" />
                      </font>

@@ -15,11 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
-
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
-
 public class TicketUpdateController {
   @FXML
   private AnchorPane mainContentArea;
@@ -89,8 +84,8 @@ public class TicketUpdateController {
 
   @FXML
   public void onDeleteTicketClicked(){
-    loadPage("tickets/tickets.fxml");
-    AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticketId);
+      AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticketId);
+      loadPage("tickets/tickets.fxml");
   }
 
   @FXML
@@ -105,7 +100,7 @@ public class TicketUpdateController {
       System.out.println("asset number empty");
       newAssetNumber = assetNumber;
     }
-    else{
+    else {
       newAssetNumber = Integer.parseInt(newAssetNumberString);
     }
 

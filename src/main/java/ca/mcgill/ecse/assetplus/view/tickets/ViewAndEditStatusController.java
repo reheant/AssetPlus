@@ -68,6 +68,14 @@ public class ViewAndEditStatusController {
       disapprovedButton.setDisable(true);
       approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager");
     }
+    else if (ticket.getStatus().equals("Closed")){
+      startedRadioButton.setDisable(true);
+      completedRadioButton.setDisable(true);
+      ticketStatusMessage.setText("Ticket has been closed");
+    } else {
+      startedRadioButton.setDisable(true);
+      completedRadioButton.setDisable(true);
+    }
   }
 
 

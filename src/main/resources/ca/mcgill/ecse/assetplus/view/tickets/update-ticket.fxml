@@ -37,6 +37,11 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
+            <Label alignment="CENTER" layoutX="44.0" layoutY="402.0" text="Images: ">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
             <ListView fx:id="imageListView" layoutX="44.0" layoutY="442.0" prefHeight="96.0" prefWidth="690.0" />
             <Button fx:id="deleteImageButton" layoutX="585.0" layoutY="544.0" mnemonicParsing="false" onAction="#onDeleteImageButtonClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: #E3E1E1; -fx-border-radius: 20px;" text="- Delete Image" textFill="#e3e1e1">
                <font>
@@ -69,7 +74,7 @@
                </font>
             </Button>
             <TextField fx:id="raisedOnDateTextField" layoutX="49.0" layoutY="295.0" prefHeight="31.0" prefWidth="284.0" />
-            <ListView fx:id="imageListView" layoutX="44.0" layoutY="440.0" prefHeight="96.0" prefWidth="690.0" />
+
       </children>
       </AnchorPane>
       <AnchorPane layoutX="851.0" layoutY="27.0" prefHeight="211.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
@@ -94,12 +99,12 @@
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Button layoutX="82.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#onAssignStaffClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: #E3E1E1; -fx-border-radius: 20px;" text="+ Assign Staff" textFill="#e3e1e1">
+            <Button fx:id="assignStaffButton" layoutX="82.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#onAssignStaffClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: #E3E1E1; -fx-border-radius: 20px;" text="+ Assign Staff" textFill="#e3e1e1">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <ListView fx:id="staffListView" layoutX="23.0" layoutY="55.0" prefHeight="74.0" prefWidth="274.0" />
+            <TextField fx:id="staffTextField" layoutX="23.0" layoutY="70.0" prefHeight="31.0" prefWidth="274.0" editable="false" />
          </children>
       </AnchorPane>
       <Label fx:id="errorLabel" alignment="CENTER" layoutX="37.0" layoutY="681.0" prefHeight="35.0" prefWidth="1151.0" text=" " textAlignment="CENTER" textFill="RED">
@@ -114,7 +119,7 @@
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <TextField fx:id="ticketRaiserTextField" layoutX="18.0" layoutY="96.0" prefHeight="31.0" prefWidth="284.0" />
+            <TextField fx:id="ticketRaiserTextField" layoutX="18.0" layoutY="96.0" prefHeight="31.0" prefWidth="284.0" editable="false" />
          </children>
       </AnchorPane>
    </children>

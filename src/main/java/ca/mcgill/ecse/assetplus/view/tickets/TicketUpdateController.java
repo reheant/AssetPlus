@@ -28,7 +28,7 @@ public class TicketUpdateController {
   private ListView<String> imageListView;
 
   @FXML
-  private ListView<String> staffListView;
+  private TextField staffTextField;
 
   @FXML
   private Label errorLabel;
@@ -44,6 +44,9 @@ public class TicketUpdateController {
 
   @FXML
   private Button saveTicketButton;
+
+  @FXML
+  private Button assignStaffButton;
 
   @FXML
   private TextArea descriptionTextArea;
@@ -172,7 +175,7 @@ public class TicketUpdateController {
 
                     String errorMessage = AssetPlusStateController.assignTicket(ticketId, email, timeEstimate, priorityLevel, requiresManagerApproval);
                     if (errorMessage.isEmpty()) {
-                        staffListView.getItems().add(email);
+                        staffTextField.setText(email);
                     } else {
                         showAlert("Error Assigning Ticket: ", errorMessage);
                     }
@@ -186,6 +189,9 @@ public class TicketUpdateController {
 
   @FXML
   public void reinitialize() {
+      assignStaffButton.disableProperty().bind(
+              staffTextField.textProperty().isNotEmpty()
+      );
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
     System.out.println(this.currentMaintenanceTicket);
     this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
@@ -194,8 +200,10 @@ public class TicketUpdateController {
     this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
     this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
     this.raisedOnDateTextField.setText(String.valueOf(currentMaintenanceTicket.getRaisedOnDate()));
-    
-    String currentAssetName = currentMaintenanceTicket.getAssetName();
+    this.staffTextField.setText(this.currentMaintenanceTicket.getFixedByEmail());
+
+
+      String currentAssetName = currentMaintenanceTicket.getAssetName();
     if (currentAssetName == null){
       currentAssetName = "None";
     }

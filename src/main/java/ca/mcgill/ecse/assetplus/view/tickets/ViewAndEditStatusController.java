@@ -42,13 +42,13 @@ public class ViewAndEditStatusController {
   private RadioButton approvedButton, disapprovedButton;
 
   private int ticketID;
+
   private TOMaintenanceTicket ticket;
-  
 
   @FXML
   public void initialize(int ticketID) {
-    this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
     this.ticketID = ticketID;
+    this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
     if (ticket.getFixedByEmail() == null){
       startedRadioButton.setDisable(true);
       completedRadioButton.setDisable(true);

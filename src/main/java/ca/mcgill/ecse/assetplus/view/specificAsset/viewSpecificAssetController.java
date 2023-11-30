@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-public class viewSpecificAssetController {
+public class ViewSpecificAssetController {
   @FXML
   private Label assetNumber;
   @FXML
@@ -35,8 +35,8 @@ public class viewSpecificAssetController {
   private String[] specificData;
   private String titleLabelString;
 
-  public void displayTitle(String[] specificData){
-    titleLabel.setText(specificData[0]+ " #" + specificData[1]);
+  public void displayTitle(String[] specificData) {
+    titleLabel.setText(specificData[0] + " #" + specificData[1]);
     assetNumber.setText(specificData[1]);
     purchasedDate.setText(specificData[4]);
     floorNumber.setText(specificData[2]);
@@ -57,23 +57,25 @@ public class viewSpecificAssetController {
     loadPage("SpecificAsset.fxml");
   }
 
-@FXML
+  @FXML
   public void initialize(String titleLabelString) {
-    
+
     this.titleLabelString = titleLabelString;
     specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
     displayTitle(specificData);
-    
+
   }
 
   private void loadPage(String fxmlFile) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
       Node page = loader.load();
 
       if (fxmlFile.equals("editSpecificAsset.fxml")) {
-          editSpecificAssetController updateController = loader.getController();
-          updateController.setTextFields(specificData[1], specificData[4], specificData[2], specificData[3], specificData[0], titleLabelString);
+        EditSpecificAssetController updateController = loader.getController();
+        updateController.setTextFields(specificData[1], specificData[4], specificData[2],
+            specificData[3], specificData[0], titleLabelString);
       }
       if (fxmlFile.equals("SpecificAsset.fxml")) {
         SpecificAssetController updateController = loader.getController();
@@ -81,8 +83,8 @@ public class viewSpecificAssetController {
       }
 
       viewSpecificAssetContentArea.getChildren().setAll(page);
-  } catch (IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
+    }
   }
-}
 }

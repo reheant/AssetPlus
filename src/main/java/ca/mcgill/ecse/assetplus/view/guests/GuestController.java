@@ -46,11 +46,11 @@ public class GuestController {
 
   @FXML
   private void onUpdateGuestClicked() {
-      String selectedGuestEmail = guestList.getSelectionModel().getSelectedItem();
-      if (selectedGuestEmail != null && !selectedGuestEmail.equals("No search results")) {
-          loadPage("update-guest.fxml");
-      }
-  }  
+    String selectedGuestEmail = guestList.getSelectionModel().getSelectedItem();
+    if (selectedGuestEmail != null && !selectedGuestEmail.equals("No search results")) {
+      loadPage("update-guest.fxml");
+    }
+  }
 
   @FXML
   private void onDeleteGuestClicked() {
@@ -101,19 +101,18 @@ public class GuestController {
     guestList.setPrefHeight(10 * guestList.getFixedCellSize());
     guestList.getItems().addAll(guestEmails);
 
-    guestList.getSelectionModel().selectedItemProperty()
-        .addListener(new ChangeListener<String>() {
+    guestList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
-          @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue,
-              String newValue) {
-            setGuestInformation(newValue);
-          }
-        });
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        setGuestInformation(newValue);
+      }
+    });
   }
 
   private void setGuestInformation(String email) {
-    String[] guestInfo = AssetPlusFeatureSet1Controller.getGuestInformationByEmail(email); 
+    String[] guestInfo = AssetPlusFeatureSet1Controller.getGuestInformationByEmail(email);
     if (guestInfo != null) {
       guestName.setText(guestInfo[0]);
       guestEmailLabel.setText(guestInfo[1]);
@@ -177,21 +176,22 @@ public class GuestController {
 
   private void loadPage(String fxmlFile) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/guests/" + fxmlFile));
-        Node page = loader.load();
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/guests/" + fxmlFile));
+      Node page = loader.load();
 
-        if (fxmlFile.equals("update-guest.fxml")) {
-            UpdateGuestController updateController = loader.getController();
-            updateController.setGuestUpdateEmail(guestEmailLabel.getText());
-            updateController.setGuestOldName(guestName.getText());
-            updateController.setGuestOldPhoneNumber(guestPhoneNumber.getText());
-            updateController.setGuestOldPassword(guestPassword.getText()); 
-            updateController.updateUIWithGuestData();
-        }
+      if (fxmlFile.equals("update-guest.fxml")) {
+        UpdateGuestController updateController = loader.getController();
+        updateController.setGuestUpdateEmail(guestEmailLabel.getText());
+        updateController.setGuestOldName(guestName.getText());
+        updateController.setGuestOldPhoneNumber(guestPhoneNumber.getText());
+        updateController.setGuestOldPassword(guestPassword.getText());
+        updateController.updateUIWithGuestData();
+      }
 
-        guestContentArea.getChildren().setAll(page);
+      guestContentArea.getChildren().setAll(page);
     } catch (IOException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
   }
 }

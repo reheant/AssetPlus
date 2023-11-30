@@ -40,19 +40,21 @@ public class SpecificAssetController {
   private String assetTypeString;
 
 
-  @FXML 
-  public List<String> filterList(String searchedDate, String searchedAssetNb, String searchedFloorNb, String searchedRoomNb) {
-    
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, false);
-    List<String> finalData = new ArrayList<>();     
-    for (int i = 0; i<assetData.length; i++) {
+  @FXML
+  public List<String> filterList(String searchedDate, String searchedAssetNb,
+      String searchedFloorNb, String searchedRoomNb) {
+
+    String[] assetData =
+        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, false);
+    List<String> finalData = new ArrayList<>();
+    for (int i = 0; i < assetData.length; i++) {
       String[] parsedString = assetData[i].split("\\s+");
-      if ((parsedString[4].equals(searchedDate) || searchedDate.isEmpty()) &&
-            (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb)) &&
-            (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb)) &&
-            (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
-            finalData.add(parsedString[0] +" "+ parsedString[1]);
-        }
+      if ((parsedString[4].equals(searchedDate) || searchedDate.isEmpty())
+          && (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb))
+          && (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb))
+          && (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
+        finalData.add(parsedString[0] + " " + parsedString[1]);
+      }
     }
     return finalData;
   }
@@ -63,7 +65,8 @@ public class SpecificAssetController {
     String searchedAssetNb = assetNbFilter.getText();
     String searchedFloorNb = floorNbFilter.getText();
     String searchedRoomNb = roomNbFilter.getText();
-    List<String> filteredDates = filterList(searchedDate, searchedAssetNb, searchedFloorNb, searchedRoomNb);
+    List<String> filteredDates =
+        filterList(searchedDate, searchedAssetNb, searchedFloorNb, searchedRoomNb);
 
     specificAssetList.getItems().clear();
     if (filteredDates.isEmpty()) {
@@ -74,7 +77,7 @@ public class SpecificAssetController {
     }
   }
 
-  @FXML 
+  @FXML
   private void clearButtonOnClick() {
     purchaseDateFilter.setText("");
     assetNbFilter.setText("");
@@ -122,18 +125,19 @@ public class SpecificAssetController {
 
   private void resetSpecificAssetList() {
     specificAssetList.getItems().clear();
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, true);
+    String[] assetData =
+        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, true);
     specificAssetList.getItems().addAll(assetData);
   }
 
   @FXML
-  public void addSpecificAssetOnClick(){
+  public void addSpecificAssetOnClick() {
     loadPage("addSpecificAsset.fxml");
 
   }
 
   @FXML
-  public void backButtonOnClick(){
+  public void backButtonOnClick() {
     loadPage("../assetTypes/assets.fxml");
   }
 
@@ -144,7 +148,8 @@ public class SpecificAssetController {
     floorNbFilter.setPromptText("Floor Number");
     roomNbFilter.setPromptText("Room Number");
     this.assetTypeString = assetType;
-    String[] assetData = AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType, true);
+    String[] assetData =
+        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType, true);
     specificAssetList.setFixedCellSize(50.0);
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -163,28 +168,30 @@ public class SpecificAssetController {
     specificAssetList.getSelectionModel().selectedItemProperty()
         .addListener(new ChangeListener<String>() {
           @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+          public void changed(ObservableValue<? extends String> observable, String oldValue,
+              String newValue) {
             specificAssetInfo = newValue;
             loadPage("viewSpecificAsset.fxml");
-        }
+          }
         });
   }
 
   private void loadPage(String fxmlFile) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
       Node page = loader.load();
       if (fxmlFile.equals("viewSpecificAsset.fxml")) {
-          viewSpecificAssetController updateController = loader.getController();
-          updateController.initialize(specificAssetInfo);
+        ViewSpecificAssetController updateController = loader.getController();
+        updateController.initialize(specificAssetInfo);
       }
       if (fxmlFile.equals("addSpecificAsset.fxml")) {
-        addSpecificAssetController updateController = loader.getController();
+        AddSpecificAssetController updateController = loader.getController();
         updateController.setAssetTypeString(assetTypeString);
       }
       specificAssetContentArea.getChildren().setAll(page);
-  } catch (IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
+    }
   }
-}
 }

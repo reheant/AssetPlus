@@ -77,16 +77,14 @@ public class AssetTypeUpdateController {
     String name = assetTypeName.getText().strip().equals("") ? this.assetTypeOldName
         : assetTypeName.getText().strip();
 
-    String lifespan =
-        assetTypeLifespan.getText().strip().equals("") ? this.assetTypeOldLifespan
-            : assetTypeLifespan.getText().strip();
+    String lifespan = assetTypeLifespan.getText().strip().equals("") ? this.assetTypeOldLifespan
+        : assetTypeLifespan.getText().strip();
 
     String result = "";
-    try{
+    try {
       int lifeInt = Integer.parseInt(lifespan);
       result += AssetPlusFeatureSet2Controller.updateAssetType(assetTypeOldName, name, lifeInt);
-    }
-    catch (Exception e){
+    } catch (Exception e) {
       result += "Please insert a valid integer";
     }
 
@@ -105,7 +103,7 @@ public class AssetTypeUpdateController {
    */
   @FXML
   public void initialize() {
-    assetTypeName.setFocusTraversable(false); 
+    assetTypeName.setFocusTraversable(false);
     assetTypeLifespan.setFocusTraversable(false);
   }
 

@@ -39,12 +39,12 @@
                </font>
             </Label>
             <ListView fx:id="imageListView" layoutX="44.0" layoutY="442.0" prefHeight="96.0" prefWidth="690.0" />
-            <Button fx:id="deleteImageButton" layoutX="585.0" layoutY="544.0" mnemonicParsing="false" onAction="#onDeleteImageButtonClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: #E3E1E1; -fx-border-radius: 20px;" text="- Delete Image" textFill="#e3e1e1">
+            <Button fx:id="deleteImageButton" layoutX="585.0" layoutY="544.0" mnemonicParsing="false" onAction="#onDeleteImageButtonClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: grey; -fx-border-radius: 20px;" text="- Delete Image">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button layoutX="420.0" layoutY="544.0" mnemonicParsing="false" onAction="#onAddImageButtonClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: #E3E1E1; -fx-border-radius: 20px;" text="+ Add Image" textFill="#e3e1e1">
+            <Button layoutX="420.0" layoutY="544.0" mnemonicParsing="false" onAction="#onAddImageButtonClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: grey; -fx-border-radius: 20px;" text="+ Add Image">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -95,7 +95,7 @@
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Button fx:id="assignStaffButton" layoutX="82.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#onAssignStaffClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: #E3E1E1; -fx-border-radius: 20px;" text="+ Assign Staff" textFill="#e3e1e1">
+            <Button fx:id="assignStaffButton" layoutX="82.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#onAssignStaffClicked" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: ffffff; -fx-background-radius: 20px; -fx-border-width: 5px; -fx-border-color: grey; -fx-border-radius: 20px;" text="+ Assign Staff">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

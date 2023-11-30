@@ -58,6 +58,14 @@ public class AssetPlusStateController {
         return "";
     }
 
+    public static String assignTicketWithStringEnums(int ticketId, String email, String timeEstimateStr, String priorityLevelStr, boolean requiresManagerApproval) {
+        MaintenanceTicket.TimeEstimate timeEstimate = convertStringToTimeEstimate(timeEstimateStr);
+        MaintenanceTicket.PriorityLevel priorityLevel = convertStringToPriorityLevel(priorityLevelStr);
+
+        // Now call the original assignTicket method with the correct enum types
+        return assignTicket(ticketId, email, timeEstimate, priorityLevel, requiresManagerApproval);
+    }
+
     /**
      * Starts the work on a maintenance ticket.
      *
@@ -98,7 +106,6 @@ public class AssetPlusStateController {
      * Completes the work on a maintenance ticket.
      *
      * @author Luke Freund
-     * @param userEmail The email of the user resolving the ticket
      * @param ticketId The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
@@ -193,6 +200,13 @@ public class AssetPlusStateController {
         return "";
     }
 
+    private static MaintenanceTicket.TimeEstimate convertStringToTimeEstimate(String timeEstimateStr) {
+        return MaintenanceTicket.TimeEstimate.valueOf(timeEstimateStr);
+    }
+
+    private static MaintenanceTicket.PriorityLevel convertStringToPriorityLevel(String priorityLevelStr) {
+        return MaintenanceTicket.PriorityLevel.valueOf(priorityLevelStr);
+    }
 
     /**
      * Validates that the maintenance ticket exists in the system.

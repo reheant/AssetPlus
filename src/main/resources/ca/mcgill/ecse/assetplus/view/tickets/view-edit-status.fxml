@@ -1,70 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="viewEditStatusContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewAndEditStatusController">
+<AnchorPane fx:id="viewEditStatusContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewAndEditStatusController">
    <children>
       <Pane layoutX="161.0" layoutY="16.0" prefHeight="673.0" prefWidth="866.0" style="-fx-background-color: white; -fx-background-radius: 30px; -fx-border-radius: 30px; -fx-border-color: black; -fx-border-width: 3px;">
          <children>
-            <Label layoutX="252.0" layoutY="14.0" prefHeight="87.0" prefWidth="500.0" text="View and Edit Ticket" textAlignment="JUSTIFY">
+            <Label layoutX="227.0" layoutY="31.0" prefHeight="87.0" prefWidth="412.0" text="View and Edit Ticket" textAlignment="JUSTIFY">
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
-            </Label>
-            <RadioButton fx:id="completedRadioButton" layoutX="115.0" layoutY="146.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Completed">
-               <toggleGroup>
-                  <ToggleGroup fx:id="CompleteAndStart" />
-               </toggleGroup>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </RadioButton><Button fx:id="backButton" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#backButtonOnClick" prefHeight="31.0" prefWidth="95.0" style="-fx-background-color: #ffffff;" text="&lt; Tickets">
+            </Label><Button fx:id="backButton" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#backButtonOnClick" prefHeight="31.0" prefWidth="95.0" style="-fx-background-color: #ffffff;" text="&lt; Tickets">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <RadioButton fx:id="startedRadioButton" layoutX="115.0" layoutY="189.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="95.0" text="Started" toggleGroup="$CompleteAndStart">
-               <font>
-                  <Font size="14.0" />
-               </font></RadioButton>
-            <Label fx:id="ticketStatusMessage" layoutX="19.0" layoutY="244.0" text="Ticket information will display here once a valid ticket is chosen">
-               <font>
-                  <Font size="14.0" />
-               </font></Label>
-            <Label fx:id="ticketStatusMessage1" layoutX="33.0" layoutY="109.0" prefHeight="37.0" prefWidth="165.0" text="Modify Ticket Progress:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="ticketStatusMessage11" layoutX="45.0" layoutY="337.0" prefHeight="37.0" prefWidth="165.0" text="Modify Approval Status:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <RadioButton fx:id="approvedButton" layoutX="118.0" layoutY="384.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Approved">
-               <toggleGroup>
-                  <ToggleGroup fx:id="approval" />
-               </toggleGroup>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="disapprovedButton" layoutX="118.0" layoutY="426.0" mnemonicParsing="false" onAction="#manageCompleteAndStarted" prefHeight="31.0" prefWidth="152.0" text="Disapproved" toggleGroup="$approval">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </RadioButton>
-            <Label fx:id="approvalStatusMessage" layoutX="34.0" layoutY="490.0" text="Ticket  information will display here after approval status is completed">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+            <AnchorPane layoutX="460.0" layoutY="169.0" prefHeight="436.0" prefWidth="358.0" style="-fx-border-color: grey; -fx-border-radius: 20; -fx-border-width: 3;">
+               <children>
+                  <Label fx:id="ticketStatusMessage11" layoutX="76.0" layoutY="14.0" prefHeight="37.0" prefWidth="207.0" text="Modify Approval Status:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="approveButton" layoutX="103.0" layoutY="95.0" mnemonicParsing="false" onAction="#handleApproveButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" text="Approve" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+
+                  <Button fx:id="disapproveButton" layoutX="104.0" layoutY="156.0" mnemonicParsing="false" onAction="#handleDisapproveButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" text="Disapprove" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="approvalStatusMessage" layoutX="35.0" layoutY="272.0" prefHeight="61.0" prefWidth="289.0" text="Ticket  information will display here after approval status is completed">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="62.0" layoutY="169.0" prefHeight="436.0" prefWidth="358.0" style="-fx-border-color: grey; -fx-border-radius: 20; -fx-border-width: 3;">
+               <children>
+                  <Button fx:id="actionButton" layoutX="103.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleActionButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="ticketStatusMessage" layoutX="23.0" layoutY="287.0" prefHeight="18.0" prefWidth="315.0" text="Ticket information will display here once a valid ticket is chosen">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ticketStatusMessage1" layoutX="76.0" layoutY="14.0" prefHeight="37.0" prefWidth="207.0" text="Modify Ticket Progress:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
 
          </children></Pane>
    </children>

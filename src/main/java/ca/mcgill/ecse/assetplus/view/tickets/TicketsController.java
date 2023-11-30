@@ -69,7 +69,6 @@ public class TicketsController {
         }
     }
 
-    // Event handler for the clear button
     @FXML
     private void onClearButtonClicked() {
         maintenanceTicketSearchBar.setText("");
@@ -77,7 +76,6 @@ public class TicketsController {
         resetCellFactory();
     }
 
-    // Event handler for the clear filter button
     @FXML
     private void onClearFilterClicked() {
         staffEmailTextField.setText("");
@@ -86,7 +84,6 @@ public class TicketsController {
         resetCellFactory();
     }
 
-    // Event handler for the apply filter button
     @FXML
     private void onApplyFilterClicked() {
         String staffEmail = staffEmailTextField.getText();
@@ -174,7 +171,6 @@ public class TicketsController {
         String[] ticketIds = getTicketIds();
         maintenanceTicketList.getItems().addAll(ticketIds);
       }
-
 
     private void displayNoSearchResults() {
         maintenanceTicketList.getItems().add("No search results");

@@ -40,7 +40,8 @@ public class HomeController {
 
     private void loadPage(String fxmlFile) {
         try {
-            Node page = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+            Node page = FXMLLoader.load(Objects.requireNonNull(
+                    getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
             mainContentArea.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 
-public class addSpecificAssetController {
+public class AddSpecificAssetController {
   @FXML
   private AnchorPane addSpecificAssetContentArea;
   @FXML
@@ -28,7 +28,7 @@ public class addSpecificAssetController {
   private TextField floorNumber;
   @FXML
   private TextField roomNumber;
-  @FXML 
+  @FXML
   private Button backButton;
   @FXML
   private Label errorLabel;
@@ -42,8 +42,8 @@ public class addSpecificAssetController {
   }
 
   @FXML
-  public void addSpecificAssetOnClick(){
-    String assetNb = assetNumber.getText().strip(); 
+  public void addSpecificAssetOnClick() {
+    String assetNb = assetNumber.getText().strip();
     String purchased = purchasedDate.getText().strip();
     String floorNb = floorNumber.getText().strip();
     String roomNb = roomNumber.getText().strip();
@@ -55,27 +55,29 @@ public class addSpecificAssetController {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     java.util.Date utilDate;
-    if (assetNb.equals("") || purchased.equals("") || floorNb.equals("") || roomNb.equals("")){
+    if (assetNb.equals("") || purchased.equals("") || floorNb.equals("") || roomNb.equals("")) {
       result += "Please do not leave any empty values";
     } else {
       try {
-      utilDate = dateFormat.parse(purchased);
-      sqlDate = new java.sql.Date(utilDate.getTime());
-    } catch (ParseException e) {
-      result += "Please enter a valid date. (yyyy-mm-dd) \n";
-      e.printStackTrace();
-    }
-    try {
-      intAssetnb = Integer.parseInt(assetNb);
-      intFloorNb = Integer.parseInt(floorNb);
-      intRoomNb = Integer.parseInt(roomNb);
-    } catch (Exception e) {
-      result += "Please enter valid numbers with no characters \n";
-    }
+        utilDate = dateFormat.parse(purchased);
+        sqlDate = new java.sql.Date(utilDate.getTime());
+      } catch (ParseException e) {
+        result += "Please enter a valid date. (yyyy-mm-dd) \n";
+        e.printStackTrace();
+      }
+      try {
+        intAssetnb = Integer.parseInt(assetNb);
+        intFloorNb = Integer.parseInt(floorNb);
+        intRoomNb = Integer.parseInt(roomNb);
+      } catch (Exception e) {
+        result += "Please enter valid numbers with no characters \n";
+      }
 
-    if (result.equals("")) {
-      result += AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb, sqlDate, assetTypeString); 
-    }}
+      if (result.equals("")) {
+        result += AssetPlusFeatureSet3Controller.addSpecificAsset(intAssetnb, intFloorNb, intRoomNb,
+            sqlDate, assetTypeString);
+      }
+    }
     if (!result.equals("")) {
       errorLabel.setText(result);
       return;
@@ -85,23 +87,24 @@ public class addSpecificAssetController {
   }
 
   @FXML
-  public void backButtonOnClick(){
+  public void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
 
   }
 
   private void loadPage(String fxmlFile) {
-        try {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
-          Node page = loader.load();
+    try {
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/specificAsset/" + fxmlFile));
+      Node page = loader.load();
 
-          if (fxmlFile.equals("SpecificAsset.fxml")) {
-            SpecificAssetController updateController = loader.getController();
-            updateController.initialize(assetTypeString);
-          }
-          addSpecificAssetContentArea.getChildren().setAll(page);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+      if (fxmlFile.equals("SpecificAsset.fxml")) {
+        SpecificAssetController updateController = loader.getController();
+        updateController.initialize(assetTypeString);
+      }
+      addSpecificAssetContentArea.getChildren().setAll(page);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
 }

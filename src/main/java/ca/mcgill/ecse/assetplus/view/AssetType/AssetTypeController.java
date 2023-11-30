@@ -57,18 +57,18 @@ public class AssetTypeController {
   @FXML
   private void viewAllSpecificAssetsClicked() {
     String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
-      if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
-          loadPage("../specificAsset/specificAsset.fxml");
-      }
-    
+    if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
+      loadPage("../specificAsset/specificAsset.fxml");
+    }
+
   }
 
   @FXML
   private void onUpdateAssetTypeClicked() {
-      String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
-      if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
-          loadPage("update-asset-type.fxml");
-      }
+    String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
+    if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
+      loadPage("update-asset-type.fxml");
+    }
   }
 
   /**
@@ -246,25 +246,26 @@ public class AssetTypeController {
    */
   private void loadPage(String fxmlFile) {
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/assetTypes/" + fxmlFile));
-        Node page = loader.load();
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/assetTypes/" + fxmlFile));
+      Node page = loader.load();
 
-        if (fxmlFile.equals("update-asset-type.fxml")) {
-            AssetTypeUpdateController updateController = loader.getController();
-            updateController.setAssetTypeOldName(assetTypeName.getText());
-            updateController.setAssetTypeOldLifespan(assetTypeLifespan.getText());
-            updateController.updateUIWithAssetTypeData();
-        }
+      if (fxmlFile.equals("update-asset-type.fxml")) {
+        AssetTypeUpdateController updateController = loader.getController();
+        updateController.setAssetTypeOldName(assetTypeName.getText());
+        updateController.setAssetTypeOldLifespan(assetTypeLifespan.getText());
+        updateController.updateUIWithAssetTypeData();
+      }
 
-        if (fxmlFile.equals("../specificAsset/specificAsset.fxml")) {
-          SpecificAssetController updateController = loader.getController();
-          updateController.initialize(assetTypeString);
-        }
+      if (fxmlFile.equals("../specificAsset/specificAsset.fxml")) {
+        SpecificAssetController updateController = loader.getController();
+        updateController.initialize(assetTypeString);
+      }
 
-        assetTypeContentArea.getChildren().setAll(page);
+      assetTypeContentArea.getChildren().setAll(page);
     } catch (IOException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
-}
+  }
 
 }

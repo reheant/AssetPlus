@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="viewSpecificAssetContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: E3E1E1; -fx-border-radius: 20px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.specificAsset.viewSpecificAssetController">
+<AnchorPane fx:id="viewSpecificAssetContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: E3E1E1; -fx-border-radius: 20px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.specificAsset.ViewSpecificAssetController">
    <children>
       <Pane layoutX="172.0" layoutY="42.0" prefHeight="621.0" prefWidth="857.0" style="-fx-background-color: white; -fx-background-radius: 30px;">
          <children>

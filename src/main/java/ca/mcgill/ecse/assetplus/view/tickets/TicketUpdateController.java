@@ -32,7 +32,28 @@ public class TicketUpdateController {
   private Label ticketIdLabel;
 
   @FXML
+  private Label expectedLifespan;
+
+  @FXML
+  private Label purchaseDate;
+
+  @FXML
+  private Label floorNumber;
+
+  @FXML
+  private Label roomNumber;
+
+  @FXML
   private Button assignStaffButton;
+
+  @FXML
+  private Label priorityLabel;
+
+  @FXML
+  private Label resolveTimeLabel;
+
+  @FXML
+  private Label approvalRequiredLabel;
 
   @FXML
   private TextArea descriptionTextArea;
@@ -160,6 +181,7 @@ public class TicketUpdateController {
               });
           });
       });
+      reinitialize();
   }
 
   @FXML
@@ -182,6 +204,21 @@ public class TicketUpdateController {
       currentAssetName = "None";
     }
     this.assetNameLabel.setText("Current Asset Name: " + currentAssetName);
+    int expectedLifespanInDays = this.currentMaintenanceTicket.getExpectLifeSpanInDays();
+    this.expectedLifespan.setText("Expected lifespan (days): " + (expectedLifespanInDays != -1 ? expectedLifespanInDays : "N/A"));
+    Date purchaseDate = this.currentMaintenanceTicket.getPurchaseDate();
+    this.purchaseDate.setText("Purchase date: " + (purchaseDate != null ? String.valueOf(purchaseDate) : "N/A"));
+    int floorNumber = this.currentMaintenanceTicket.getFloorNumber();
+    this.floorNumber.setText("Floor Number: " + (floorNumber != -1 ? floorNumber : "N/A"));
+    int roomNumber = this.currentMaintenanceTicket.getRoomNumber();
+    this.roomNumber.setText("Room Number: " + (roomNumber != -1 ? roomNumber : "N/A"));
+
+    boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
+    this.approvalRequiredLabel.setText("Approval Required: " + String.valueOf(approvalRequired));
+    String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
+    this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
+    String priority = this.currentMaintenanceTicket.getPriority();
+    this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
 
     assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
     System.out.println("new asset number: " + String.valueOf(assetNumber));

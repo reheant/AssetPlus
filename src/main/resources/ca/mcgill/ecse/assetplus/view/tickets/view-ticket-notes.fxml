@@ -8,10 +8,11 @@
    <children>
       <AnchorPane layoutX="53.0" layoutY="37.0" prefHeight="631.0" prefWidth="1094.0" style="-fx-background-radius: 20; -fx-background-color: white;">
          <children>
-            <TextArea fx:id="ticketNotes" layoutX="148.0" layoutY="173.0" prefHeight="362.0" prefWidth="798.0">
+            <TextArea fx:id="ticketNotes" layoutX="148.0" layoutY="173.0" prefHeight="362.0" prefWidth="798.0" editable="false">
                <font>
                   <Font size="16.0" />
-               </font></TextArea>
+               </font>
+            </TextArea>
             <Label layoutX="483.0" layoutY="97.0" text="Ticket Notes">
                <font>
                   <Font size="24.0" />

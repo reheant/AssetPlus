@@ -15,10 +15,13 @@ import java.util.Optional;
 
 public class ViewAndEditStatusController {
   @FXML
-  private Label ticketStatusMessage;
+  private TextArea ticketStatusMessage;
 
   @FXML
-  private Label approvalStatusMessage;
+  private TextArea approvalStatusMessage;
+
+  @FXML
+  private Label currentStatus;
 
   @FXML
   private Button actionButton;
@@ -48,6 +51,7 @@ public class ViewAndEditStatusController {
   private void updateView() {
     this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
     String status = ticket.getStatus();
+    currentStatus.setText("Current status: " + status);
     switch (status) {
       case "Open" -> {
         actionButton.setDisable(true);

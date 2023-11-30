@@ -15,14 +15,32 @@ public class AssetTypeUpdateController {
   private String assetTypeOldName;
   private String assetTypeOldLifespan;
 
+  /**
+   * Sets assetTypeUpdateName variable to updated asset type name
+   *
+   * @param name The updated asset type name
+   * @author Tiffany Miller
+   */
   public void setAssetTypeUpdateName(String name) {
     this.assetTypeUpdateName = name;
   }
 
+  /**
+   * Sets assetTypeOldName variable to old asset type name
+   *
+   * @param name The old asset type name
+   * @author Tiffany Miller
+   */
   public void setAssetTypeOldName(String name) {
     this.assetTypeOldName = name;
   }
 
+  /**
+   * Sets assetTypeOldLifespan variable to old lifespan
+   *
+   * @param lifespan The old lifespan of an asset type
+   * @author Tiffany Miller
+   */
   public void setAssetTypeOldLifespan(String lifespan) {
     this.assetTypeOldLifespan = lifespan;
   }
@@ -39,11 +57,21 @@ public class AssetTypeUpdateController {
   @FXML
   private TextField assetTypeLifespan;
 
+  /**
+   * Returns to default asset type page once cancel button is clicked
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onCancelButtonClicked() {
     loadPage("assets.fxml");
   }
 
+  /**
+   * Updates the old asset type name and lifespan to new name and lifespan
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onUpdateAssetTypeButtonClicked() {
     String name = assetTypeName.getText().strip().equals("") ? this.assetTypeOldName
@@ -70,12 +98,22 @@ public class AssetTypeUpdateController {
     }
   }
 
+  /**
+   * Initializes asset type name and lifespan
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   public void initialize() {
     assetTypeName.setFocusTraversable(false); 
     assetTypeLifespan.setFocusTraversable(false);
   }
 
+  /**
+   * Updates the UI with current asset type information
+   *
+   * @author Tiffany Miller
+   */
   public void updateUIWithAssetTypeData() {
     if (assetTypeOldName != null) {
       assetTypeName.setPromptText("Old Name: " + assetTypeOldName);
@@ -88,6 +126,12 @@ public class AssetTypeUpdateController {
     }
   }
 
+  /**
+   * Loads page of the given fxml file
+   *
+   * @author Tiffany Miller
+   * @param fxmlFile The name of the fxml file one wishes to load
+   */
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(

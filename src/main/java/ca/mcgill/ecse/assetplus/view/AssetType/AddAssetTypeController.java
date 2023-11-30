@@ -23,11 +23,21 @@ public class AddAssetTypeController {
   @FXML
   private TextField assetTypeLifespan;
 
+  /**
+   * Returns to default asset type page once cancel button is clicked
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onCancelButtonClicked() {
     loadPage("assets.fxml");
   }
 
+  /**
+   * Adds asset type once button is clicked
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onAddAssetTypeButtonClicked() {
     String name = assetTypeName.getText().strip();
@@ -54,6 +64,12 @@ public class AddAssetTypeController {
     }
   }
 
+  /**
+   * Loads page of the given fxml file
+   *
+   * @author Tiffany Miller
+   * @param fxmlFile The name of the fxml file one wishes to load
+   */
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(

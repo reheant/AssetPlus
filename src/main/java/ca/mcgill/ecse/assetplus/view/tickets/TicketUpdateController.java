@@ -214,7 +214,7 @@ public class TicketUpdateController {
     this.roomNumber.setText("Room Number: " + (roomNumber != -1 ? roomNumber : "N/A"));
 
     boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
-    this.approvalRequiredLabel.setText("Approval Required: " + String.valueOf(approvalRequired));
+    this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
     String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
     this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
     String priority = this.currentMaintenanceTicket.getPriority();

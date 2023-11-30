@@ -32,19 +32,34 @@ public class AssetTypeController {
   @FXML
   private ListView<String> assetTypeList;
 
+  /**
+   * Loads add asset type page
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onAddAssetTypeClicked() {
     loadPage("add-asset-type.fxml");
   }
 
+  /**
+   * Loads update asset type page on user's selected asset type
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onUpdateAssetTypeClicked() {
       String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
       if (selectedAssetType != null && !selectedAssetType.equals("No search results")) {
           loadPage("update-asset-type.fxml");
       }
-  }  
+  }
 
+  /**
+   * Deletes user's selected asset type once button is clicked
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onDeleteAssetTypeClicked() {
     String name = assetTypeName.getText().strip();
@@ -52,6 +67,11 @@ public class AssetTypeController {
     loadPage("assets.fxml");
   }
 
+  /**
+   * Displays search results once search button is clicked
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onSearchButtonClicked() {
     String searchedName = assetTypeSearchBar.getText();
@@ -66,6 +86,11 @@ public class AssetTypeController {
     }
   }
 
+  /**
+   * Clears search results once clear button in search bar is clicked
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   private void onClearButtonClicked() {
     assetTypeSearchBar.setText("");
@@ -73,6 +98,11 @@ public class AssetTypeController {
     resetCellFactory();
   }
 
+  /**
+   * Initializes asset type default page
+   *
+   * @author Tiffany Miller
+   */
   @FXML
   public void initialize() {
     assetTypeSearchBar.setFocusTraversable(false);
@@ -105,6 +135,12 @@ public class AssetTypeController {
         });
   }
 
+  /**
+   * Sets and displays previous name and lifespan information when updating that specific asset type
+   *
+   * @param name The name of the asset type one wishes to set and display information
+   * @author Tiffany Miller
+   */
   private void setInfo(String name) {
     int lifespan = AssetPlusFeatureSet2Controller.getLifespanByName(name);
     if (lifespan != 0) {
@@ -116,13 +152,23 @@ public class AssetTypeController {
     }
   }
 
-
+  /**
+   * Filters asset type list of names by user search results
+   *
+   * @param searchedName The name of the asset type the user searched
+   * @author Tiffany Miller
+   */
   private List<String> filterAssetTypeList(String searchedName) {
     String[] assetTypeNames = AssetPlusFeatureSet2Controller.getAssetTypes();
     return Arrays.stream(assetTypeNames).filter(name -> name.equalsIgnoreCase(searchedName))
         .collect(Collectors.toList());
   }
 
+  /**
+   * Displays no search results
+   *
+   * @author Tiffany Miller
+   */
   private void displayNoSearchResults() {
     assetTypeList.getItems().add("No search results");
     assetTypeList.setCellFactory(lv -> new ListCell<String>() {
@@ -144,6 +190,11 @@ public class AssetTypeController {
     });
   }
 
+  /**
+   * Resets cell factory in user interface javafx
+   *
+   * @author Tiffany Miller
+   */
   private void resetCellFactory() {
     assetTypeList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -159,12 +210,23 @@ public class AssetTypeController {
     });
   }
 
+  /**
+   * Resets asset type list of names
+   *
+   * @author Tiffany Miller
+   */
   private void resetAssetTypeList() {
     assetTypeList.getItems().clear();
     String[] assetTypeNames = AssetPlusFeatureSet2Controller.getAssetTypes();
     assetTypeList.getItems().addAll(assetTypeNames);
   }
 
+  /**
+   * Loads page of the given fxml file
+   *
+   * @param fxmlFile The name of fxml file one wishes to load
+   * @author Tiffany Miller
+   */
   private void loadPage(String fxmlFile) {
     try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/assetTypes/" + fxmlFile));

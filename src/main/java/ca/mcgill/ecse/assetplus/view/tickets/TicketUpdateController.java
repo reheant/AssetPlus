@@ -2,7 +2,6 @@ package ca.mcgill.ecse.assetplus.view.tickets;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -24,9 +23,6 @@ public class TicketUpdateController {
 
   @FXML
   private TextField staffTextField;
-
-  @FXML
-  private Label errorLabel;
 
   @FXML
   private Label ticketIdLabel;
@@ -109,11 +105,12 @@ public class TicketUpdateController {
     }
 
     String result = AssetPlusFeatureSet4Controller.updateMaintenanceTicket(ticketId, newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
-    if (!result.equals("")) {
-      System.out.println(result);
-      errorLabel.setText(result);
+    if (result.equals("")) {
+      loadPage("tickets/tickets.fxml");
+    } else{
+      showAlert("Error: could not save ticket. ", result);      
     }
-    reinitialize();
+
   }
 
   @FXML

@@ -117,16 +117,7 @@ public class TicketsController {
     @FXML
     private void onAddTicketClicked() {
         this.newTicketId = AssetPlusFeatureSet6Controller.getMaxTicketId() + 1;
-        Date currentDate = new Date(System.currentTimeMillis());
-        String result = AssetPlusFeatureSet4Controller.addMaintenanceTicket(newTicketId,
-                currentDate, "Add a description...", "manager@ap.com", -1);
-        if (!result.equals("")) {
-            System.out.println(result);
-            errorLabel.setText(result);
-            return;
-        } else {
-            loadPage("tickets/update-ticket.fxml");
-        }
+        loadPage("tickets/add-ticket.fxml");
     }
 
     // Initialize method if needed
@@ -244,7 +235,11 @@ public class TicketsController {
             Node page = loader.load();
             maintenanceTicketContentArea.getChildren().setAll(page);
 
-            if (fxmlFile.equals("tickets/update-ticket.fxml")) {
+            if (fxmlFile.equals("tickets/add-ticket.fxml")) {
+                AddTicketController addTicketController = loader.getController();
+                addTicketController.setTicketId(newTicketId);
+                addTicketController.reinitialize();
+            } else if (fxmlFile.equals("tickets/update-ticket.fxml")) {
                 TicketUpdateController ticketUpdateController = loader.getController();
                 ticketUpdateController.setTicketId(newTicketId);
                 ticketUpdateController.reinitialize();

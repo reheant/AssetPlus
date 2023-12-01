@@ -112,7 +112,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidAssetNumber(int assetNumber) {
     if (assetNumber < 1) {
-      return "The asset number shall not be less than 1";
+      return "The asset number shall not be less than 1 ";
     }
     return "";
   }
@@ -126,7 +126,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidFloorNumber(int floorNumber) {
     if (floorNumber < 0) {
-      return "The floor number shall not be less than 0";
+      return "The floor number shall not be less than 0 ";
     }
     return "";
   }
@@ -140,7 +140,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidRoomNumber(int roomNumber) {
     if (roomNumber < -1) {
-      return "The room number shall not be less than -1";
+      return "The room number shall not be less than -1 ";
     }
     return "";
   }
@@ -154,7 +154,7 @@ public class AssetPlusFeatureSet3Controller {
    */
   private static String assertValidDate(Date date) {
     if (date == null) {
-      return "Error: Date is null.";
+      return "Error: Date is null. ";
     }
     return "";
   }
@@ -173,6 +173,6 @@ public class AssetPlusFeatureSet3Controller {
         return "";
       }
     }
-    return "The asset type does not exist";
+    return "The asset type does not exist ";
   }
 }

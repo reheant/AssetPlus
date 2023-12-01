@@ -56,6 +56,12 @@ public class TicketsController {
 
     private int newTicketId;
 
+    /**
+     * Handles the event when the search button is clicked.
+     * Searches for maintenance tickets based on the entered email.
+     *
+     * @author Liam Di Chiro
+     */
     @FXML
     private void onSearchButtonClicked() {
         String searchedEmail = maintenanceTicketSearchBar.getText();
@@ -70,6 +76,12 @@ public class TicketsController {
         }
     }
 
+    /**
+     * Handles the event when the clear button is clicked.
+     * Clears the search bar and resets the maintenance ticket list.
+     *
+     * @author: Liam Di Chiro
+     */
     @FXML
     private void onClearButtonClicked() {
         maintenanceTicketSearchBar.setText("");
@@ -77,6 +89,12 @@ public class TicketsController {
         resetCellFactory();
     }
 
+    /**
+     * Handles the event when the clear filter button is clicked.
+     * Clears the filter criteria and resets the maintenance ticket list.
+     *
+     * @author Liam Di Chiro
+     */
     @FXML
     private void onClearFilterClicked() {
         staffEmailTextField.setText("");
@@ -86,6 +104,12 @@ public class TicketsController {
         resetCellFactory();
     }
 
+    /**
+     * Handles the event when the apply filter button is clicked.
+     * Applies the specified filters and updates the maintenance ticket list accordingly.
+     *
+     * @author Liam Di Chiro
+     */
     @FXML
     private void onApplyFilterClicked() {
         String staffEmail = staffEmailTextField.getText();
@@ -118,13 +142,24 @@ public class TicketsController {
         }
     }
 
+    /**
+     * Handles the event when the add ticket button is clicked.
+     * Initializes the process of adding a new maintenance ticket.
+     *
+     * @author Liam Di Chiro
+     */
     @FXML
     private void onAddTicketClicked() {
         this.newTicketId = AssetPlusFeatureSet6Controller.getMaxTicketId() + 1;
         loadPage("tickets/add-ticket.fxml");
     }
 
-    // Initialize method if needed
+    /**
+     * Initializes the controller.
+     * Configures initial settings and populates the maintenance ticket list.
+     *
+     * @author Liam Di Chiro
+     */
     @FXML
     public void initialize() {
         maintenanceTicketSearchBar.setFocusTraversable(false);
@@ -158,12 +193,22 @@ public class TicketsController {
         });
     }
 
+    /**
+     * Resets the maintenance ticket list by clearing and repopulating it with all available tickets.
+     *
+     * @author Liam Di Chiro
+     */
     private void resetEmployeeList() {
         maintenanceTicketList.getItems().clear();
         String[] ticketIds = getTicketIds();
         maintenanceTicketList.getItems().addAll(ticketIds);
       }
 
+    /**
+     * Displays a message indicating no search results in the maintenance ticket list.
+     *
+     * @author Liam Di Chiro
+     */
     private void displayNoSearchResults() {
         maintenanceTicketList.getItems().add("No search results");
         maintenanceTicketList.setCellFactory(lv -> new ListCell<String>() {
@@ -185,6 +230,11 @@ public class TicketsController {
         });
     }
 
+    /**
+     * Resets the cell factory of the maintenance ticket list.
+     *
+     * @author: Liam Di Chiro
+     */
     private void resetCellFactory() {
         maintenanceTicketList.setCellFactory(lv -> new ListCell<String>() {
             @Override
@@ -200,6 +250,14 @@ public class TicketsController {
         });
     }
 
+    /**
+     * Filters a list of maintenance tickets by staff email.
+     *
+     * @author Liam Di Chiro
+     * @param tickets     The list of maintenance tickets to filter.
+     * @param staffEmail  The staff email to filter by.
+     * @return A filtered list of maintenance tickets.
+     */
     private List<TOMaintenanceTicket> filterByEmail(List<TOMaintenanceTicket> tickets, String staffEmail) {
         return tickets.stream()
                 .filter(ticket -> ticket.getFixedByEmail() != null)
@@ -207,6 +265,14 @@ public class TicketsController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Filters a list of maintenance tickets by raiser email.
+     *
+     * @author: Liam Di Chiro
+     * @param tickets      The list of maintenance tickets to filter.
+     * @param raisedByEmail The raiser email to filter by.
+     * @return A filtered list of maintenance tickets.
+     */
     private List<TOMaintenanceTicket> filterByRaiserEmail(List<TOMaintenanceTicket> tickets, String raisedByEmail) {
         return tickets.stream()
                 .filter(ticket -> ticket.getRaisedByEmail() != null)
@@ -214,12 +280,27 @@ public class TicketsController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Filters a list of maintenance tickets by raised on date.
+     *
+     * @author: Liam Di Chiro
+     * @param tickets      The list of maintenance tickets to filter.
+     * @param raisedOnDate The raised on date to filter by.
+     * @return A filtered list of maintenance tickets.
+     */
     private List<TOMaintenanceTicket> filterByDate(List<TOMaintenanceTicket> tickets, String raisedOnDate) {
         return tickets.stream()
                 .filter(ticket -> ticket.getRaisedOnDate().toString().equalsIgnoreCase(raisedOnDate))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Filters the list of maintenance ticket IDs based on the searched ticket ID.
+     *
+     * @author Liam Di Chiro
+     * @param searchedTicketId The ticket ID to search for.
+     * @return A list of filtered ticket IDs.
+     */
     private List<String> filterTicketIdList(String searchedTicketId) {
         String[] ticketIdKs = getTicketIds();
         return Arrays.stream(ticketIdKs)
@@ -227,6 +308,12 @@ public class TicketsController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves the ticket IDs from the current list of maintenance tickets.
+     *
+     * @author Liam Di Chiro
+     * @return An array of ticket IDs.
+     */
     private String[] getTicketIds() {
         List<TOMaintenanceTicket> ticketList = AssetPlusFeatureSet6Controller.getTickets();
         String[] ticketIdKs = new String[ticketList.size()];
@@ -237,6 +324,12 @@ public class TicketsController {
         return ticketIdKs;
     }
 
+    /**
+     * Loads an FXML page based on the specified file path.
+     *
+     * @author: Liam Di Chiro
+     * @param fxmlFile The file path of the FXML page to load.
+     */
     private void loadPage(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(

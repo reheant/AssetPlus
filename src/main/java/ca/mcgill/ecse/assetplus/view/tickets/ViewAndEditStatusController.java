@@ -49,7 +49,7 @@ public class ViewAndEditStatusController {
     if (!error.equals("")) {
       errorLabelLeft.setText(error);
     } 
-    currentStatus.setText(ticket.getStatus());
+    initialize(ticketID);
   }
 
   @FXML 
@@ -59,7 +59,7 @@ public class ViewAndEditStatusController {
     if (!error.equals("")) {
       errorLabelLeft.setText(error);
     } 
-    currentStatus.setText(ticket.getStatus());
+    initialize(ticketID);
   }
 
   @FXML
@@ -69,7 +69,7 @@ public class ViewAndEditStatusController {
     if (!error.equals("")) {
       errorLabelRight.setText(error);
     } 
-    currentStatus.setText(ticket.getStatus());
+    initialize(ticketID);
   }
 
   @FXML
@@ -88,7 +88,7 @@ public class ViewAndEditStatusController {
     if (!error[0].equals("")){
       errorLabelRight.setText(error[0]);
     }
-    currentStatus.setText(ticket.getStatus());
+    initialize(ticketID);
   }
 
   private void loadPage(String fxmlFile) {

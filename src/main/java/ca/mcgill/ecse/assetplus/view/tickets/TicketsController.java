@@ -88,9 +88,6 @@ public class TicketsController {
     private void onApplyFilterClicked() {
         String staffEmail = staffEmailTextField.getText();
         String raisedOnDate = raisedOnDateTextField.getText();
-
-        System.out.println("Staff email: " + staffEmail);
-        System.out.println("Raised on date: " + raisedOnDate);
         List<TOMaintenanceTicket> filteredTickets = AssetPlusFeatureSet6Controller.getTickets();
 
         if (!staffEmail.equals("")) {
@@ -148,9 +145,6 @@ public class TicketsController {
         @Override
         public void changed(ObservableValue<? extends String> observable, String oldValue,
         String newValue) {
-            // newValue = ticket id that has been selected as a string
-            // do logic here to see ticket details
-            System.out.println("Ticket id: " + newValue);
             newTicketId = Integer.parseInt(newValue);
             loadPage("tickets/update-ticket.fxml");
         }

@@ -33,7 +33,6 @@ public class AssetPlusStateController {
             HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
             if (employeeEmail == "manager@ap.com"){
                 employee = assetPlus.getManager();
-                System.out.println("MANAGER HERE");
             }
 
             var error = "";
@@ -57,7 +56,17 @@ public class AssetPlusStateController {
         }
         return "";
     }
-
+    /**
+     * Assigns tickets with all string value inputs.
+     *
+     * @author Luke Freund
+     * @param ticketId The unique identifier of the maintenance ticket.
+     * @param email The email of a hotel staff member.
+     * @param timeEstimateStr The estimated completion time of the maintenance ticket as a string.
+     * @param priorityLevelStr The priority level of the maintenance ticket as a string.
+     * @param requiresManagerApproval Indicates if the ticket requires a manager's approval 
+     * @return An empty string indicating success. An error message if failure.
+     */
     public static String assignTicketWithStringEnums(int ticketId, String email, String timeEstimateStr, String priorityLevelStr, boolean requiresManagerApproval) {
         MaintenanceTicket.TimeEstimate timeEstimate = convertStringToTimeEstimate(timeEstimateStr);
         MaintenanceTicket.PriorityLevel priorityLevel = convertStringToPriorityLevel(priorityLevelStr);
@@ -199,11 +208,23 @@ public class AssetPlusStateController {
         }
         return "";
     }
-
+    /**
+     * Converts time estimate String to a TimeEstimate value.
+     *
+     * @author Luke Freund
+     * @param timeEstimateStr time estimate as a string
+     * @return TimeEstimate value of the entered string.
+     */
     private static MaintenanceTicket.TimeEstimate convertStringToTimeEstimate(String timeEstimateStr) {
         return MaintenanceTicket.TimeEstimate.valueOf(timeEstimateStr);
     }
-
+    /**
+     * Converts priority level String to a PriorityLevel value.
+     *
+     * @author Luke Freund
+     * @param priorityLevelStr priority level as a string
+     * @return PriorityLevel value of the entered string.
+     */
     private static MaintenanceTicket.PriorityLevel convertStringToPriorityLevel(String priorityLevelStr) {
         return MaintenanceTicket.PriorityLevel.valueOf(priorityLevelStr);
     }

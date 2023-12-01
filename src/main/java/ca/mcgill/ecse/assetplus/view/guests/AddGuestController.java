@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class AddGuestController {
+
   @FXML
   private AnchorPane guestContentArea;
 
@@ -29,11 +30,23 @@ public class AddGuestController {
   @FXML
   private TextField guestPassword;
 
+  /**
+   * Loads the 'guests.fxml' page when the Cancel button is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onCancelButtonClicked() {
     loadPage("guests.fxml");
   }
 
+  /**
+   * Adds a new guest when the Add Guest button is clicked. Validates and submits the guest's
+   * information. Displays an error message if the submission fails, otherwise loads the
+   * 'guests.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onAddGuestButtonClicked() {
     String name = guestName.getText().strip();
@@ -52,6 +65,14 @@ public class AddGuestController {
     }
   }
 
+
+  /**
+   * Loads a specified FXML page into the guest content area. Catches and prints exceptions if the
+   * file cannot be loaded.
+   * 
+   * @author Nicolas Bolouri
+   * @param fxmlFile The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
+   */
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(

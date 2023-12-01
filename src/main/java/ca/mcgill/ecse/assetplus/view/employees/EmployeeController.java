@@ -18,6 +18,7 @@ import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 
 public class EmployeeController {
+
   @FXML
   private AnchorPane employeeContentArea;
 
@@ -39,11 +40,22 @@ public class EmployeeController {
   @FXML
   private ListView<String> employeeList;
 
+  /**
+   * Loads the 'add-employee.fxml' page when Add Employee is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onAddEmployeeClicked() {
     loadPage("add-employee.fxml");
   }
 
+  /**
+   * Loads the 'update-employee.fxml' page for the selected employee. Does nothing if no employee is
+   * selected or the selection is invalid.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onUpdateEmployeeClicked() {
     String selectedEmployeeEmail = employeeList.getSelectionModel().getSelectedItem();
@@ -52,6 +64,11 @@ public class EmployeeController {
     }
   }
 
+  /**
+   * Deletes the employee with the displayed email and loads the 'employees.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onDeleteEmployeeClicked() {
     String email = employeeEmailLabel.getText().strip();
@@ -59,6 +76,12 @@ public class EmployeeController {
     loadPage("employees.fxml");
   }
 
+  /**
+   * Searches and displays employees matching the entered email. Shows 'No search results' if no
+   * match is found.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onSearchButtonClicked() {
     String searchedEmail = employeeSearchBar.getText();
@@ -73,12 +96,24 @@ public class EmployeeController {
     }
   }
 
+  /**
+   * Clears the search bar, resets the employee list and cell factory.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onClearButtonClicked() {
     employeeSearchBar.setText("");
     resetEmployeeList();
     resetCellFactory();
   }
+
+  /**
+   * Initializes the employee list and sets up the UI. Loads employee emails and sets up the list
+   * cell factory.
+   *
+   * @author Nicolas Bolouri
+   */
 
   @FXML
   public void initialize() {
@@ -112,6 +147,13 @@ public class EmployeeController {
         });
   }
 
+  /**
+   * Sets the employee information display for the given email. Shows 'Information not available' if
+   * the email is not found.
+   * 
+   * @author Nicolas Bolouri
+   * @param email The email of the employee to display information for.
+   */
   private void setEmployeeInformation(String email) {
     String[] employeeInfo = AssetPlusFeatureSet1Controller.getEmployeeInformationByEmail(email);
     if (employeeInfo != null) {
@@ -127,13 +169,25 @@ public class EmployeeController {
     }
   }
 
-
+  /**
+   * Filters the employee list based on the searched email.
+   *
+   * @author Nicolas Bolouri
+   * @param searchedEmail The email to filter the employee list by.
+   * @return A list of emails matching the search criteria.
+   */
   private List<String> filterEmployeeList(String searchedEmail) {
     String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
     return Arrays.stream(employeeEmails).filter(email -> email.equalsIgnoreCase(searchedEmail))
         .collect(Collectors.toList());
   }
 
+  /**
+   * Displays 'No search results' in the employee list. Adjusts the cell factory for this specific
+   * item.
+   *
+   * @author Nicolas Bolouri
+   */
   private void displayNoSearchResults() {
     employeeList.getItems().add("No search results");
     employeeList.setCellFactory(lv -> new ListCell<String>() {
@@ -155,6 +209,11 @@ public class EmployeeController {
     });
   }
 
+  /**
+   * Resets the cell factory of the employee list to its default state.
+   *
+   * @author Nicolas Bolouri
+   */
   private void resetCellFactory() {
     employeeList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -170,12 +229,25 @@ public class EmployeeController {
     });
   }
 
+  /**
+   * Resets the employee list to show all employees.
+   *
+   * @author Nicolas Bolouri
+   */
   private void resetEmployeeList() {
     employeeList.getItems().clear();
     String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
     employeeList.getItems().addAll(employeeEmails);
   }
 
+
+  /**
+   * Loads a specified FXML page into the employee content area. Sets up controller data for
+   * 'update-employee.fxml'. Catches and prints exceptions if the file cannot be loaded.
+   *
+   * @author Nicolas Bolouri
+   * @param fxmlFile The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/employees/'.
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(
@@ -196,5 +268,4 @@ public class EmployeeController {
       e.printStackTrace();
     }
   }
-
 }

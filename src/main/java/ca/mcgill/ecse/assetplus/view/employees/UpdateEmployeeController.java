@@ -16,22 +16,6 @@ public class UpdateEmployeeController {
   private String employeeOldPhoneNumber;
   private String employeeOldPassword;
 
-  public void setEmployeeUpdateEmail(String email) {
-    this.employeeUpdateEmail = email;
-  }
-
-  public void setEmployeeOldName(String name) {
-    this.employeeOldName = name;
-  }
-
-  public void setEmployeeOldPhoneNumber(String phoneNumber) {
-    this.employeeOldPhoneNumber = phoneNumber;
-  }
-
-  public void setEmployeeOldPassword(String password) {
-    this.employeeOldPassword = password;
-  }
-
   @FXML
   private AnchorPane employeeContentArea;
 
@@ -50,11 +34,22 @@ public class UpdateEmployeeController {
   @FXML
   private TextField employeePassword;
 
+  /**
+   * Loads the 'employees.fxml' page when the Cancel button is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onCancelButtonClicked() {
     loadPage("employees.fxml");
   }
 
+  /**
+   * Updates an employee's details when the Update Employee button is clicked. Displays error
+   * message if the update fails, otherwise loads the 'employees.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onUpdateEmployeeButtonClicked() {
     String name = employeeName.getText();
@@ -73,6 +68,11 @@ public class UpdateEmployeeController {
     }
   }
 
+  /**
+   * Initializes employee detail fields, making them non-focusable.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   public void initialize() {
     employeeName.setFocusTraversable(false);
@@ -81,6 +81,12 @@ public class UpdateEmployeeController {
     employeePassword.setFocusTraversable(false);
   }
 
+  /**
+   * Updates the UI with the existing employee data. Sets prompt text or text fields with old
+   * employee information.
+   *
+   * @author Nicolas Bolouri
+   */
   public void updateUIWithEmployeeData() {
     if (employeeOldName != null) {
       employeeName.setPromptText("Old Name: " + employeeOldName);
@@ -96,6 +102,54 @@ public class UpdateEmployeeController {
     }
   }
 
+  /**
+   * Sets the email for employee update.
+   *
+   * @author Nicolas Bolouri
+   * @param email The email of the employee to update.
+   */
+  public void setEmployeeUpdateEmail(String email) {
+    this.employeeUpdateEmail = email;
+  }
+
+  /**
+   * Sets the old name for employee update.
+   *
+   * @author Nicolas Bolouri
+   * @param name The old name of the employee to update.
+   */
+  public void setEmployeeOldName(String name) {
+    this.employeeOldName = name;
+  }
+
+
+  /**
+   * Sets the old phone number for employee update.
+   *
+   * @author Nicolas Bolouri
+   * @param phoneNumber The old phone number of the employee to update.
+   */
+  public void setEmployeeOldPhoneNumber(String phoneNumber) {
+    this.employeeOldPhoneNumber = phoneNumber;
+  }
+
+  /**
+   * Sets the old password for employee update.
+   *
+   * @param password The old password of the employee to update.
+   * @author Nicolas Bolouri
+   */
+  public void setEmployeeOldPassword(String password) {
+    this.employeeOldPassword = password;
+  }
+
+  /**
+   * Loads a specified FXML page into the employee content area. Catches and prints exceptions if
+   * the file cannot be loaded.
+   *
+   * @author Nicolas Bolouri
+   * @param fxmlFile The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/employees/'.
+   */
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(

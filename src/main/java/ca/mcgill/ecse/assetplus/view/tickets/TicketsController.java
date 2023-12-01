@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -195,7 +196,8 @@ public class TicketsController {
 
     private List<TOMaintenanceTicket> filterByEmail(List<TOMaintenanceTicket> tickets, String staffEmail) {
         return tickets.stream()
-                .filter(ticket -> ticket.getRaisedByEmail().equalsIgnoreCase(staffEmail))
+                .filter(ticket -> ticket.getFixedByEmail() != null)
+                .filter(ticket -> ticket.getFixedByEmail().equalsIgnoreCase(staffEmail))
                 .collect(Collectors.toList());
     }
 

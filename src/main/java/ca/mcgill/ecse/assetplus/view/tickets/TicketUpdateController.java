@@ -174,14 +174,14 @@ public class TicketUpdateController {
 
                   String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(ticketId, email, timeEstimateStr, priorityLevelStr, requiresManagerApproval);
                   if (errorMessage.isEmpty()) {
-                      staffTextField.setText(email);
+                    errorLabel.setText("");
+                    staffTextField.setText(email);
                   } else {
-                    showError(errorMessage);
+                    errorLabel.setText(errorMessage);
                   }
               });
           });
       });
-      reinitialize();
   }
 
   @FXML

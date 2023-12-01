@@ -109,7 +109,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <TextField fx:id="staffTextField" layoutX="23.0" layoutY="77.0" prefHeight="31.0" prefWidth="274.0" />
+            <TextField fx:id="staffTextField" editable="false" layoutX="23.0" layoutY="77.0" prefHeight="31.0" prefWidth="274.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="851.0" layoutY="511.0" prefHeight="124.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20px;">

@@ -31,7 +31,7 @@ public class AssetPlusStateController {
         try {
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
             HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
-            if (employeeEmail == "manager@ap.com"){
+            if (employeeEmail.equals("manager@ap.com")){
                 employee = assetPlus.getManager();
             }
 

@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 
 
@@ -75,17 +77,41 @@ public class ViewAndEditStatusController {
   @FXML
   private void handleDisapproveButton() {
     String[] error = {""};
-    TextInputDialog dialog = new TextInputDialog();
-    dialog.setTitle("Disapprove Reason");
-    dialog.setHeaderText("Disapprove Ticket");
-    dialog.setContentText("Please enter the reason for disapproving the ticket:");
 
-    Optional<String> result = dialog.showAndWait();
-    result.ifPresent(reason -> {
-      Date currentDate = new Date(System.currentTimeMillis());
-      error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(), currentDate, reason);
+    // First dialog for the reason
+    TextInputDialog reasonDialog = new TextInputDialog();
+    reasonDialog.setTitle("Disapprove Reason");
+    reasonDialog.setHeaderText("Disapprove Ticket");
+    reasonDialog.setContentText("Please enter the reason for disapproving the ticket:");
+
+    Optional<String> reasonResult = reasonDialog.showAndWait();
+    reasonResult.ifPresent(reason -> {
+      // Second dialog for the date
+      Dialog<java.sql.Date> dateDialog = new Dialog<>();
+      dateDialog.setTitle("Disapproval Date");
+      dateDialog.setHeaderText("Select the Date");
+
+      DatePicker datePicker = new DatePicker();
+      datePicker.setValue(LocalDate.now());
+
+      dateDialog.getDialogPane().setContent(datePicker);
+      dateDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+      dateDialog.setResultConverter(dialogButton -> {
+        if (dialogButton == ButtonType.OK) {
+          LocalDate localDate = datePicker.getValue();
+          return java.sql.Date.valueOf(localDate);
+        }
+        return null;
+      });
+
+      Optional<java.sql.Date> dateResult = dateDialog.showAndWait();
+      dateResult.ifPresent(date -> {
+        error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(), date, reason);
+      });
     });
-    if (!error[0].equals("")){
+
+    if (!error[0].equals("")) {
       errorLabelRight.setText(error[0]);
     }
     initialize(ticketID);

@@ -175,6 +175,10 @@ public class AssetPlusStateController {
                 return error.trim();
             }
 
+            if (reason == null || reason.trim().isEmpty()) {
+                return "Note required for disapproval";
+            }
+
             Manager manager = assetPlus.getManager();
             ticket.disapprove(date, reason);
             ticket.addTicketNote(date, reason, manager);

@@ -179,9 +179,7 @@ public class AssetPlusStateController {
                 return "Note required for disapproval";
             }
 
-            Manager manager = assetPlus.getManager();
             ticket.disapprove(date, reason);
-            ticket.addTicketNote(date, reason, manager);
             AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to disapprove a ticket"

@@ -57,17 +57,10 @@ public class UpdateEmployeeController {
 
   @FXML
   private void onUpdateEmployeeButtonClicked() {
-    String name = employeeName.getText().strip().equals("") ? this.employeeOldName
-        : employeeName.getText().strip();
-
+    String name = employeeName.getText();
     String email = employeeUpdateEmail;
-
-    String phoneNumber =
-        employeePhoneNumber.getText().strip().equals("") ? this.employeeOldPhoneNumber
-            : employeePhoneNumber.getText().strip();
-
-    String password = employeePassword.getText().strip().equals("") ? this.employeeOldPassword
-        : employeePassword.getText().strip();
+    String phoneNumber = employeePhoneNumber.getText();
+    String password = employeePassword.getText();
 
     String result =
         AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber);

@@ -97,6 +97,12 @@ public class AssetPlusFeatureSet2Controller {
     public static void deleteAssetType(String name) {
         AssetType assetType = AssetType.getWithName(name);
         if (assetType != null) {
+            List<MaintenanceTicket> maintenanceTickets = assetPlus.getMaintenanceTickets();
+            for (MaintenanceTicket ticket : maintenanceTickets) {
+                if (ticket != null && ticket.getAsset() != null && ticket.getAsset().getAssetType().equals(assetType)){
+                    AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticket.getId());
+                }
+            }
             assetType.delete();
             AssetPlusPersistence.save();
         }

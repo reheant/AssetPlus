@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="viewEditStatusContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewAndEditStatusController">
+<AnchorPane fx:id="viewEditStatusContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewAndEditStatusController">
    <children>
       <Pane layoutX="161.0" layoutY="16.0" prefHeight="673.0" prefWidth="866.0" style="-fx-background-color: white; -fx-background-radius: 30px; -fx-border-radius: 30px; -fx-border-color: black; -fx-border-width: 3px;">
          <children>
@@ -35,7 +35,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <TextArea fx:id="approvalStatusMessage" layoutX="31.0" layoutY="302.0" prefHeight="67.0" prefWidth="299.0" text="Ticket  information will display here after approval status is completed" editable="false"/>
+                  <TextArea fx:id="approvalStatusMessage" editable="false" layoutX="31.0" layoutY="302.0" prefHeight="67.0" prefWidth="299.0" text="Ticket  information will display here after approval status is completed" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="62.0" layoutY="203.0" prefHeight="436.0" prefWidth="358.0" style="-fx-border-color: grey; -fx-border-radius: 20; -fx-border-width: 3;">
@@ -50,7 +50,8 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="ticketStatusMessage" layoutX="42.0" layoutY="303.0" prefHeight="67.0" prefWidth="276.0" text="Ticket information will display here once a valid ticket is chosen" editable="false"/>
+                  <TextArea fx:id="ticketStatusMessage" editable="false" layoutX="42.0" layoutY="303.0" prefHeight="67.0" prefWidth="276.0" text="Ticket information will display here once a valid ticket is chosen" />
+                  <Label fx:id="errorLabel" layoutX="41.0" layoutY="380.0" prefHeight="37.0" prefWidth="276.0" textAlignment="CENTER" textFill="#e82f2f" />
                </children>
             </AnchorPane>
             <Label fx:id="currentStatus" layoutX="368.0" layoutY="141.0" text="Current Status: ">

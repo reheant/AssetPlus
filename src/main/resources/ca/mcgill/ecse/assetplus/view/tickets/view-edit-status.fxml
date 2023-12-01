@@ -35,26 +35,35 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <TextArea fx:id="approvalStatusMessage" editable="false" layoutX="31.0" layoutY="302.0" prefHeight="67.0" prefWidth="299.0" text="Ticket  information will display here after approval status is completed" />
+                  <Label fx:id="errorLabelRight" layoutX="42.0" layoutY="262.0" prefHeight="87.0" prefWidth="276.0" textAlignment="CENTER" textFill="#e82f2f" wrapText="true" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="62.0" layoutY="203.0" prefHeight="436.0" prefWidth="358.0" style="-fx-border-color: grey; -fx-border-radius: 20; -fx-border-width: 3;">
                <children>
-                  <Button fx:id="actionButton" layoutX="103.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleActionButton" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
                   <Label layoutX="76.0" layoutY="14.0" prefHeight="37.0" prefWidth="207.0" text="Modify Ticket Progress:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="ticketStatusMessage" editable="false" layoutX="42.0" layoutY="303.0" prefHeight="67.0" prefWidth="276.0" text="Ticket information will display here once a valid ticket is chosen" />
-                  <Label fx:id="errorLabel" layoutX="41.0" layoutY="380.0" prefHeight="37.0" prefWidth="276.0" textAlignment="CENTER" textFill="#e82f2f" />
+                  <Button fx:id="startButton" layoutX="93.0" layoutY="98.0" mnemonicParsing="false" onAction="#startButtonOnClick" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" text="Start" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="completeButton" layoutX="93.0" layoutY="154.0" mnemonicParsing="false" onAction="#completeButtonOnClick" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 15px;" text="Complete" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="errorLabelLeft" layoutX="41.0" layoutY="262.0" prefHeight="87.0" prefWidth="276.0" textAlignment="CENTER" textFill="#e82f2f" wrapText="true" />
                </children>
             </AnchorPane>
-            <Label fx:id="currentStatus" layoutX="368.0" layoutY="141.0" text="Current Status: ">
+            <Label fx:id="currentStatus" layoutX="451.0" layoutY="141.0" prefHeight="26.0" prefWidth="165.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="315.0" layoutY="141.0" text="Current Status: ">
                <font>
                   <Font size="20.0" />
                </font>

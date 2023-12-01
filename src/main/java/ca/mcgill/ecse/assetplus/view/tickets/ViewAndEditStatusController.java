@@ -14,17 +14,12 @@ import java.util.Optional;
 
 
 public class ViewAndEditStatusController {
-  @FXML
-  private TextArea ticketStatusMessage;
 
   @FXML
-  private TextArea approvalStatusMessage;
+  private Label currentStatus, errorLabelLeft, errorLabelRight;
 
   @FXML
-  private Label currentStatus, errorLabel;
-
-  @FXML
-  private Button actionButton;
+  private Button startButton, completeButton;
 
   @FXML 
   private AnchorPane viewEditStatusContentArea;
@@ -40,102 +35,46 @@ public class ViewAndEditStatusController {
   public void initialize(int ticketID) {
     this.ticketID = ticketID;
     this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
-    updateView();
-    updateApprovalView();
+    currentStatus.setText(ticket.getStatus());
   }
 
   public void backButtonOnClick() {
     loadPage("update-ticket.fxml");
   }
 
-  private void updateView() {
-    this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
-    String status = ticket.getStatus();
-    currentStatus.setText("Current status: " + status);
-    switch (status) {
-      case "Open" -> {
-        actionButton.setDisable(false);
-        actionButton.setText("Start");
-        ticketStatusMessage.setText("Ticket must be assigned before starting or completing.");
-      }
-      case "Assigned" -> {
-        actionButton.setDisable(false);
-        actionButton.setText("Start");
-        ticketStatusMessage.setText("Ticket ready to be started.");
-      }
-      case "InProgress" -> {
-        actionButton.setDisable(false);
-        actionButton.setText("Complete");
-        ticketStatusMessage.setText("Ticket has been started.");
-      }
-      case "Resolved", "Closed" -> {
-        actionButton.setDisable(true);
-        actionButton.setText("Complete");
-        ticketStatusMessage.setText(status.equals("Resolved") ?
-                "Ticket has been resolved, awaiting manager's approval." :
-                "Ticket is closed.");
-      }
-      default -> {
-      }
-    }
-  }
-
-  private void updateApprovalView() {
-    this.ticket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketID);
-    if (!ticket.getApprovalRequired()) {
-      approveButton.setDisable(true);
-      disapproveButton.setDisable(true);
-      approvalStatusMessage.setText("Ticket does not require manager's approval.");
-    } else {
-      String status = ticket.getStatus();
-      switch (status) {
-        case "Open", "Assigned", "InProgress" -> {
-          approveButton.setDisable(true);
-          disapproveButton.setDisable(true);
-          approvalStatusMessage.setText("Ticket must be completed before getting approved or disapproved by the manager.");
-        }
-        case "Resolved" -> {
-          approveButton.setDisable(false);
-          disapproveButton.setDisable(false);
-          approvalStatusMessage.setText("Approve or disapprove ticket completion.");
-        }
-        case "Closed" -> {
-          approveButton.setDisable(true);
-          disapproveButton.setDisable(true);
-          approvalStatusMessage.setText("Ticket approved and closed.");
-        }
-        default -> {
-        }
-      }
-    }
-  }
-
-  @FXML
-  private void handleActionButton() {
+  @FXML 
+  private void startButtonOnClick() {
     String error = "";
-    if ("Start".equals(actionButton.getText())) {
-      error += AssetPlusStateController.startTicket(ticket.getId());
-    } else if ("Complete".equals(actionButton.getText())) {
-      error += AssetPlusStateController.resolveTicket(ticket.getId());
-    }
-    if (error.equals("")) {
-      updateView();
-      updateApprovalView();
-    } else {
-      errorLabel.setText(error);
-    }
-    
+    error += AssetPlusStateController.startTicket(ticket.getId());
+    if (!error.equals("")) {
+      errorLabelLeft.setText(error);
+    } 
+    currentStatus.setText(ticket.getStatus());
+  }
+
+  @FXML 
+  private void completeButtonOnClick() {
+    String error = "";
+    error += AssetPlusStateController.resolveTicket(ticket.getId());
+    if (!error.equals("")) {
+      errorLabelLeft.setText(error);
+    } 
+    currentStatus.setText(ticket.getStatus());
   }
 
   @FXML
   private void handleApproveButton() {
-    AssetPlusStateController.approveTicket(ticket.getId());
-    updateView();
-    updateApprovalView();
+    String error = "";
+    error += AssetPlusStateController.approveTicket(ticket.getId());
+    if (!error.equals("")) {
+      errorLabelRight.setText(error);
+    } 
+    currentStatus.setText(ticket.getStatus());
   }
 
   @FXML
   private void handleDisapproveButton() {
+    String[] error = {""};
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("Disapprove Reason");
     dialog.setHeaderText("Disapprove Ticket");
@@ -144,10 +83,12 @@ public class ViewAndEditStatusController {
     Optional<String> result = dialog.showAndWait();
     result.ifPresent(reason -> {
       Date currentDate = new Date(System.currentTimeMillis());
-      AssetPlusStateController.disapproveTicket(ticket.getId(), currentDate, reason);
+      error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(), currentDate, reason);
     });
-    updateView();
-    updateApprovalView();
+    if (!error[0].equals("")){
+      errorLabelRight.setText(error[0]);
+    }
+    currentStatus.setText(ticket.getStatus());
   }
 
   private void loadPage(String fxmlFile) {

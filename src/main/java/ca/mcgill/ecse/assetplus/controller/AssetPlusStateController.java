@@ -29,15 +29,21 @@ public class AssetPlusStateController {
     public static String assignTicket(int ticketID, String employeeEmail, TimeEstimate timeEstimate,
             PriorityLevel priorityLevel, boolean requiresManagerApproval) {
         try {
+            var error = "";
             MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
-            HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
+            HotelStaff employee;
             if (employeeEmail.equals("manager@ap.com")){
                 employee = assetPlus.getManager();
+            } else if (employeeEmail.contains("@ap.com")) {
+                employee = (HotelStaff) User.getWithEmail(employeeEmail);
             }
-
-            var error = "";
-            error += assertTicketExists(ticket);
+            else{
+                error = "Not an employee email. ";
+                employee = null;
+            }
+            
             error += assertEmployeeExists(employee);
+            error += assertTicketExists(ticket);
             error += assertTicketAssignable(ticket);
 
             if (!error.isEmpty()) {

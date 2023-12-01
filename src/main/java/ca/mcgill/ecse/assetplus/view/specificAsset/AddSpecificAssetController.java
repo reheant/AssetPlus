@@ -36,11 +36,22 @@ public class AddSpecificAssetController {
   private String assetTypeString;
   private java.sql.Date sqlDate;
 
+  /**
+   * Sets the assetType label string to the corresponding asset type
+   * 
+   * @param string AssetType name string
+   * @author Rehean Thillainathalingam
+   */
   public void setAssetTypeString(String string) {
     assetTypeString = string;
     assetType.setText(assetTypeString);
   }
 
+  /**
+   * Adds a specific asset once the add specific asset button is clicked
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   public void addSpecificAssetOnClick() {
     String assetNb = assetNumber.getText().strip();
@@ -86,12 +97,22 @@ public class AddSpecificAssetController {
     }
   }
 
+  /**
+   * Loads specific asset page once back button is clicked
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   public void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
 
   }
 
+  /**
+   * Loads the corresponding page of the inputted fxml file
+   * @author Rehean Thillainathalingam
+   * @param fxmlFile fxml file name string
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(

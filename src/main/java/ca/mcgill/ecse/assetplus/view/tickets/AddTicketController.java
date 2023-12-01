@@ -54,15 +54,31 @@ public class AddTicketController {
 
   private int ticketId;
 
+  /**
+   * Keeps track of the id of the ticket to view
+   *
+   * @author Julien Audet
+   * @param newViewedTicketId The id of the ticket to view
+   */
   public void setTicketId(int newViewedTicketId){
     ticketId = newViewedTicketId;
   }
 
+  /**
+   * Cancels ticket creation
+   *
+   * @author Julien Audet
+   */
   @FXML
   public void onCancelTicketClicked(){
       loadPage("tickets/tickets.fxml");
   }
 
+  /**
+   * Attempt to create a ticket with the information currently in the fields
+   *
+   * @author Julien Audet
+   */
   @FXML
   public void onCreateTicketClicked(){
     String result;
@@ -101,17 +117,34 @@ public class AddTicketController {
     }    
   }
 
+  /**
+   * Returns to the ticket search page
+   *
+   * @author Julien Audet
+   */
   @FXML
   public void onBackToTicketsClicked(){
     loadPage("tickets/tickets.fxml");
   }
 
+  /**
+   * Reinitializes the information displayed on the page. Similar to initialize, but shouldn't be called right when the page is loaded
+   *
+   * @author Julien Audet
+   */
   @FXML
   public void reinitialize() {
     this.ticketIdTextField.setPromptText("Suggested New Ticket ID: " + String.format("%05d", ticketId));
     this.errorLabel.setText("");
   }
 
+  /**
+   * Loads a new page with the desired fxml file
+   *
+   * @author Julien Audet
+   * @param fxmlFile A path to the fxml file to load.
+   * @return An FXMLLoader to allow access to that scene's view controller
+   */
   private FXMLLoader loadPage(String fxmlFile) {
       try {
           FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
@@ -124,12 +157,22 @@ public class AddTicketController {
       return null;
   }
 
-
+  /**
+   * Displays a error message on the page
+   *
+   * @author Julien Audet
+   * @param content The error message to display
+   */
   private void showError(String content) {
     errorLabel.setText(content);
   }
 
 
+  /**
+   * Clears the error off the screen once clicked
+   *
+   * @author Julien Audet
+   */
   @FXML
   private void onErrorClicked() {
     errorLabel.setText("");

@@ -33,6 +33,12 @@ public class ViewAndEditStatusController {
 
   private TOMaintenanceTicket ticket;
 
+  /**
+   * Initializes the view and edit status view.
+   *
+   * @author Rehean Thillainathalingam
+   * @param ticketID The ID of the maintenance ticket.
+   */
   @FXML
   public void initialize(int ticketID) {
     this.ticketID = ticketID;
@@ -40,10 +46,20 @@ public class ViewAndEditStatusController {
     currentStatus.setText(ticket.getStatus());
   }
 
+  /**
+   * Loads the update-ticket view when the back button is clicked.
+   *
+   * @author Luke Freund
+   */
   public void backButtonOnClick() {
     loadPage("update-ticket.fxml");
   }
 
+  /**
+   * Starts the work on the ticket.
+   *
+   * @author Rehean Thillainathalingam
+   */
   @FXML 
   private void startButtonOnClick() {
     String error = "";
@@ -54,6 +70,11 @@ public class ViewAndEditStatusController {
     initialize(ticketID);
   }
 
+  /**
+   * Completes the work on a ticket.
+   *
+   * @author Luke Freund
+   */
   @FXML 
   private void completeButtonOnClick() {
     String error = "";
@@ -64,6 +85,11 @@ public class ViewAndEditStatusController {
     initialize(ticketID);
   }
 
+  /**
+   * If manager approval required, approves the ticket.
+   *
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   private void handleApproveButton() {
     String error = "";
@@ -74,6 +100,11 @@ public class ViewAndEditStatusController {
     initialize(ticketID);
   }
 
+  /**
+   * Disapproves the ticket.
+   *
+   * @author Luke Freund
+   */
   @FXML
   private void handleDisapproveButton() {
     String[] error = {""};
@@ -119,6 +150,12 @@ public class ViewAndEditStatusController {
     initialize(ticketID);
   }
 
+  /**
+   * Loads the specified view.
+   *
+   * @author Rehean Thillainathalingam
+   * @param fxmlFile The file to be loaded.
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/tickets/" + fxmlFile));

@@ -74,11 +74,8 @@ public class AssetTypeUpdateController {
    */
   @FXML
   private void onUpdateAssetTypeButtonClicked() {
-    String name = assetTypeName.getText().strip().equals("") ? this.assetTypeOldName
-        : assetTypeName.getText().strip();
-
-    String lifespan = assetTypeLifespan.getText().strip().equals("") ? this.assetTypeOldLifespan
-        : assetTypeLifespan.getText().strip();
+    String name = assetTypeName.getText();
+    String lifespan = assetTypeLifespan.getText();
 
     String result = "";
     try {

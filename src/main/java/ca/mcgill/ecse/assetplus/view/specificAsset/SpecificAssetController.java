@@ -39,7 +39,16 @@ public class SpecificAssetController {
   private String specificAssetInfo;
   private String assetTypeString;
 
-
+  /**
+   * Filters specific assets based on user inputs
+   * 
+   * @author Rehean Thillainathalingam
+   * @param searchedDate
+   * @param searchedAssetNb
+   * @param searchedFloorNb
+   * @param searchedRoomNb
+   * @return A string list with the filtered data
+   */
   @FXML
   public List<String> filterList(String searchedDate, String searchedAssetNb,
       String searchedFloorNb, String searchedRoomNb) {
@@ -59,6 +68,11 @@ public class SpecificAssetController {
     return finalData;
   }
 
+  /**
+   * Filters specific assets once filter button is clicked
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   private void filterButtonOnClick() {
     String searchedDate = purchaseDateFilter.getText();
@@ -77,6 +91,11 @@ public class SpecificAssetController {
     }
   }
 
+  /**
+   * Clears filters once clear button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   private void clearButtonOnClick() {
     purchaseDateFilter.setText("");
@@ -87,6 +106,11 @@ public class SpecificAssetController {
     resetCellFactory();
   }
 
+  /**
+   * Resets specific asset list data.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   private void resetCellFactory() {
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -101,7 +125,11 @@ public class SpecificAssetController {
       }
     });
   }
-
+  /**
+   * Displays that no results were found in the specific asset list.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   private void displayNoSearchResults() {
     specificAssetList.getItems().add("No search results");
     specificAssetList.setCellFactory(lv -> new ListCell<String>() {
@@ -123,6 +151,11 @@ public class SpecificAssetController {
     });
   }
 
+  /**
+   * Resets the specific asset list
+   * 
+   * @author Rehean Thillainathalingam
+   */
   private void resetSpecificAssetList() {
     specificAssetList.getItems().clear();
     String[] assetData =
@@ -130,17 +163,32 @@ public class SpecificAssetController {
     specificAssetList.getItems().addAll(assetData);
   }
 
+  /**
+   * Loads add specific asset page once the add button is pressed.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   public void addSpecificAssetOnClick() {
     loadPage("addSpecificAsset.fxml");
 
   }
 
+  /**
+   * Loads assets page once the back button is pressed.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   public void backButtonOnClick() {
     loadPage("../assetTypes/assets.fxml");
   }
 
+  /**
+   * Initializes the specific asset page.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   public void initialize(String assetType) {
     purchaseDateFilter.setPromptText("YYYY-MM-DD");
@@ -176,6 +224,12 @@ public class SpecificAssetController {
         });
   }
 
+  /**
+   * Loads the corresponding page of the inputted fxml file
+   * 
+   * @author Rehean Thillainathalingam
+   * @param fxmlFile fxml file name 
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(

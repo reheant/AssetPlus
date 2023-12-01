@@ -35,6 +35,12 @@ public class ViewSpecificAssetController {
   private String[] specificData;
   private String titleLabelString;
 
+  /**
+   * Sets the text for the labels on the view page
+   * 
+   * @author Rehean Thillainathalingam
+   * @param specificData String array of the date required.
+   */
   public void displayTitle(String[] specificData) {
     titleLabel.setText(specificData[0] + " #" + specificData[1]);
     assetNumber.setText(specificData[1]);
@@ -44,19 +50,40 @@ public class ViewSpecificAssetController {
     assetType.setText(specificData[0]);
   }
 
+  /**
+   * Loads specific asset page once back button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   public void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
   }
 
+  /**
+   * Loads edit specific asset page once edit button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   public void editSpecificAssetOnClick() {
     loadPage("editSpecificAsset.fxml");
   }
 
+  /**
+   * Deletes specific asset and returns user to specific asset page.
+   * 
+   * @author Rehean Thillainathalingam
+   */
   public void deleteSpecificAssetOnClick() {
     AssetPlusFeatureSet3Controller.deleteSpecificAsset(Integer.parseInt(specificData[1]));
     loadPage("SpecificAsset.fxml");
   }
 
+  /**
+   * Initializes the view specific asset page
+   * 
+   * @author Rehean Thillainathalingam
+   * @param titleLabelString A string label for the title of the page
+   */
   @FXML
   public void initialize(String titleLabelString) {
 
@@ -65,7 +92,13 @@ public class ViewSpecificAssetController {
     displayTitle(specificData);
 
   }
-
+  
+  /**
+   * Loads the corresponding page of the inputted fxml file
+   * 
+   * @author Rehean Thillainathalingam
+   * @param string AssetType name string
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(

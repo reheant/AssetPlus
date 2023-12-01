@@ -65,7 +65,6 @@ public class AddGuestController {
     }
   }
 
-
   /**
    * Loads a specified FXML page into the guest content area. Catches and prints exceptions if the
    * file cannot be loaded.

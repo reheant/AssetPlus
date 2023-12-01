@@ -41,6 +41,43 @@ public class GuestController {
   private ListView<String> guestList;
 
   /**
+   * Initializes the guest list and sets up the UI. Loads guest emails and sets up the list cell
+   * factory.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  public void initialize() {
+    guestSearchBar.setFocusTraversable(false);
+
+    String[] guestEmails = AssetPlusFeatureSet1Controller.getGuestEmails();
+    guestList.setFixedCellSize(50.0);
+    guestList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(item);
+          setStyle("-fx-font-size: 16pt;");
+        }
+      }
+    });
+    guestList.setPrefHeight(10 * guestList.getFixedCellSize());
+    guestList.getItems().addAll(guestEmails);
+
+    guestList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        setGuestInformation(newValue);
+      }
+    });
+  }
+
+  /**
    * Loads the 'add-guest.fxml' page when Add Guest is clicked.
    *
    * @author Nicolas Bolouri
@@ -106,43 +143,6 @@ public class GuestController {
     guestSearchBar.setText("");
     resetGuestList();
     resetCellFactory();
-  }
-
-  /**
-   * Initializes the guest list and sets up the UI. Loads guest emails and sets up the list cell
-   * factory.
-   *
-   * @author Nicolas Bolouri
-   */
-  @FXML
-  public void initialize() {
-    guestSearchBar.setFocusTraversable(false);
-
-    String[] guestEmails = AssetPlusFeatureSet1Controller.getGuestEmails();
-    guestList.setFixedCellSize(50.0);
-    guestList.setCellFactory(lv -> new ListCell<String>() {
-      @Override
-      public void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty) {
-          setText(null);
-        } else {
-          setText(item);
-          setStyle("-fx-font-size: 16pt;");
-        }
-      }
-    });
-    guestList.setPrefHeight(10 * guestList.getFixedCellSize());
-    guestList.getItems().addAll(guestEmails);
-
-    guestList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-
-      @Override
-      public void changed(ObservableValue<? extends String> observable, String oldValue,
-          String newValue) {
-        setGuestInformation(newValue);
-      }
-    });
   }
 
   /**
@@ -237,7 +237,6 @@ public class GuestController {
     String[] guestEmails = AssetPlusFeatureSet1Controller.getGuestEmails();
     guestList.getItems().addAll(guestEmails);
   }
-
 
   /**
    * Loads a specified FXML page into the guest content area. Sets up controller data for

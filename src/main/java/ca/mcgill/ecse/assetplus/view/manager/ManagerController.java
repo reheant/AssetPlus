@@ -24,6 +24,28 @@ public class ManagerController {
   private Label managerPhoneNumber;
 
   /**
+   * Initializes the manager information. This method fetches the manager's information and updates
+   * the display. If no manager information is found, it sets the display to 'Manager not found'.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  public void initialize() {
+    String managerInfo = AssetPlusFeatureSet1Controller.getManagerInfo();
+    if (managerInfo.isEmpty() || managerInfo.equals("Manager not found")) {
+      managerName.setText("Manager not found");
+      managerEmail.setText("Manager not found");
+      managerPhoneNumber.setText("Manager not found");
+
+    } else {
+      String[] infoParts = managerInfo.split("~");
+      managerName.setText(infoParts[0]);
+      managerEmail.setText(infoParts[1]);
+      managerPhoneNumber.setText(infoParts[2]);
+    }
+  }
+
+  /**
    * Handles the event when the Manager Information button is clicked. This method loads the page
    * 'update-manager.fxml'.
    *
@@ -44,28 +66,6 @@ public class ManagerController {
   private void onCancelButtonClicked() {
     managerContentArea.getChildren().clear();
     initialize();
-  }
-
-  /**
-   * Initializes the manager information. This method fetches the manager's information and updates
-   * the display. If no manager information is found, it sets the display to 'Manager not found'.
-   *
-   * @author Nicolas Bolouri
-   */
-  @FXML
-  public void initialize() {
-    String managerInfo = AssetPlusFeatureSet1Controller.getManagerInfo();
-    if (managerInfo.isEmpty() || managerInfo.equals("Manager not found")) {
-      managerName.setText("Manager not found");
-      managerEmail.setText("Manager not found");
-      managerPhoneNumber.setText("Manager not found");
-
-    } else {
-      String[] infoParts = managerInfo.split("~");
-      managerName.setText(infoParts[0]);
-      managerEmail.setText(infoParts[1]);
-      managerPhoneNumber.setText(infoParts[2]);
-    }
   }
 
   /**

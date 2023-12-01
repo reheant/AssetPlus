@@ -41,6 +41,45 @@ public class EmployeeController {
   private ListView<String> employeeList;
 
   /**
+   * Initializes the employee list and sets up the UI. Loads employee emails and sets up the list
+   * cell factory.
+   *
+   * @author Nicolas Bolouri
+   */
+
+  @FXML
+  public void initialize() {
+    employeeSearchBar.setFocusTraversable(false);
+
+    String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
+    employeeList.setFixedCellSize(50.0);
+    employeeList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(item);
+          setStyle("-fx-font-size: 16pt;");
+        }
+      }
+    });
+    employeeList.setPrefHeight(10 * employeeList.getFixedCellSize());
+    employeeList.getItems().addAll(employeeEmails);
+
+    employeeList.getSelectionModel().selectedItemProperty()
+        .addListener(new ChangeListener<String>() {
+
+          @Override
+          public void changed(ObservableValue<? extends String> observable, String oldValue,
+              String newValue) {
+            setEmployeeInformation(newValue);
+          }
+        });
+  }
+
+  /**
    * Loads the 'add-employee.fxml' page when Add Employee is clicked.
    *
    * @author Nicolas Bolouri
@@ -106,45 +145,6 @@ public class EmployeeController {
     employeeSearchBar.setText("");
     resetEmployeeList();
     resetCellFactory();
-  }
-
-  /**
-   * Initializes the employee list and sets up the UI. Loads employee emails and sets up the list
-   * cell factory.
-   *
-   * @author Nicolas Bolouri
-   */
-
-  @FXML
-  public void initialize() {
-    employeeSearchBar.setFocusTraversable(false);
-
-    String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
-    employeeList.setFixedCellSize(50.0);
-    employeeList.setCellFactory(lv -> new ListCell<String>() {
-      @Override
-      public void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty) {
-          setText(null);
-        } else {
-          setText(item);
-          setStyle("-fx-font-size: 16pt;");
-        }
-      }
-    });
-    employeeList.setPrefHeight(10 * employeeList.getFixedCellSize());
-    employeeList.getItems().addAll(employeeEmails);
-
-    employeeList.getSelectionModel().selectedItemProperty()
-        .addListener(new ChangeListener<String>() {
-
-          @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue,
-              String newValue) {
-            setEmployeeInformation(newValue);
-          }
-        });
   }
 
   /**
@@ -239,7 +239,6 @@ public class EmployeeController {
     String[] employeeEmails = AssetPlusFeatureSet1Controller.getEmployeeEmails();
     employeeList.getItems().addAll(employeeEmails);
   }
-
 
   /**
    * Loads a specified FXML page into the employee content area. Sets up controller data for

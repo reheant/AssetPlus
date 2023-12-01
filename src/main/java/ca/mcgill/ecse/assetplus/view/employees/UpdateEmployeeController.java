@@ -35,40 +35,6 @@ public class UpdateEmployeeController {
   private TextField employeePassword;
 
   /**
-   * Loads the 'employees.fxml' page when the Cancel button is clicked.
-   *
-   * @author Nicolas Bolouri
-   */
-  @FXML
-  private void onCancelButtonClicked() {
-    loadPage("employees.fxml");
-  }
-
-  /**
-   * Updates an employee's details when the Update Employee button is clicked. Displays error
-   * message if the update fails, otherwise loads the 'employees.fxml' page.
-   *
-   * @author Nicolas Bolouri
-   */
-  @FXML
-  private void onUpdateEmployeeButtonClicked() {
-    String name = employeeName.getText();
-    String email = employeeUpdateEmail;
-    String phoneNumber = employeePhoneNumber.getText();
-    String password = employeePassword.getText();
-
-    String result =
-        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber);
-
-    if (!result.equals("")) {
-      errorLabel.setText(result);
-      return;
-    } else {
-      loadPage("employees.fxml");
-    }
-  }
-
-  /**
    * Initializes employee detail fields, making them non-focusable.
    *
    * @author Nicolas Bolouri
@@ -141,6 +107,40 @@ public class UpdateEmployeeController {
    */
   public void setEmployeeOldPassword(String password) {
     this.employeeOldPassword = password;
+  }
+
+  /**
+   * Loads the 'employees.fxml' page when the Cancel button is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onCancelButtonClicked() {
+    loadPage("employees.fxml");
+  }
+
+  /**
+   * Updates an employee's details when the Update Employee button is clicked. Displays error
+   * message if the update fails, otherwise loads the 'employees.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onUpdateEmployeeButtonClicked() {
+    String name = employeeName.getText();
+    String email = employeeUpdateEmail;
+    String phoneNumber = employeePhoneNumber.getText();
+    String password = employeePassword.getText();
+
+    String result =
+        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber);
+
+    if (!result.equals("")) {
+      errorLabel.setText(result);
+      return;
+    } else {
+      loadPage("employees.fxml");
+    }
   }
 
   /**

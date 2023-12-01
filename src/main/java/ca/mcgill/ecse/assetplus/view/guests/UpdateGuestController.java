@@ -35,40 +35,6 @@ public class UpdateGuestController {
   private TextField guestPassword;
 
   /**
-   * Loads the 'guests.fxml' page when the Cancel button is clicked.
-   *
-   * @author Nicolas Bolouri
-   */
-  @FXML
-  private void onCancelButtonClicked() {
-    loadPage("guests.fxml");
-  }
-
-  /**
-   * Updates guest details when the Update Guest button is clicked. Displays error message if the
-   * update fails, otherwise loads the 'guests.fxml' page.
-   *
-   * @author Nicolas Bolouri
-   */
-  @FXML
-  private void onUpdateGuestButtonClicked() {
-    String name = guestName.getText();
-    String email = guestUpdateEmail;
-    String phoneNumber = guestPhoneNumber.getText();
-    String password = guestPassword.getText();
-
-    String result =
-        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber);
-
-    if (!result.equals("")) {
-      errorLabel.setText(result);
-      return;
-    } else {
-      loadPage("guests.fxml");
-    }
-  }
-
-  /**
    * Initializes guest detail fields, making them non-focusable.
    *
    * @author Nicolas Bolouri
@@ -112,7 +78,6 @@ public class UpdateGuestController {
     this.guestUpdateEmail = email;
   }
 
-
   /**
    * Sets the old name for guest update.
    *
@@ -141,6 +106,40 @@ public class UpdateGuestController {
    */
   public void setGuestOldPassword(String password) {
     this.guestOldPassword = password;
+  }
+
+  /**
+   * Loads the 'guests.fxml' page when the Cancel button is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onCancelButtonClicked() {
+    loadPage("guests.fxml");
+  }
+
+  /**
+   * Updates guest details when the Update Guest button is clicked. Displays error message if the
+   * update fails, otherwise loads the 'guests.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onUpdateGuestButtonClicked() {
+    String name = guestName.getText();
+    String email = guestUpdateEmail;
+    String phoneNumber = guestPhoneNumber.getText();
+    String password = guestPassword.getText();
+
+    String result =
+        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber);
+
+    if (!result.equals("")) {
+      errorLabel.setText(result);
+      return;
+    } else {
+      loadPage("guests.fxml");
+    }
   }
 
   /**

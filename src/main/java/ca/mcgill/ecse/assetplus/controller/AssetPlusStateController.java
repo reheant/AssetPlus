@@ -403,6 +403,9 @@ public class AssetPlusStateController {
             return "Email is not a valid employee email ";
         }
 
+        if (employeeEmail.equals("manager@ap.com")) {
+            return "";
+        }
         HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
         return assertEmployeeExists(employee);
     }
@@ -416,7 +419,7 @@ public class AssetPlusStateController {
      */
     private static String assertUserExistsAndIsEmployee(HotelStaff employee) {
         if (employee == null) {
-            return "Staff to assign does not exist.";
+            return "Staff does not exist.";
         }
 
         return assertUserIsEmployee(employee.getEmail());

@@ -19,6 +19,9 @@ public class TicketUpdateController {
   private AnchorPane mainContentArea;
 
   @FXML
+  private Label errorLabel;
+
+  @FXML
   private ListView<String> imageListView;
 
   @FXML
@@ -86,8 +89,8 @@ public class TicketUpdateController {
 
   @FXML
   public void onDeleteTicketClicked(){
-      AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticketId);
-      loadPage("tickets/tickets.fxml");
+    AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticketId);
+    loadPage("tickets/tickets.fxml");
   }
 
   @FXML
@@ -108,7 +111,7 @@ public class TicketUpdateController {
     if (result.equals("")) {
       loadPage("tickets/tickets.fxml");
     } else{
-      showAlert("Error: could not save ticket. ", result);      
+      showError(result);      
     }
 
   }
@@ -125,7 +128,7 @@ public class TicketUpdateController {
           AssetPlusFeatureSet5Controller.deleteImageFromMaintenanceTicket(selectedUrl, ticketId);
           imageListView.getItems().remove(selectedUrl);
       } else {
-          showAlert("No Selection", "Please select an image URL to delete.");
+          showError("Please select an image URL to delete.");
       }
   }
 
@@ -173,7 +176,7 @@ public class TicketUpdateController {
                   if (errorMessage.isEmpty()) {
                       staffTextField.setText(email);
                   } else {
-                      showAlert("Error Assigning Ticket: ", errorMessage);
+                    showError(errorMessage);
                   }
               });
           });
@@ -183,11 +186,11 @@ public class TicketUpdateController {
 
   @FXML
   public void reinitialize() {
+    errorLabel.setText("");
       assignStaffButton.disableProperty().bind(
               staffTextField.textProperty().isNotEmpty()
       );
     this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
-    System.out.println(this.currentMaintenanceTicket);
     this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
 
     this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
@@ -218,7 +221,6 @@ public class TicketUpdateController {
     this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
 
     assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
-    System.out.println("new asset number: " + String.valueOf(assetNumber));
     if (assetNumber != -1){
       this.assetNumberTextField.setText(String.valueOf(assetNumber));
     }
@@ -256,9 +258,19 @@ public class TicketUpdateController {
           if (errorMessage.isEmpty()) {
               imageListView.getItems().add(url);
           } else {
-              showAlert("Invalid Image URL: ", errorMessage);
+            showError(errorMessage);
           }
       });
+  }
+
+  private void showError(String content) {
+    errorLabel.setText(content);
+  }
+
+
+  @FXML
+  private void onErrorClicked() {
+    errorLabel.setText("");
   }
 
   private void showAlert(String title, String content) {

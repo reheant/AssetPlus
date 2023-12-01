@@ -109,14 +109,8 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <TextField fx:id="staffTextField" layoutX="23.0" layoutY="70.0" prefHeight="31.0" prefWidth="274.0" />
          </children>
       </AnchorPane>
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="37.0" layoutY="681.0" prefHeight="35.0" prefWidth="1151.0" text=" " textAlignment="CENTER" textFill="RED">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
       <AnchorPane layoutX="851.0" layoutY="511.0" prefHeight="167.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
          <children>
             <Label alignment="CENTER" layoutX="70.0" layoutY="14.0" text="Ticket Raiser">
@@ -146,5 +140,11 @@
             </Label>
          </children>
       </AnchorPane>
+      <TextField fx:id="staffTextField" prefHeight="31.0" prefWidth="274.0" />
+      <Label fx:id="errorLabel" alignment="CENTER" layoutX="32.0" layoutY="660.0" onMouseClicked="#onErrorClicked" prefHeight="35.0" prefWidth="1151.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

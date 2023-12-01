@@ -66,11 +66,6 @@
             <Label fx:id="roomNumber" layoutX="20.0" layoutY="230.0" text="Room number: " />
          </children>
       </AnchorPane>
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="35.0" layoutY="650.0" prefHeight="35.0" prefWidth="1151.0" text="test tes " textAlignment="CENTER" textFill="RED">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
       <AnchorPane layoutX="851.0" layoutY="366.0" prefHeight="312.0" prefWidth="320.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
          <children>
             <Label alignment="CENTER" layoutX="70.0" layoutY="14.0" text="Ticket Raiser">
@@ -81,5 +76,10 @@
             <TextField fx:id="ticketRaiserTextField" layoutX="18.0" layoutY="96.0" prefHeight="31.0" prefWidth="284.0" promptText="example@email.com" />
          </children>
       </AnchorPane>
+      <Label fx:id="errorLabel" alignment="CENTER" layoutX="35.0" layoutY="650.0" onMouseClicked="#onErrorClicked" prefHeight="35.0" prefWidth="1151.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

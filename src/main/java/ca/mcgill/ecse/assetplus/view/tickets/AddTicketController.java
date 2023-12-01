@@ -70,21 +70,21 @@ public class AddTicketController {
     
     String newTicketIdString = ticketIdTextField.getText();
     if (newTicketIdString == null || newTicketIdString.isEmpty()){
-      showAlert("Error: missing information", "Missing ticket id.");      
+      showError("Missing ticket id.");      
       return;
     }
     Integer newTicketId = Integer.parseInt(newTicketIdString);
     
     String newAssetNumberString = assetNumberTextField.getText();
     if (newAssetNumberString == null || newAssetNumberString.isEmpty()){
-      showAlert("Error: missing information", "Missing asset number. Put asset number -1 to avoid specifying an asset.");      
+      showError("Missing asset number. Put asset number -1 to avoid specifying an asset.");      
       return;
     }
     Integer newAssetNumber = Integer.parseInt(newAssetNumberString);
 
     LocalDate localDate = raisedOnDateDatePicker.getValue();
     if (localDate == null){
-      showAlert("Error: missing information", "Missing date.");
+      showError("Missing date.");
       return;
     }
     Date newRaisedOnDate = Date.valueOf(localDate);
@@ -97,8 +97,7 @@ public class AddTicketController {
       loadPage("tickets/tickets.fxml");  
     }
     else{
-      System.out.println(result);
-      showAlert("Error: Could not create ticket", result);
+      showError(result);
     }    
   }
 
@@ -110,6 +109,7 @@ public class AddTicketController {
   @FXML
   public void reinitialize() {
     this.ticketIdTextField.setPromptText("Suggested New Ticket ID: " + String.format("%05d", ticketId));
+    this.errorLabel.setText("");
   }
 
   private FXMLLoader loadPage(String fxmlFile) {
@@ -126,7 +126,13 @@ public class AddTicketController {
 
 
   private void showError(String content) {
+    errorLabel.setText(content);
+  }
 
+
+  @FXML
+  private void onErrorClicked() {
+    errorLabel.setText("");
   }
 
   private void showAlert(String title, String content) {

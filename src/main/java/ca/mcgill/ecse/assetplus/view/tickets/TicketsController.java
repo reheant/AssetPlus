@@ -191,7 +191,6 @@ public class TicketsController {
         loadPage("tickets/add-ticket.fxml");
     }
 
-
     /**
      * Resets the maintenance ticket list by clearing and repopulating it with all available
      * tickets.

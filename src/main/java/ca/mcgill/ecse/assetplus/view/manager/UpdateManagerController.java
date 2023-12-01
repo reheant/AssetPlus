@@ -11,7 +11,7 @@ import java.util.Objects;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
 
 public class UpdateManagerController {
-  
+
   @FXML
   private AnchorPane managerContentArea;
 
@@ -32,7 +32,7 @@ public class UpdateManagerController {
     loadPage("manager.fxml");
   }
 
-  @FXML 
+  @FXML
   private void onSavelButtonClicked() {
     String managerPassword = AssetPlusFeatureSet1Controller.getManagerPassword();
     String oldPassword = this.oldPassword.getText();
@@ -44,7 +44,8 @@ public class UpdateManagerController {
       return;
     }
 
-    if (newPassword.isEmpty() || newPasswordConfirm.isEmpty() || !newPassword.equals(newPasswordConfirm)) {
+    if (newPassword.isEmpty() || newPasswordConfirm.isEmpty()
+        || !newPassword.equals(newPasswordConfirm)) {
       errorLabel.setText("New passwords do not match");
       return;
     }
@@ -54,13 +55,12 @@ public class UpdateManagerController {
     if (!result.equals("")) {
       errorLabel.setText(result);
       return;
-    }
-    else {
+    } else {
       loadPage("manager.fxml");
     }
-  } 
+  }
 
-    private void loadPage(String fxmlFile) {
+  private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(
           getClass().getResource("/ca/mcgill/ecse/assetplus/view/manager/" + fxmlFile)));
@@ -70,7 +70,5 @@ public class UpdateManagerController {
     }
   }
 }
-
-
 
 

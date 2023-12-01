@@ -41,8 +41,8 @@ public class AddGuestController {
     String phoneNumber = guestPhoneNumber.getText().strip();
     String password = guestPassword.getText().strip();
 
-    String result =
-        AssetPlusFeatureSet1Controller.addEmployeeOrGuest(email, password, name, phoneNumber, false); 
+    String result = AssetPlusFeatureSet1Controller.addEmployeeOrGuest(email, password, name,
+        phoneNumber, false);
 
     if (!result.equals("")) {
       errorLabel.setText(result);

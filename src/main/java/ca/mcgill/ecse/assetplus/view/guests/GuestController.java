@@ -244,7 +244,7 @@ public class GuestController {
    * 'update-guest.fxml'. Catches and prints exceptions if the file cannot be loaded.
    *
    * @author Nicolas Bolouri
-   * @param fxmlFile The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
+   * @param String The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
    */
   private void loadPage(String fxmlFile) {
     try {

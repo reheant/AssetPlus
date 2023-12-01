@@ -148,7 +148,7 @@ public class UpdateEmployeeController {
    * the file cannot be loaded.
    *
    * @author Nicolas Bolouri
-   * @param fxmlFile The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/employees/'.
+   * @param String The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/employees/'.
    */
   private void loadPage(String fxmlFile) {
     try {

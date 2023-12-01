@@ -71,7 +71,7 @@ public class AddGuestController {
    * file cannot be loaded.
    * 
    * @author Nicolas Bolouri
-   * @param fxmlFile The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
+   * @param String The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
    */
   private void loadPage(String fxmlFile) {
     try {

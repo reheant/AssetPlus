@@ -74,7 +74,7 @@ public class ManagerController {
    * IOException is caught and printed.
    *
    * @author Nicolas Bolouri
-   * @param fxmlFile The name of the FXML file to load, relative to
+   * @param String The name of the FXML file to load, relative to
    *        '/ca/mcgill/ecse/assetplus/view/manager/'.
    */
   private void loadPage(String fxmlFile) {

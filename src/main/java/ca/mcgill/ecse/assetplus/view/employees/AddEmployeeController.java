@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class AddEmployeeController {
+
   @FXML
   private AnchorPane employeeContentArea;
 
@@ -29,11 +30,23 @@ public class AddEmployeeController {
   @FXML
   private TextField employeePassword;
 
+  /**
+   * Loads the 'employees.fxml' page when the Cancel button is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onCancelButtonClicked() {
     loadPage("employees.fxml");
   }
 
+  /**
+   * Adds a new employee when the Add Employee button is clicked. Validates and submits the
+   * employee's information. Displays an error message if the submission fails, otherwise loads the
+   * 'employees.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   private void onAddEmployeeButtonClicked() {
     String name = employeeName.getText().strip();
@@ -52,6 +65,13 @@ public class AddEmployeeController {
     }
   }
 
+  /**
+   * Loads a specified FXML page into the employee content area. Catches and prints exceptions if
+   * the file cannot be loaded.
+   *
+   * @author Nicolas Bolouri
+   * @param String The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/employees/'.
+   */
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(

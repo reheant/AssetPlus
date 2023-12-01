@@ -16,22 +16,6 @@ public class UpdateGuestController {
   private String guestOldPhoneNumber;
   private String guestOldPassword;
 
-  public void setGuestUpdateEmail(String email) {
-    this.guestUpdateEmail = email;
-  }
-
-  public void setGuestOldName(String name) {
-    this.guestOldName = name;
-  }
-
-  public void setGuestOldPhoneNumber(String phoneNumber) {
-    this.guestOldPhoneNumber = phoneNumber;
-  }
-
-  public void setGuestOldPassword(String password) {
-    this.guestOldPassword = password;
-  }
-
   @FXML
   private AnchorPane guestContentArea;
 
@@ -50,29 +34,11 @@ public class UpdateGuestController {
   @FXML
   private TextField guestPassword;
 
-  @FXML
-  private void onCancelButtonClicked() {
-    loadPage("guests.fxml");
-  }
-
-  @FXML
-  private void onUpdateGuestButtonClicked() {
-    String name = guestName.getText();
-    String email = guestUpdateEmail;
-    String phoneNumber = guestPhoneNumber.getText();
-    String password = guestPassword.getText();
-
-    String result =
-        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber); 
-
-    if (!result.equals("")) {
-      errorLabel.setText(result);
-      return;
-    } else {
-      loadPage("guests.fxml");
-    }
-  }
-
+  /**
+   * Initializes guest detail fields, making them non-focusable.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   public void initialize() {
     guestName.setFocusTraversable(false);
@@ -81,6 +47,12 @@ public class UpdateGuestController {
     guestPassword.setFocusTraversable(false);
   }
 
+  /**
+   * Updates the UI with the existing guest data. Sets prompt text or text fields with old guest
+   * information.
+   *
+   * @author Nicolas Bolouri
+   */
   public void updateUIWithGuestData() {
     if (guestOldName != null) {
       guestName.setPromptText("Old Name: " + guestOldName);
@@ -96,6 +68,87 @@ public class UpdateGuestController {
     }
   }
 
+  /**
+   * Sets the email for guest update.
+   *
+   * @author Nicolas Bolouri
+   * @param email The email of the guest to update.
+   */
+  public void setGuestUpdateEmail(String email) {
+    this.guestUpdateEmail = email;
+  }
+
+  /**
+   * Sets the old name for guest update.
+   *
+   * @author Nicolas Bolouri
+   * @param name The old name of the guest to update.
+   */
+  public void setGuestOldName(String name) {
+    this.guestOldName = name;
+  }
+
+  /**
+   * Sets the old phone number for guest update.
+   *
+   * @author Nicolas Bolouri
+   * @param phoneNumber The old phone number of the guest to update.
+   */
+  public void setGuestOldPhoneNumber(String phoneNumber) {
+    this.guestOldPhoneNumber = phoneNumber;
+  }
+
+  /**
+   * Sets the old password for guest update.
+   *
+   * @author Nicolas Bolouri
+   * @param password The old password of the guest to update.
+   */
+  public void setGuestOldPassword(String password) {
+    this.guestOldPassword = password;
+  }
+
+  /**
+   * Loads the 'guests.fxml' page when the Cancel button is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onCancelButtonClicked() {
+    loadPage("guests.fxml");
+  }
+
+  /**
+   * Updates guest details when the Update Guest button is clicked. Displays error message if the
+   * update fails, otherwise loads the 'guests.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onUpdateGuestButtonClicked() {
+    String name = guestName.getText();
+    String email = guestUpdateEmail;
+    String phoneNumber = guestPhoneNumber.getText();
+    String password = guestPassword.getText();
+
+    String result =
+        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber);
+
+    if (!result.equals("")) {
+      errorLabel.setText(result);
+      return;
+    } else {
+      loadPage("guests.fxml");
+    }
+  }
+
+  /**
+   * Loads a specified FXML page into the guest content area. Catches and prints exceptions if the
+   * file cannot be loaded.
+   *
+   * @author Nicolas Bolouri
+   * @param String The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
+   */
   private void loadPage(String fxmlFile) {
     try {
       Node page = FXMLLoader.load(Objects.requireNonNull(

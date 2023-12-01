@@ -21,7 +21,7 @@ public class ViewAndEditStatusController {
   private TextArea approvalStatusMessage;
 
   @FXML
-  private Label currentStatus;
+  private Label currentStatus, errorLabel;
 
   @FXML
   private Button actionButton;
@@ -54,7 +54,7 @@ public class ViewAndEditStatusController {
     currentStatus.setText("Current status: " + status);
     switch (status) {
       case "Open" -> {
-        actionButton.setDisable(true);
+        actionButton.setDisable(false);
         actionButton.setText("Start");
         ticketStatusMessage.setText("Ticket must be assigned before starting or completing.");
       }
@@ -112,13 +112,19 @@ public class ViewAndEditStatusController {
 
   @FXML
   private void handleActionButton() {
+    String error = "";
     if ("Start".equals(actionButton.getText())) {
-      AssetPlusStateController.startTicket(ticket.getId());
+      error += AssetPlusStateController.startTicket(ticket.getId());
     } else if ("Complete".equals(actionButton.getText())) {
-      AssetPlusStateController.resolveTicket(ticket.getId());
+      error += AssetPlusStateController.resolveTicket(ticket.getId());
     }
-    updateView();
-    updateApprovalView();
+    if (error.equals("")) {
+      updateView();
+      updateApprovalView();
+    } else {
+      errorLabel.setText(error);
+    }
+    
   }
 
   @FXML

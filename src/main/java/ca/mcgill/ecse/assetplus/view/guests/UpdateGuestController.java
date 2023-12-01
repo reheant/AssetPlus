@@ -57,26 +57,13 @@ public class UpdateGuestController {
 
   @FXML
   private void onUpdateGuestButtonClicked() {
-    String name =
-        guestName.getText().strip().equals("") ? this.guestOldName : guestName.getText().strip();
-
+    String name = guestName.getText();
     String email = guestUpdateEmail;
-
-    String phoneNumber = guestPhoneNumber.getText().strip().equals("") ? this.guestOldPhoneNumber
-        : guestPhoneNumber.getText().strip();
-
-    String password = guestPassword.getText().strip().equals("") ? this.guestOldPassword
-        : guestPassword.getText().strip();
+    String phoneNumber = guestPhoneNumber.getText();
+    String password = guestPassword.getText();
 
     String result =
-        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber); // Note:
-                                                                                                  // This
-                                                                                                  // might
-                                                                                                  // need
-                                                                                                  // modification
-                                                                                                  // for
-                                                                                                  // guest
-                                                                                                  // update
+        AssetPlusFeatureSet1Controller.updateEmployeeOrGuest(email, password, name, phoneNumber); 
 
     if (!result.equals("")) {
       errorLabel.setText(result);

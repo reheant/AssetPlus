@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="mainContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.ViewTicketNotesController">
+   <children>
+      <AnchorPane layoutX="53.0" layoutY="37.0" prefHeight="631.0" prefWidth="1094.0" style="-fx-background-radius: 20; -fx-background-color: white;">
+         <children>
+            <TextArea fx:id="ticketNotes" layoutX="148.0" layoutY="173.0" prefHeight="362.0" prefWidth="798.0" editable="false">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextArea>
+            <Label layoutX="483.0" layoutY="97.0" text="Ticket Notes">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+             <Button fx:id="backToTicketsButton" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onBackToTicketClicked" prefHeight="31.0" prefWidth="95.0" style="-fx-background-color: #ffffff;" text="&lt; Ticket">
+                 <font>
+                     <Font name="System Bold" size="15.0" />
+                 </font>
+             </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

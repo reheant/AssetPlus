@@ -29,12 +29,21 @@ public class AssetPlusStateController {
     public static String assignTicket(int ticketID, String employeeEmail, TimeEstimate timeEstimate,
             PriorityLevel priorityLevel, boolean requiresManagerApproval) {
         try {
-            MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
-            HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
-
             var error = "";
-            error += assertTicketExists(ticket);
+            MaintenanceTicket ticket = MaintenanceTicket.getWithId(ticketID);
+            HotelStaff employee;
+            if (employeeEmail.equals("manager@ap.com")){
+                employee = assetPlus.getManager();
+            } else if (employeeEmail.contains("@ap.com")) {
+                employee = (HotelStaff) User.getWithEmail(employeeEmail);
+            }
+            else{
+                error = "Not an employee email. ";
+                employee = null;
+            }
+            
             error += assertEmployeeExists(employee);
+            error += assertTicketExists(ticket);
             error += assertTicketAssignable(ticket);
 
             if (!error.isEmpty()) {
@@ -52,6 +61,24 @@ public class AssetPlusStateController {
                     + e.getMessage();
         }
         return "";
+    }
+    /**
+     * Assigns tickets with all string value inputs.
+     *
+     * @author Luke Freund
+     * @param ticketId The unique identifier of the maintenance ticket.
+     * @param email The email of a hotel staff member.
+     * @param timeEstimateStr The estimated completion time of the maintenance ticket as a string.
+     * @param priorityLevelStr The priority level of the maintenance ticket as a string.
+     * @param requiresManagerApproval Indicates if the ticket requires a manager's approval 
+     * @return An empty string indicating success. An error message if failure.
+     */
+    public static String assignTicketWithStringEnums(int ticketId, String email, String timeEstimateStr, String priorityLevelStr, boolean requiresManagerApproval) {
+        MaintenanceTicket.TimeEstimate timeEstimate = convertStringToTimeEstimate(timeEstimateStr);
+        MaintenanceTicket.PriorityLevel priorityLevel = convertStringToPriorityLevel(priorityLevelStr);
+
+        // Now call the original assignTicket method with the correct enum types
+        return assignTicket(ticketId, email, timeEstimate, priorityLevel, requiresManagerApproval);
     }
 
     /**
@@ -94,7 +121,6 @@ public class AssetPlusStateController {
      * Completes the work on a maintenance ticket.
      *
      * @author Luke Freund
-     * @param userEmail The email of the user resolving the ticket
      * @param ticketId The unique identifier of the maintenance ticket.
      * @return An empty string indicating success. An error message if failure.
      */
@@ -149,9 +175,11 @@ public class AssetPlusStateController {
                 return error.trim();
             }
 
-            Manager manager = assetPlus.getManager();
+            if (reason == null || reason.trim().isEmpty()) {
+                return "Note required for disapproval";
+            }
+
             ticket.disapprove(date, reason);
-            ticket.addTicketNote(date, reason, manager);
             AssetPlusPersistence.save();
         } catch (Exception e) {
             return "An unexpected error occurred while attempting to disapprove a ticket"
@@ -188,7 +216,26 @@ public class AssetPlusStateController {
         }
         return "";
     }
-
+    /**
+     * Converts time estimate String to a TimeEstimate value.
+     *
+     * @author Luke Freund
+     * @param timeEstimateStr time estimate as a string
+     * @return TimeEstimate value of the entered string.
+     */
+    private static MaintenanceTicket.TimeEstimate convertStringToTimeEstimate(String timeEstimateStr) {
+        return MaintenanceTicket.TimeEstimate.valueOf(timeEstimateStr);
+    }
+    /**
+     * Converts priority level String to a PriorityLevel value.
+     *
+     * @author Luke Freund
+     * @param priorityLevelStr priority level as a string
+     * @return PriorityLevel value of the entered string.
+     */
+    private static MaintenanceTicket.PriorityLevel convertStringToPriorityLevel(String priorityLevelStr) {
+        return MaintenanceTicket.PriorityLevel.valueOf(priorityLevelStr);
+    }
 
     /**
      * Validates that the maintenance ticket exists in the system.
@@ -358,6 +405,9 @@ public class AssetPlusStateController {
             return "Email is not a valid employee email ";
         }
 
+        if (employeeEmail.equals("manager@ap.com")) {
+            return "";
+        }
         HotelStaff employee = (HotelStaff) User.getWithEmail(employeeEmail);
         return assertEmployeeExists(employee);
     }
@@ -371,7 +421,7 @@ public class AssetPlusStateController {
      */
     private static String assertUserExistsAndIsEmployee(HotelStaff employee) {
         if (employee == null) {
-            return "Staff to assign does not exist.";
+            return "Staff does not exist.";
         }
 
         return assertUserIsEmployee(employee.getEmail());

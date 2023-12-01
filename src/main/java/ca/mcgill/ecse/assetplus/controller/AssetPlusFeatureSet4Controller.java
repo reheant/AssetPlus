@@ -34,7 +34,10 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidAssetNumber(assetNumber);
 
     User aTicketRaiser = User.getWithEmail(email);
-    if (aTicketRaiser == null) {
+    if (email.equals("manager@ap.com")){
+      aTicketRaiser = assetPlus.getManager();
+    }
+    else if (aTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
 
@@ -55,7 +58,7 @@ public class AssetPlusFeatureSet4Controller {
       }
       AssetPlusPersistence.save();
     } catch (Exception e) {
-      if (e.getMessage().contains("Cannot create due to duplicate id.")) {
+      if (e.getMessage().contains("Cannot create due to duplicate id. ")) {
         return "Ticket id already exists";
       }
 
@@ -86,8 +89,12 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidTicketDescription(newDescription);
     error += assertValidAssetNumber(newAssetNumber);
 
+
     User newTicketRaiser = User.getWithEmail(newEmail);
-    if (newTicketRaiser == null) {
+    if (newEmail.equals("manager@ap.com")){
+      newTicketRaiser = assetPlus.getManager();
+    }
+    else if (newTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
 
@@ -146,7 +153,7 @@ public class AssetPlusFeatureSet4Controller {
    */
   private static String assertAssetPlusInitialized() {
     if (assetPlus == null) {
-      return "Error: AssetPlus is not initialized.";
+      return "Error: AssetPlus is not initialized. ";
     }
     return "";
   }
@@ -202,7 +209,7 @@ public class AssetPlusFeatureSet4Controller {
     if (assetNumber == UNSPECIFIED_ASSET_NUMBER) {
       return "";
     } else if (assetNumber < 1) {
-      return "Error: An invalid asset number was provided: assetNumber is < 1";
+      return "Error: An invalid asset number was provided: assetNumber is < 1 ";
     }
 
     SpecificAsset aAsset = SpecificAsset.getWithAssetNumber(assetNumber);

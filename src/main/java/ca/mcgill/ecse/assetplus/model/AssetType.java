@@ -229,11 +229,11 @@ public class AssetType
     assettypesByName.remove(getName());
     AssetPlus placeholderAssetPlus = assetPlus;
     this.assetPlus = null;
-    if(placeholderAssetPlus != null)
+    if (placeholderAssetPlus != null)
     {
       placeholderAssetPlus.removeAssetType(this);
     }
-    for(int i=specificAssets.size(); i > 0; i--)
+    for (int i=specificAssets.size(); i > 0; i--)
     {
       SpecificAsset aSpecificAsset = specificAssets.get(i - 1);
       aSpecificAsset.delete();

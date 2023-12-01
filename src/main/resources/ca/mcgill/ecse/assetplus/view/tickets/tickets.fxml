@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="maintenanceTicketContentArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #E3E1E1;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.assetplus.view.tickets.TicketsController">
+    <children>
+        <AnchorPane layoutX="30.0" layoutY="27.0" prefHeight="651.0" prefWidth="633.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+            <children>
+                <Label alignment="CENTER" layoutX="126.0" layoutY="14.0" text="Maintenance Tickets">
+                    <font>
+                        <Font name="System Bold" size="40.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="maintenanceTicketSearchBar" layoutX="14.0" layoutY="97.0" prefHeight="37.0" prefWidth="427.0" promptText="Search for a maintenance ticket by ID" style="-fx-background-color: #E3E1E1; -fx-border-color: black;">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="449.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#onSearchButtonClicked" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: #00BFFB; -fx-border-color: black;" text="Search" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+                <ScrollPane fx:id="maintenanceTicketScrollPane" layoutX="14.0" layoutY="142.0" prefWidth="610.0" style="-fx-background-color: white;">
+                    <content>
+                        <ListView fx:id="maintenanceTicketList" prefWidth="605.0" />
+                    </content>
+                </ScrollPane>
+                <Button layoutX="537.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#onClearButtonClicked" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: pink; -fx-border-color: black;" text="Clear" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="690.0" layoutY="27.0" prefHeight="441.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+            <children>
+                <Label alignment="CENTER" layoutX="174.0" layoutY="14.0" text="Filter By">
+                    <font>
+                        <Font name="System Bold" size="40.0" />
+                    </font>
+                </Label>
+                <Label layoutX="42.0" layoutY="77.0" prefHeight="29.0" prefWidth="221.0" text="Assigned Staff Email">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <Label layoutX="41.0" layoutY="250.0" text="Raised on Date">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <TextField id="staffEmailTextField" fx:id="staffEmailTextField" layoutX="42.0" layoutY="114.0" prefHeight="30.0" prefWidth="400.0" promptText="No staff currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <TextField id="raisedOnDateTextField" fx:id="raisedOnDateTextField" layoutX="42.0" layoutY="286.0" prefHeight="30.0" prefWidth="400.0" promptText="yyyy-mm-dd" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="43.0" layoutY="336.0" mnemonicParsing="false" onMouseClicked="#onClearFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Clear Filter" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+                <Button layoutX="43.0" layoutY="387.0" mnemonicParsing="false" onMouseClicked="#onApplyFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Apply Filter" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+            <TextField id="raisedByEmailTextField" fx:id="raisedByEmailTextField" layoutX="43.0" layoutY="197.0" prefHeight="30.0" prefWidth="400.0" promptText="No email currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="43.0" layoutY="159.0" prefHeight="29.0" prefWidth="221.0" text="Ticket Raiser Email">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="690.0" layoutY="477.0" prefHeight="210.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+            <children>
+                <Label alignment="CENTER" layoutX="203.0" layoutY="14.0" text="Add">
+                    <font>
+                        <Font name="System Bold" size="40.0" />
+                    </font>
+                </Label>
+                <Button fx:id="addTicketButton" layoutX="42.0" layoutY="105.0" mnemonicParsing="false" onMouseClicked="#onAddTicketClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="New Ticket" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+        <Label fx:id="errorLabel" alignment="CENTER" layoutX="27.0" layoutY="671.0" prefHeight="35.0" prefWidth="1151.0" text=" " textAlignment="CENTER" textFill="RED">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

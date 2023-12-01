@@ -45,7 +45,7 @@ public class EditSpecificAssetController {
     loadPage("SpecificAsset.fxml");
   }
    /**
-   * Loads specific asset page once back button is clicked
+   * Sets the text fields accordign to the specific asset
    * 
    * @author Rehean Thillainathalingam
    * @param originalAssetNb The asset number of the current specific asset
@@ -66,7 +66,7 @@ public class EditSpecificAssetController {
   }
 
   /**
-   * Updates the specific asset once the update button is pressed.
+   * Updates the specific asset once the confirm button is pressed.
    * 
    * @author Rehean Thillainathalingam
    */

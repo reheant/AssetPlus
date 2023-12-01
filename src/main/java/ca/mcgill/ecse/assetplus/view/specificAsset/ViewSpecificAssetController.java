@@ -69,7 +69,7 @@ public class ViewSpecificAssetController {
   }
 
   /**
-   * Deletes specific asset and returns user to specific asset page.
+   * Deletes specific asset and loads specific asset page.
    * 
    * @author Rehean Thillainathalingam
    */
@@ -97,7 +97,7 @@ public class ViewSpecificAssetController {
    * Loads the corresponding page of the inputted fxml file
    * 
    * @author Rehean Thillainathalingam
-   * @param string AssetType name string
+   * @param fxmlFile AssetType name string
    */
   private void loadPage(String fxmlFile) {
     try {

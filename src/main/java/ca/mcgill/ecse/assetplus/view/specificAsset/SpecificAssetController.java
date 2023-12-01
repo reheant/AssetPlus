@@ -43,10 +43,10 @@ public class SpecificAssetController {
    * Filters specific assets based on user inputs
    * 
    * @author Rehean Thillainathalingam
-   * @param searchedDate
-   * @param searchedAssetNb
-   * @param searchedFloorNb
-   * @param searchedRoomNb
+   * @param searchedDate desired date filter
+   * @param searchedAssetNb desired asset number filter
+   * @param searchedFloorNb desired floor number filter
+   * @param searchedRoomNb desired room number filter
    * @return A string list with the filtered data
    */
   @FXML

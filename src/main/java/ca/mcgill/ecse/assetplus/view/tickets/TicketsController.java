@@ -1,6 +1,5 @@
 package ca.mcgill.ecse.assetplus.view.tickets;
 
-import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet4Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
 import javafx.beans.value.ChangeListener;
@@ -11,8 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +41,9 @@ public class TicketsController {
 
     @FXML
     private TextField staffEmailTextField;
+
+    @FXML
+    private TextField raisedByEmailTextField;
 
     @FXML
     private TextField raisedOnDateTextField;
@@ -80,6 +80,7 @@ public class TicketsController {
     @FXML
     private void onClearFilterClicked() {
         staffEmailTextField.setText("");
+        raisedByEmailTextField.setText("");
         raisedOnDateTextField.setText("");
         resetEmployeeList();
         resetCellFactory();
@@ -88,11 +89,16 @@ public class TicketsController {
     @FXML
     private void onApplyFilterClicked() {
         String staffEmail = staffEmailTextField.getText();
+        String raisedByEmail = raisedByEmailTextField.getText();
         String raisedOnDate = raisedOnDateTextField.getText();
         List<TOMaintenanceTicket> filteredTickets = AssetPlusFeatureSet6Controller.getTickets();
 
         if (!staffEmail.equals("")) {
             filteredTickets = filterByEmail(filteredTickets, staffEmail);
+        }
+
+        if (!raisedByEmail.equals("")) {
+            filteredTickets = filterByRaiserEmail(filteredTickets, raisedByEmail);
         }
 
         if (!raisedOnDate.equals("")) {
@@ -198,6 +204,13 @@ public class TicketsController {
         return tickets.stream()
                 .filter(ticket -> ticket.getFixedByEmail() != null)
                 .filter(ticket -> ticket.getFixedByEmail().equalsIgnoreCase(staffEmail))
+                .collect(Collectors.toList());
+    }
+
+    private List<TOMaintenanceTicket> filterByRaiserEmail(List<TOMaintenanceTicket> tickets, String raisedByEmail) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getRaisedByEmail() != null)
+                .filter(ticket -> ticket.getRaisedByEmail().equalsIgnoreCase(raisedByEmail))
                 .collect(Collectors.toList());
     }
 

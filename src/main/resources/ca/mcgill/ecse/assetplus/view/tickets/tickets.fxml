@@ -39,46 +39,51 @@
                 </Button>
             </children>
         </AnchorPane>
-        <AnchorPane layoutX="690.0" layoutY="27.0" prefHeight="427.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+        <AnchorPane layoutX="690.0" layoutY="27.0" prefHeight="441.0" prefWidth="483.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
             <children>
                 <Label alignment="CENTER" layoutX="174.0" layoutY="14.0" text="Filter By">
                     <font>
                         <Font name="System Bold" size="40.0" />
                     </font>
                 </Label>
-                <Label layoutX="42.0" layoutY="87.0" text="Staff email">
+                <Label layoutX="42.0" layoutY="77.0" prefHeight="29.0" prefWidth="221.0" text="Assigned Staff Email">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Label>
-                <Label layoutX="41.0" layoutY="205.0" text="Raised on Date">
+                <Label layoutX="41.0" layoutY="250.0" text="Raised on Date">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Label>
-                <TextField id="staffEmailTextField" fx:id="staffEmailTextField" layoutX="42.0" layoutY="124.0" prefHeight="30.0" prefWidth="400.0" promptText="No staff currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+                <TextField id="staffEmailTextField" fx:id="staffEmailTextField" layoutX="42.0" layoutY="114.0" prefHeight="30.0" prefWidth="400.0" promptText="No staff currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </TextField>
-                <TextField id="raisedOnDateTextField" fx:id="raisedOnDateTextField" layoutX="42.0" layoutY="241.0" prefHeight="30.0" prefWidth="400.0" promptText="yyyy-mm-dd" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
+                <TextField id="raisedOnDateTextField" fx:id="raisedOnDateTextField" layoutX="42.0" layoutY="286.0" prefHeight="30.0" prefWidth="400.0" promptText="yyyy-mm-dd" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </TextField>
-                <Button layoutX="42.0" layoutY="307.0" mnemonicParsing="false" onMouseClicked="#onClearFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Clear Filter" textFill="WHITE">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Button>
-                <Button layoutX="42.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#onApplyFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Apply Filter" textFill="WHITE">
+                <Button layoutX="43.0" layoutY="336.0" mnemonicParsing="false" onMouseClicked="#onClearFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Clear Filter" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
-            <Label layoutX="213.0" layoutY="168.0" prefHeight="23.0" prefWidth="57.0" text="and / or">
+                <Button layoutX="43.0" layoutY="387.0" mnemonicParsing="false" onMouseClicked="#onApplyFilterClicked" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #00BFFB; -fx-background-radius: 20px;" text="Apply Filter" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+            <TextField id="raisedByEmailTextField" fx:id="raisedByEmailTextField" layoutX="43.0" layoutY="197.0" prefHeight="30.0" prefWidth="400.0" promptText="No email currently selected" style="-fx-background-color: #E3FFFF; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black; -fx-padding: 0 0 0 10px;">
                <font>
-                  <Font name="System Italic" size="18.0" />
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="43.0" layoutY="159.0" prefHeight="29.0" prefWidth="221.0" text="Ticket Raiser Email">
+               <font>
+                  <Font size="24.0" />
                </font>
             </Label>
             </children>

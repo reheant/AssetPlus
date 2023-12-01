@@ -113,6 +113,8 @@ public class ViewAndEditStatusController {
 
     if (!error[0].equals("")) {
       errorLabelRight.setText(error[0]);
+    } else {
+      errorLabelRight.setText("");
     }
     initialize(ticketID);
   }

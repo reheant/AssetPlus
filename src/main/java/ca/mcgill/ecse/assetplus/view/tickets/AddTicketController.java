@@ -171,7 +171,7 @@ public class AddTicketController {
   }
 
   /**
-   * Displays a error message on the page
+   * Displays an error message on the page
    *
    * @author Julien Audet
    * @param content The error message to display

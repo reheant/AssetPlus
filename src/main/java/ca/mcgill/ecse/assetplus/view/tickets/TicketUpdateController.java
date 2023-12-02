@@ -288,6 +288,11 @@ public class TicketUpdateController {
     errorLabel.setText(content);
   }
 
+  /**
+   * Sets the ticket details in the view
+   *
+   * @author Luke Freund
+   */
   private void setTicketDetails() {
       this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
 
@@ -299,6 +304,11 @@ public class TicketUpdateController {
       this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
   }
 
+  /**
+   * Sets the asset details in the view
+   *
+   * @author Luke Freund
+   */
   private void setAssetDetails() {
       String currentAssetName = currentMaintenanceTicket.getAssetName();
       if (currentAssetName == null) {
@@ -327,6 +337,11 @@ public class TicketUpdateController {
       }
   }
 
+  /**
+   * Shows the email dialog
+   *
+   * @author Luke Freund
+   */
   private Optional<String> showEmailDialog() {
       TextInputDialog emailDialog = new TextInputDialog();
       emailDialog.setTitle("Assign Staff");
@@ -335,6 +350,11 @@ public class TicketUpdateController {
       return emailDialog.showAndWait();
   }
 
+  /**
+   * Shows the priority dialog
+   *
+   * @author Luke Freund
+   */
   private Optional<String> showPriorityDialog() {
       List<String> priorityOptions = Arrays.asList("Urgent", "Normal", "Low");
       ChoiceDialog<String> priorityDialog = new ChoiceDialog<>("Normal", priorityOptions);
@@ -344,6 +364,11 @@ public class TicketUpdateController {
       return priorityDialog.showAndWait();
   }
 
+  /**
+   * Shows the time estimate dialog
+   *
+   * @author Luke Freund
+   */
   private Optional<String> showTimeEstimateDialog() {
       List<String> timeOptions = Arrays.asList("LessThanADay", "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks");
       ChoiceDialog<String> timeDialog = new ChoiceDialog<>("OneToThreeDays", timeOptions);
@@ -352,6 +377,12 @@ public class TicketUpdateController {
       timeDialog.setContentText("Choose the time estimate:");
       return timeDialog.showAndWait();
   }
+
+  /**
+   * Shows the approval required dialog
+   *
+   * @author Luke Freund
+   */
   private Optional<String> showApprovalDialog() {
       List<String> approvalOptions = Arrays.asList("Yes", "No");
       ChoiceDialog<String> approvalDialog = new ChoiceDialog<>("No", approvalOptions);

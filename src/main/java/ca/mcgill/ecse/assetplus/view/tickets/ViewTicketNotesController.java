@@ -37,7 +37,6 @@ public class ViewTicketNotesController {
      *
      * @author Luke Freund
      * @param ticket The transfer object containing the current maintenance ticket
-     * @param ticket
      */
     public void setCurrentMaintenanceTicket(TOMaintenanceTicket ticket) {
         this.currentMaintenanceTicket = ticket;

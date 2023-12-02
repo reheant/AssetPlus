@@ -57,6 +57,39 @@ public class TicketsController {
     private int newTicketId;
 
     @FXML
+    public void initialize() {
+        maintenanceTicketSearchBar.setFocusTraversable(false);
+        String[] ticketIdKs = getTicketIds();
+
+        maintenanceTicketList.setFixedCellSize(50.0);
+        maintenanceTicketList.setCellFactory(lv -> new ListCell<String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(item);
+                    setStyle("-fx-font-size: 16pt;");
+                }
+            }
+        });
+        maintenanceTicketList.setPrefHeight(10 * maintenanceTicketList.getFixedCellSize());
+        maintenanceTicketList.getItems().addAll(ticketIdKs);
+
+        maintenanceTicketList.getSelectionModel().selectedItemProperty()
+                .addListener(new ChangeListener<String>() {
+
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                        String newValue) {
+                        newTicketId = Integer.parseInt(newValue);
+                        loadPage("tickets/update-ticket.fxml");
+                    }
+                });
+    }
+
+    @FXML
     private void onSearchButtonClicked() {
         String searchedEmail = maintenanceTicketSearchBar.getText();
         List<String> filteredTicketIds = filterTicketIdList(searchedEmail);
@@ -122,40 +155,6 @@ public class TicketsController {
     private void onAddTicketClicked() {
         this.newTicketId = AssetPlusFeatureSet6Controller.getMaxTicketId() + 1;
         loadPage("tickets/add-ticket.fxml");
-    }
-
-    // Initialize method if needed
-    @FXML
-    public void initialize() {
-        maintenanceTicketSearchBar.setFocusTraversable(false);
-        String[] ticketIdKs = getTicketIds();
-
-        maintenanceTicketList.setFixedCellSize(50.0);
-        maintenanceTicketList.setCellFactory(lv -> new ListCell<String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(item);
-                    setStyle("-fx-font-size: 16pt;");
-                }
-            }
-        });
-        maintenanceTicketList.setPrefHeight(10 * maintenanceTicketList.getFixedCellSize());
-        maintenanceTicketList.getItems().addAll(ticketIdKs);
-
-        maintenanceTicketList.getSelectionModel().selectedItemProperty()
-            .addListener(new ChangeListener<String>() {
-
-        @Override
-        public void changed(ObservableValue<? extends String> observable, String oldValue,
-        String newValue) {
-            newTicketId = Integer.parseInt(newValue);
-            loadPage("tickets/update-ticket.fxml");
-        }
-        });
     }
 
     private void resetEmployeeList() {

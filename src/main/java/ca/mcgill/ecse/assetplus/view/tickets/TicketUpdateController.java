@@ -8,11 +8,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ca.mcgill.ecse.assetplus.controller.*;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 public class TicketUpdateController {
   private TOMaintenanceTicket currentMaintenanceTicket;
@@ -194,34 +197,68 @@ public class TicketUpdateController {
    */
   @FXML
   private void onAssignStaffClicked() {
-      showEmailDialog().ifPresent(email -> {
-          showPriorityDialog().ifPresent(priorityLevelStr -> {
-              showTimeEstimateDialog().ifPresent(timeEstimateStr -> {
-                  showApprovalDialog().ifPresent(approval -> {
-                      boolean requiresManagerApproval = approval.equals("Yes");
+      Dialog<Void> dialog = new Dialog<>();
+      dialog.setTitle("Assign Staff");
+      dialog.setHeaderText("Enter assignment details");
 
-                      String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(ticketId, email, timeEstimateStr, priorityLevelStr, requiresManagerApproval);
-                      if (errorMessage.isEmpty()) {
-                          errorLabel.setText("");
-                          staffTextField.setText(email);
-                      } else {
-                          errorLabel.setText(errorMessage);
-                      }
-                      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
-                      if (this.currentMaintenanceTicket != null) {
-                          boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
-                          this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
-                          String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
-                          this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
-                          String priority = this.currentMaintenanceTicket.getPriority();
-                          this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
-                      }
-                  });
-              });
-          });
+      ButtonType assignButtonType = new ButtonType("Assign", ButtonBar.ButtonData.OK_DONE);
+      dialog.getDialogPane().getButtonTypes().addAll(assignButtonType, ButtonType.CANCEL);
+
+      GridPane grid = new GridPane();
+      grid.setHgap(10);
+      grid.setVgap(10);
+      grid.setPadding(new Insets(20, 150, 10, 10));
+
+      TextField emailTextField = new TextField();
+      emailTextField.setPromptText("Staff's Email");
+      ComboBox<String> priorityComboBox = new ComboBox<>(FXCollections.observableArrayList("Urgent", "Normal", "Low"));
+      priorityComboBox.setValue("Normal");
+      ComboBox<String> timeComboBox = new ComboBox<>(FXCollections.observableArrayList("LessThanADay", "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks"));
+      timeComboBox.setValue("OneToThreeDays");
+      ComboBox<String> approvalComboBox = new ComboBox<>(FXCollections.observableArrayList("Yes", "No"));
+      approvalComboBox.setValue("No");
+
+      grid.add(new Label("Email:"), 0, 0);
+      grid.add(emailTextField, 1, 0);
+      grid.add(new Label("Priority:"), 0, 1);
+      grid.add(priorityComboBox, 1, 1);
+      grid.add(new Label("Time Estimate:"), 0, 2);
+      grid.add(timeComboBox, 1, 2);
+      grid.add(new Label("Manager Approval Required:"), 0, 3);
+      grid.add(approvalComboBox, 1, 3);
+
+      dialog.getDialogPane().setContent(grid);
+
+      dialog.setResultConverter(dialogButton -> {
+          if (dialogButton == assignButtonType) {
+              String email = emailTextField.getText();
+              String priorityLevelStr = priorityComboBox.getValue();
+              String timeEstimateStr = timeComboBox.getValue();
+              boolean requiresManagerApproval = approvalComboBox.getValue().equals("Yes");
+
+              String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(
+                      ticketId, email, timeEstimateStr, priorityLevelStr, requiresManagerApproval
+              );
+
+              if (errorMessage.isEmpty()) {
+                  errorLabel.setText("");
+                  staffTextField.setText(email);
+              } else {
+                  errorLabel.setText(errorMessage);
+              }
+          }
+          return null;
       });
+
+      dialog.showAndWait();
+      setAssetDetails();
   }
 
+  /**
+   * Prompts the user to add an image url to the ticket
+   *
+   * @author Luke Freund
+   */
   @FXML
   private void onAddImageButtonClicked() {
     TextInputDialog dialog = new TextInputDialog();
@@ -310,6 +347,8 @@ public class TicketUpdateController {
    * @author Luke Freund
    */
   private void setAssetDetails() {
+      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
+
       String currentAssetName = currentMaintenanceTicket.getAssetName();
       if (currentAssetName == null) {
             currentAssetName = "None";
@@ -335,60 +374,5 @@ public class TicketUpdateController {
       if (assetNumber != -1) {
           this.assetNumberTextField.setText(String.valueOf(assetNumber));
       }
-  }
-
-  /**
-   * Shows the email dialog
-   *
-   * @author Luke Freund
-   */
-  private Optional<String> showEmailDialog() {
-      TextInputDialog emailDialog = new TextInputDialog();
-      emailDialog.setTitle("Assign Staff");
-      emailDialog.setHeaderText(null);
-      emailDialog.setContentText("Please enter the staff's email:");
-      return emailDialog.showAndWait();
-  }
-
-  /**
-   * Shows the priority dialog
-   *
-   * @author Luke Freund
-   */
-  private Optional<String> showPriorityDialog() {
-      List<String> priorityOptions = Arrays.asList("Urgent", "Normal", "Low");
-      ChoiceDialog<String> priorityDialog = new ChoiceDialog<>("Normal", priorityOptions);
-      priorityDialog.setTitle("Priority Level");
-      priorityDialog.setHeaderText(null);
-      priorityDialog.setContentText("Choose the priority level:");
-      return priorityDialog.showAndWait();
-  }
-
-  /**
-   * Shows the time estimate dialog
-   *
-   * @author Luke Freund
-   */
-  private Optional<String> showTimeEstimateDialog() {
-      List<String> timeOptions = Arrays.asList("LessThanADay", "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks");
-      ChoiceDialog<String> timeDialog = new ChoiceDialog<>("OneToThreeDays", timeOptions);
-      timeDialog.setTitle("Time Estimate");
-      timeDialog.setHeaderText(null);
-      timeDialog.setContentText("Choose the time estimate:");
-      return timeDialog.showAndWait();
-  }
-
-  /**
-   * Shows the approval required dialog
-   *
-   * @author Luke Freund
-   */
-  private Optional<String> showApprovalDialog() {
-      List<String> approvalOptions = Arrays.asList("Yes", "No");
-      ChoiceDialog<String> approvalDialog = new ChoiceDialog<>("No", approvalOptions);
-      approvalDialog.setTitle("Manager Approval Required");
-      approvalDialog.setHeaderText(null);
-      approvalDialog.setContentText("Does this assignment require manager approval?");
-      return approvalDialog.showAndWait();
   }
 }

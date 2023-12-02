@@ -3,12 +3,18 @@ package ca.mcgill.ecse.assetplus.view.tickets;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusStateController;
 import ca.mcgill.ecse.assetplus.controller.TOMaintenanceTicket;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
+
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -118,37 +124,48 @@ public class ViewAndEditStatusController {
   private void handleDisapproveButton() {
     String[] error = {""};
 
-    // First dialog for the reason
-    TextInputDialog reasonDialog = new TextInputDialog();
-    reasonDialog.setTitle("Disapprove Reason");
-    reasonDialog.setHeaderText("Disapprove Ticket");
-    reasonDialog.setContentText("Please enter the reason for disapproving the ticket:");
+    Dialog<Pair<String, Date>> dialog = new Dialog<>();
+    dialog.setTitle("Disapprove Ticket");
+    dialog.setHeaderText("Enter the reason and select the date for disapproving the ticket");
 
-    Optional<String> reasonResult = reasonDialog.showAndWait();
-    reasonResult.ifPresent(reason -> {
-      // Second dialog for the date
-      Dialog<java.sql.Date> dateDialog = new Dialog<>();
-      dateDialog.setTitle("Disapproval Date");
-      dateDialog.setHeaderText("Select the Date");
+    ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
 
-      DatePicker datePicker = new DatePicker();
-      datePicker.setValue(LocalDate.now());
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
+    grid.setPadding(new Insets(20, 150, 10, 10));
 
-      dateDialog.getDialogPane().setContent(datePicker);
-      dateDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    TextField reasonTextField = new TextField();
+    reasonTextField.setPromptText("Reason");
+    DatePicker datePicker = new DatePicker(LocalDate.now());
 
-      dateDialog.setResultConverter(dialogButton -> {
-        if (dialogButton == ButtonType.OK) {
-          LocalDate localDate = datePicker.getValue();
-          return java.sql.Date.valueOf(localDate);
-        }
-        return null;
-      });
+    grid.add(new Label("Reason:"), 0, 0);
+    grid.add(reasonTextField, 1, 0);
+    grid.add(new Label("Date:"), 0, 1);
+    grid.add(datePicker, 1, 1);
 
-      Optional<java.sql.Date> dateResult = dateDialog.showAndWait();
-      dateResult.ifPresent(date -> {
-        error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(), date, reason);
-      });
+    Node okButton = dialog.getDialogPane().lookupButton(okButtonType);
+    okButton.setDisable(true);
+
+    reasonTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+      okButton.setDisable(newValue.trim().isEmpty());
+    });
+
+    dialog.getDialogPane().setContent(grid);
+    Platform.runLater(reasonTextField::requestFocus);
+
+    dialog.setResultConverter(dialogButton -> {
+      if (dialogButton == okButtonType) {
+        return new Pair<>(reasonTextField.getText(), java.sql.Date.valueOf(datePicker.getValue()));
+      }
+      return null;
+    });
+
+    Optional<Pair<String, java.sql.Date>> result = dialog.showAndWait();
+
+    result.ifPresent(reasonAndDate -> {
+      error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(), reasonAndDate.getValue(), reasonAndDate.getKey());
     });
 
     if (!error[0].equals("")) {

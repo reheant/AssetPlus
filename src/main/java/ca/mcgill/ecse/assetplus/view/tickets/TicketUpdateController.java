@@ -158,40 +158,8 @@ public class TicketUpdateController {
         assignStaffButton.disableProperty().bind(
                 staffTextField.textProperty().isNotEmpty()
         );
-        this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
-        this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
-
-        this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
-        this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
-        this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
-        this.raisedOnDateDatePicker.setValue(currentMaintenanceTicket.getRaisedOnDate().toLocalDate());
-        this.staffTextField.setText(this.currentMaintenanceTicket.getFixedByEmail());
-
-        String currentAssetName = currentMaintenanceTicket.getAssetName();
-        if (currentAssetName == null){
-            currentAssetName = "None";
-        }
-        this.assetNameLabel.setText("Current Asset Name: " + currentAssetName);
-        int expectedLifespanInDays = this.currentMaintenanceTicket.getExpectLifeSpanInDays();
-        this.expectedLifespan.setText("Expected lifespan (days): " + (expectedLifespanInDays != -1 ? expectedLifespanInDays : "N/A"));
-        Date purchaseDate = this.currentMaintenanceTicket.getPurchaseDate();
-        this.purchaseDate.setText("Purchase date: " + (purchaseDate != null ? String.valueOf(purchaseDate) : "N/A"));
-        int floorNumber = this.currentMaintenanceTicket.getFloorNumber();
-        this.floorNumber.setText("Floor Number: " + (floorNumber != -1 ? floorNumber : "N/A"));
-        int roomNumber = this.currentMaintenanceTicket.getRoomNumber();
-        this.roomNumber.setText("Room Number: " + (roomNumber != -1 ? roomNumber : "N/A"));
-
-        boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
-        this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
-        String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
-        this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
-        String priority = this.currentMaintenanceTicket.getPriority();
-        this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
-
-        assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
-        if (assetNumber != -1){
-            this.assetNumberTextField.setText(String.valueOf(assetNumber));
-        }
+        setTicketDetails();
+        setAssetDetails();
     }
 
     /**
@@ -227,58 +195,32 @@ public class TicketUpdateController {
      */
   @FXML
   private void onAssignStaffClicked() {
-      TextInputDialog emailDialog = new TextInputDialog();
-      emailDialog.setTitle("Assign Staff");
-      emailDialog.setHeaderText(null);
-      emailDialog.setContentText("Please enter the staff's email:");
+      showEmailDialog().ifPresent(email -> {
+          showPriorityDialog().ifPresent(priorityLevelStr -> {
+              showTimeEstimateDialog().ifPresent(timeEstimateStr -> {
+                  showApprovalDialog().ifPresent(approval -> {
+                      boolean requiresManagerApproval = approval.equals("Yes");
 
-      Optional<String> emailResult = emailDialog.showAndWait();
-      emailResult.ifPresent(email -> {
-          List<String> priorityOptions = Arrays.asList("Urgent", "Normal", "Low");
-          ChoiceDialog<String> priorityDialog = new ChoiceDialog<>("Normal", priorityOptions);
-          priorityDialog.setTitle("Priority Level");
-          priorityDialog.setHeaderText(null);
-          priorityDialog.setContentText("Choose the priority level:");
-
-          Optional<String> priorityResult = priorityDialog.showAndWait();
-          priorityResult.ifPresent(priorityLevelStr -> {
-              List<String> timeOptions = Arrays.asList("LessThanADay", "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks");
-              ChoiceDialog<String> timeDialog = new ChoiceDialog<>("OneToThreeDays", timeOptions);
-              timeDialog.setTitle("Time Estimate");
-              timeDialog.setTitle("Time Estimate");
-              timeDialog.setHeaderText(null);
-              timeDialog.setContentText("Choose the time estimate:");
-
-              Optional<String> timeResult = timeDialog.showAndWait();
-              timeResult.ifPresent(timeEstimateStr -> {
-                  List<String> approvalOptions = Arrays.asList("Yes", "No");
-                  ChoiceDialog<String> approvalDialog = new ChoiceDialog<>("No", approvalOptions);
-                  approvalDialog.setTitle("Manager Approval Required");
-                  approvalDialog.setHeaderText(null);
-                  approvalDialog.setContentText("Does this assignment require manager approval?");
-
-                  Optional<String> approvalResult = approvalDialog.showAndWait();
-                  boolean requiresManagerApproval = approvalResult.isPresent() && approvalResult.get().equals("Yes");
-
-                  String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(ticketId, email, timeEstimateStr, priorityLevelStr, requiresManagerApproval);
-                  if (errorMessage.isEmpty()) {
-                    errorLabel.setText("");
-                    staffTextField.setText(email);
-                  } else {
-                    errorLabel.setText(errorMessage);
-                  }
+                      String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(ticketId, email, timeEstimateStr, priorityLevelStr, requiresManagerApproval);
+                      if (errorMessage.isEmpty()) {
+                          errorLabel.setText("");
+                          staffTextField.setText(email);
+                      } else {
+                          errorLabel.setText(errorMessage);
+                      }
+                      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
+                      if (this.currentMaintenanceTicket != null) {
+                          boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
+                          this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
+                          String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
+                          this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
+                          String priority = this.currentMaintenanceTicket.getPriority();
+                          this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
+                      }
+                  });
               });
           });
       });
-      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
-      if (this.currentMaintenanceTicket != null) {
-          boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
-          this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
-          String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
-          this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
-          String priority = this.currentMaintenanceTicket.getPriority();
-          this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
-      }
   }
 
     /**
@@ -307,6 +249,11 @@ public class TicketUpdateController {
       return null;
   }
 
+    /**
+     * Prompts the user to add an image
+     *
+     * @author Luke Freund
+     */
   @FXML
   private void onAddImageButtonClicked() {
       TextInputDialog dialog = new TextInputDialog();
@@ -345,4 +292,79 @@ public class TicketUpdateController {
   private void onErrorClicked() {
     errorLabel.setText("");
   }
+
+  private void setTicketDetails() {
+      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
+
+      this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
+      this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
+      this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
+      this.raisedOnDateDatePicker.setValue(currentMaintenanceTicket.getRaisedOnDate().toLocalDate());
+      this.staffTextField.setText(this.currentMaintenanceTicket.getFixedByEmail());
+      this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
+  }
+
+  private void setAssetDetails() {
+      String currentAssetName = currentMaintenanceTicket.getAssetName();
+      if (currentAssetName == null) {
+            currentAssetName = "None";
+      }
+      this.assetNameLabel.setText("Current Asset Name: " + currentAssetName);
+
+      int expectedLifespanInDays = this.currentMaintenanceTicket.getExpectLifeSpanInDays();
+      this.expectedLifespan.setText("Expected lifespan (days): " + (expectedLifespanInDays != -1 ? expectedLifespanInDays : "N/A"));
+      Date purchaseDate = this.currentMaintenanceTicket.getPurchaseDate();
+      this.purchaseDate.setText("Purchase date: " + (purchaseDate != null ? String.valueOf(purchaseDate) : "N/A"));
+      int floorNumber = this.currentMaintenanceTicket.getFloorNumber();
+      this.floorNumber.setText("Floor Number: " + (floorNumber != -1 ? floorNumber : "N/A"));
+      int roomNumber = this.currentMaintenanceTicket.getRoomNumber();
+      this.roomNumber.setText("Room Number: " + (roomNumber != -1 ? roomNumber : "N/A"));
+      boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
+      this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
+      String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
+      this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
+      String priority = this.currentMaintenanceTicket.getPriority();
+      this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
+
+      assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
+      if (assetNumber != -1) {
+          this.assetNumberTextField.setText(String.valueOf(assetNumber));
+      }
+  }
+
+  private Optional<String> showEmailDialog() {
+      TextInputDialog emailDialog = new TextInputDialog();
+      emailDialog.setTitle("Assign Staff");
+      emailDialog.setHeaderText(null);
+      emailDialog.setContentText("Please enter the staff's email:");
+      return emailDialog.showAndWait();
+  }
+
+  private Optional<String> showPriorityDialog() {
+      List<String> priorityOptions = Arrays.asList("Urgent", "Normal", "Low");
+      ChoiceDialog<String> priorityDialog = new ChoiceDialog<>("Normal", priorityOptions);
+      priorityDialog.setTitle("Priority Level");
+      priorityDialog.setHeaderText(null);
+      priorityDialog.setContentText("Choose the priority level:");
+      return priorityDialog.showAndWait();
+  }
+
+  private Optional<String> showTimeEstimateDialog() {
+      List<String> timeOptions = Arrays.asList("LessThanADay", "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks");
+      ChoiceDialog<String> timeDialog = new ChoiceDialog<>("OneToThreeDays", timeOptions);
+      timeDialog.setTitle("Time Estimate");
+      timeDialog.setHeaderText(null);
+      timeDialog.setContentText("Choose the time estimate:");
+      return timeDialog.showAndWait();
+  }
+  private Optional<String> showApprovalDialog() {
+      List<String> approvalOptions = Arrays.asList("Yes", "No");
+      ChoiceDialog<String> approvalDialog = new ChoiceDialog<>("No", approvalOptions);
+      approvalDialog.setTitle("Manager Approval Required");
+      approvalDialog.setHeaderText(null);
+      approvalDialog.setContentText("Does this assignment require manager approval?");
+      return approvalDialog.showAndWait();
+  }
 }
+
+

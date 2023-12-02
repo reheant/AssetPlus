@@ -52,7 +52,7 @@ public class EditSpecificAssetController {
    * @author Rehean Thillainathalingam
    */
   @FXML
-  public void backButtonOnClick() {
+  private void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
   }
 
@@ -62,7 +62,7 @@ public class EditSpecificAssetController {
    * @author Rehean Thillainathalingam
    */
   @FXML
-  public void confirmSpecificAssetOnClick() {
+  private void confirmSpecificAssetOnClick() {
     String result = "";
     int intAssetnb = -1;
     int intFloorNb = -1;
@@ -101,7 +101,7 @@ public class EditSpecificAssetController {
   }
 
   /**
-   * Sets the text fields accordign to the specific asset
+   * Sets the text fields according to the specific asset
    * 
    * @author Rehean Thillainathalingam
    * @param originalAssetNb The asset number of the current specific asset

@@ -47,6 +47,52 @@ public class ViewSpecificAssetController {
   private AnchorPane viewSpecificAssetContentArea;
 
   /**
+   * Loads specific asset page once back button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
+  private void backButtonOnClick() {
+    loadPage("SpecificAsset.fxml");
+  }
+
+  /**
+   * Loads edit specific asset page once edit button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
+  private void editSpecificAssetOnClick() {
+    loadPage("editSpecificAsset.fxml");
+  }
+
+  /**
+   * Deletes specific asset and loads specific asset page.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
+  private void deleteSpecificAssetOnClick() {
+    AssetPlusFeatureSet3Controller.deleteSpecificAsset(Integer.parseInt(specificData[1]));
+    loadPage("SpecificAsset.fxml");
+  }
+
+  /**
+   * Sets the text for the labels on the view page
+   * 
+   * @author Rehean Thillainathalingam
+   * @param specificData String array of the date required.
+   */
+  private void displayTitle(String[] specificData) {
+    titleLabel.setText(specificData[0] + " #" + specificData[1]);
+    assetNumber.setText(specificData[1]);
+    purchasedDate.setText(specificData[4]);
+    floorNumber.setText(specificData[2]);
+    roomNumber.setText(specificData[3]);
+    assetType.setText(specificData[0]);
+  }
+  
+  /**
    * Initializes the view specific asset page
    * 
    * @author Rehean Thillainathalingam
@@ -58,49 +104,6 @@ public class ViewSpecificAssetController {
     this.titleLabelString = titleLabelString;
     specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
     displayTitle(specificData);
-  }
-
-  /**
-   * Loads specific asset page once back button is clicked.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  public void backButtonOnClick() {
-    loadPage("SpecificAsset.fxml");
-  }
-
-  /**
-   * Loads edit specific asset page once edit button is clicked.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  public void editSpecificAssetOnClick() {
-    loadPage("editSpecificAsset.fxml");
-  }
-
-  /**
-   * Deletes specific asset and loads specific asset page.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  public void deleteSpecificAssetOnClick() {
-    AssetPlusFeatureSet3Controller.deleteSpecificAsset(Integer.parseInt(specificData[1]));
-    loadPage("SpecificAsset.fxml");
-  }
-
-  /**
-   * Sets the text for the labels on the view page
-   * 
-   * @author Rehean Thillainathalingam
-   * @param specificData String array of the date required.
-   */
-  public void displayTitle(String[] specificData) {
-    titleLabel.setText(specificData[0] + " #" + specificData[1]);
-    assetNumber.setText(specificData[1]);
-    purchasedDate.setText(specificData[4]);
-    floorNumber.setText(specificData[2]);
-    roomNumber.setText(specificData[3]);
-    assetType.setText(specificData[0]);
   }
 
   /**

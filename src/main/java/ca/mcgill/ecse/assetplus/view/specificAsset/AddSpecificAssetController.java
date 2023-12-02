@@ -62,7 +62,7 @@ public class AddSpecificAssetController {
    * @author Rehean Thillainathalingam
    */
   @FXML
-  public void addSpecificAssetOnClick() {
+  private void addSpecificAssetOnClick() {
     String assetNb = assetNumber.getText().strip();
     String purchased = purchasedDate.getText().strip();
     String floorNb = floorNumber.getText().strip();
@@ -111,7 +111,7 @@ public class AddSpecificAssetController {
    * @author Rehean Thillainathalingam
    */
   @FXML
-  public void backButtonOnClick() {
+  private void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
 
   }

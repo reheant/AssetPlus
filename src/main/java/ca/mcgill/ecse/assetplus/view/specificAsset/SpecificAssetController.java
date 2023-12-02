@@ -50,35 +50,6 @@ public class SpecificAssetController {
   private TextField roomNbFilter;
 
   /**
-   * Filters specific assets based on user inputs
-   * 
-   * @author Rehean Thillainathalingam
-   * @param searchedDate desired date filter
-   * @param searchedAssetNb desired asset number filter
-   * @param searchedFloorNb desired floor number filter
-   * @param searchedRoomNb desired room number filter
-   * @return A string list with the filtered data
-   */
-  @FXML
-  public List<String> filterList(String searchedDate, String searchedAssetNb,
-      String searchedFloorNb, String searchedRoomNb) {
-
-    String[] assetData =
-        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, false);
-    List<String> finalData = new ArrayList<>();
-    for (int i = 0; i < assetData.length; i++) {
-      String[] parsedString = assetData[i].split("\\s+");
-      if ((parsedString[4].equals(searchedDate) || searchedDate.isEmpty())
-          && (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb))
-          && (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb))
-          && (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
-        finalData.add(parsedString[0] + " " + parsedString[1]);
-      }
-    }
-    return finalData;
-  }
-
-  /**
    * Filters specific assets once filter button is clicked
    * 
    * @author Rehean Thillainathalingam
@@ -107,7 +78,7 @@ public class SpecificAssetController {
    * @author Rehean Thillainathalingam
    */
   @FXML
-  public void addSpecificAssetOnClick() {
+  private void addSpecificAssetOnClick() {
     loadPage("addSpecificAsset.fxml");
 
   }
@@ -118,8 +89,23 @@ public class SpecificAssetController {
    * @author Rehean Thillainathalingam
    */
   @FXML
-  public void backButtonOnClick() {
+  private void backButtonOnClick() {
     loadPage("../assetTypes/assets.fxml");
+  }
+
+  /**
+   * Clears filters once clear button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
+  private void clearButtonOnClick() {
+    purchaseDateFilter.setText("");
+    assetNbFilter.setText("");
+    roomNbFilter.setText("");
+    floorNbFilter.setText("");
+    resetSpecificAssetList();
+    resetCellFactory();
   }
 
   /**
@@ -163,18 +149,31 @@ public class SpecificAssetController {
   }
 
   /**
-   * Clears filters once clear button is clicked.
+   * Filters specific assets based on user inputs
    * 
    * @author Rehean Thillainathalingam
+   * @param searchedDate desired date filter
+   * @param searchedAssetNb desired asset number filter
+   * @param searchedFloorNb desired floor number filter
+   * @param searchedRoomNb desired room number filter
+   * @return A string list with the filtered data
    */
-  @FXML
-  private void clearButtonOnClick() {
-    purchaseDateFilter.setText("");
-    assetNbFilter.setText("");
-    roomNbFilter.setText("");
-    floorNbFilter.setText("");
-    resetSpecificAssetList();
-    resetCellFactory();
+  private List<String> filterList(String searchedDate, String searchedAssetNb,
+      String searchedFloorNb, String searchedRoomNb) {
+
+    String[] assetData =
+        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, false);
+    List<String> finalData = new ArrayList<>();
+    for (int i = 0; i < assetData.length; i++) {
+      String[] parsedString = assetData[i].split("\\s+");
+      if ((parsedString[4].equals(searchedDate) || searchedDate.isEmpty())
+          && (searchedAssetNb.isEmpty() || parsedString[1].substring(1).equals(searchedAssetNb))
+          && (searchedFloorNb.isEmpty() || parsedString[2].equals(searchedFloorNb))
+          && (searchedRoomNb.isEmpty() || parsedString[3].equals(searchedRoomNb))) {
+        finalData.add(parsedString[0] + " " + parsedString[1]);
+      }
+    }
+    return finalData;
   }
 
   /**

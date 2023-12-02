@@ -13,19 +13,21 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 public class AddTicketController {
+  private int ticketId;
+
   @FXML
   private AnchorPane mainContentArea;
-  
+
   @FXML
   private Label errorLabel;
 
   @FXML
   private TextField ticketIdTextField;
-  
+
   @FXML
   private Label assetNameLabel;
-  
-  @FXML 
+
+  @FXML
   private TextField assetNumberTextField;
 
   @FXML
@@ -52,26 +54,14 @@ public class AddTicketController {
   @FXML
   private DatePicker raisedOnDateDatePicker;
 
-  private int ticketId;
-
-  /**
-   * Keeps track of the id of the ticket to view
-   *
-   * @author Julien Audet
-   * @param newViewedTicketId The id of the ticket to view
-   */
-  public void setTicketId(int newViewedTicketId){
-    ticketId = newViewedTicketId;
-  }
-
   /**
    * Cancels ticket creation
    *
    * @author Julien Audet
    */
   @FXML
-  public void onCancelTicketClicked(){
-      loadPage("tickets/tickets.fxml");
+  public void onCancelTicketClicked() {
+    loadPage("tickets/tickets.fxml");
   }
 
   /**
@@ -80,41 +70,41 @@ public class AddTicketController {
    * @author Julien Audet
    */
   @FXML
-  public void onCreateTicketClicked(){
+  public void onCreateTicketClicked() {
     String result;
-    String newDescription = descriptionTextArea.getText();    
-    
+    String newDescription = descriptionTextArea.getText();
+
     String newTicketIdString = ticketIdTextField.getText();
-    if (newTicketIdString == null || newTicketIdString.isEmpty()){
-      showError("Missing ticket id.");      
+    if (newTicketIdString == null || newTicketIdString.isEmpty()) {
+      showError("Missing ticket id.");
       return;
     }
     Integer newTicketId = Integer.parseInt(newTicketIdString);
-    
+
     String newAssetNumberString = assetNumberTextField.getText();
-    if (newAssetNumberString == null || newAssetNumberString.isEmpty()){
-      showError("Missing asset number. Put asset number -1 to avoid specifying an asset.");      
+    if (newAssetNumberString == null || newAssetNumberString.isEmpty()) {
+      showError("Missing asset number. Put asset number -1 to avoid specifying an asset.");
       return;
     }
     Integer newAssetNumber = Integer.parseInt(newAssetNumberString);
 
     LocalDate localDate = raisedOnDateDatePicker.getValue();
-    if (localDate == null){
+    if (localDate == null) {
       showError("Missing date.");
       return;
     }
     Date newRaisedOnDate = Date.valueOf(localDate);
 
     String newTicketRaiserEmail = ticketRaiserTextField.getText();
-    result = AssetPlusFeatureSet4Controller.addMaintenanceTicket(newTicketId, newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
+    result = AssetPlusFeatureSet4Controller.addMaintenanceTicket(newTicketId, newRaisedOnDate,
+        newDescription, newTicketRaiserEmail, newAssetNumber);
 
 
     if (result.equals("")) {
-      loadPage("tickets/tickets.fxml");  
-    }
-    else{
+      loadPage("tickets/tickets.fxml");
+    } else {
       showError(result);
-    }    
+    }
   }
 
   /**
@@ -123,19 +113,41 @@ public class AddTicketController {
    * @author Julien Audet
    */
   @FXML
-  public void onBackToTicketsClicked(){
+  public void onBackToTicketsClicked() {
     loadPage("tickets/tickets.fxml");
   }
 
   /**
-   * Reinitializes the information displayed on the page. Similar to initialize, but shouldn't be called right when the page is loaded
+   * Reinitializes the information displayed on the page. Similar to initialize, but shouldn't be
+   * called right when the page is loaded
    *
    * @author Julien Audet
    */
   @FXML
   public void reinitialize() {
-    this.ticketIdTextField.setPromptText("Suggested New Ticket ID: " + String.format("%05d", ticketId));
+    this.ticketIdTextField
+        .setPromptText("Suggested New Ticket ID: " + String.format("%05d", ticketId));
     this.errorLabel.setText("");
+  }
+
+  /**
+   * Keeps track of the id of the ticket to view
+   *
+   * @author Julien Audet
+   * @param newViewedTicketId The id of the ticket to view
+   */
+  public void setTicketId(int newViewedTicketId) {
+    ticketId = newViewedTicketId;
+  }
+
+  /**
+   * Clears the error off the screen once clicked
+   *
+   * @author Julien Audet
+   */
+  @FXML
+  private void onErrorClicked() {
+    errorLabel.setText("");
   }
 
   /**
@@ -146,15 +158,16 @@ public class AddTicketController {
    * @return An FXMLLoader to allow access to that scene's view controller
    */
   private FXMLLoader loadPage(String fxmlFile) {
-      try {
-          FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
-          Node page = loader.load();
-          mainContentArea.getChildren().setAll(page);
-          return loader;
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return null;
+    try {
+      FXMLLoader loader = new FXMLLoader(Objects
+          .requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+      Node page = loader.load();
+      mainContentArea.getChildren().setAll(page);
+      return loader;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   /**
@@ -165,16 +178,5 @@ public class AddTicketController {
    */
   private void showError(String content) {
     errorLabel.setText(content);
-  }
-
-
-  /**
-   * Clears the error off the screen once clicked
-   *
-   * @author Julien Audet
-   */
-  @FXML
-  private void onErrorClicked() {
-    errorLabel.setText("");
   }
 }

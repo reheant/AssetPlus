@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ViewTicketNotesController {
+    private TOMaintenanceTicket currentMaintenanceTicket;
 
     @FXML
     private AnchorPane mainContentArea;
@@ -19,17 +20,26 @@ public class ViewTicketNotesController {
     @FXML
     private TextArea ticketNotes;
 
-    private TOMaintenanceTicket currentMaintenanceTicket;
-
     /**
      * Initializes default values on the page
      *
      * @author Luke Freund
      */
+    @FXML
     public void initialize() {
         if (currentMaintenanceTicket != null) {
             displayTicketNotes();
         }
+    }
+
+    /**
+     * Actions to take when clicking the back to tickets button
+     *
+     * @author Luke Freund
+     */
+    @FXML
+    public void onBackToTicketClicked() {
+        loadPage("update-ticket.fxml");
     }
 
     /**
@@ -41,16 +51,6 @@ public class ViewTicketNotesController {
     public void setCurrentMaintenanceTicket(TOMaintenanceTicket ticket) {
         this.currentMaintenanceTicket = ticket;
         displayTicketNotes();
-    }
-
-    /**
-     * Actions to take when clicking the back to tickets button
-     *
-     * @author Luke Freund
-     */
-    @FXML
-    public void onBackToTicketClicked() {
-        loadPage("update-ticket.fxml");
     }
 
     /**
@@ -79,7 +79,8 @@ public class ViewTicketNotesController {
      */
     private void loadPage(String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/tickets/" + fxmlFile));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/ca/mcgill/ecse/assetplus/view/tickets/" + fxmlFile));
             Node page = loader.load();
             if (fxmlFile.equals("update-ticket.fxml")) {
                 TicketUpdateController ticketUpdateController = loader.getController();

@@ -15,6 +15,10 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 public class TicketUpdateController {
+  private TOMaintenanceTicket currentMaintenanceTicket;
+  private int ticketId;
+  private int assetNumber;
+
   @FXML
   private AnchorPane mainContentArea;
 
@@ -62,88 +66,72 @@ public class TicketUpdateController {
 
   @FXML
   private DatePicker raisedOnDateDatePicker;
-  
+
   @FXML
   private Button viewAndEditStatus;
 
   @FXML
   private Label assetNameLabel;
 
-  @FXML 
+  @FXML
   private TextField assetNumberTextField;
-  
-  private TOMaintenanceTicket currentMaintenanceTicket;
-
-  private int ticketId;
-
-  private int assetNumber;
 
   /**
-   * Keeps track of the id of the ticket to view
+   * Opens view to edit ticket status
    *
-   * @author Julien Audet
-   * @param newViewedTicketId The id of the ticket to view
+   * @author Rehean Thillainathalingam
    */
-  public void setTicketId(int newViewedTicketId){
-    ticketId = newViewedTicketId;
-  }
-
-    /**
-     * Opens view to edit ticket status
-     *
-     * @author Rehean Thillainathalingam
-     */
   @FXML
-  public void viewAndEditStatusOnClick(){
+  public void viewAndEditStatusOnClick() {
     loadPage("tickets/view-edit-status.fxml");
   }
 
-    /**
-     * Deletes the current ticket from the application
-     *
-     * @author Julien Audet
-     */
+  /**
+   * Deletes the current ticket from the application
+   *
+   * @author Julien Audet
+   */
   @FXML
-  public void onDeleteTicketClicked(){
+  public void onDeleteTicketClicked() {
     AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticketId);
     loadPage("tickets/tickets.fxml");
   }
 
-    /**
-     * Saves the modifications on the current ticket into the application
-     *
-     * @author Julien Audet
-     */
+  /**
+   * Saves the modifications on the current ticket into the application
+   *
+   * @author Julien Audet
+   */
   @FXML
-  public void onSaveTicketClicked(){
-    String newDescription = descriptionTextArea.getText();    
+  public void onSaveTicketClicked() {
+    String newDescription = descriptionTextArea.getText();
     Date newRaisedOnDate = Date.valueOf(raisedOnDateDatePicker.getValue());
     String newTicketRaiserEmail = ticketRaiserTextField.getText();
     String newAssetNumberString = assetNumberTextField.getText();
     int newAssetNumber;
-    if (newAssetNumberString.isEmpty()){
+    if (newAssetNumberString.isEmpty()) {
       newAssetNumber = assetNumber;
-    }
-    else {
+    } else {
       newAssetNumber = Integer.parseInt(newAssetNumberString);
     }
 
-    String result = AssetPlusFeatureSet4Controller.updateMaintenanceTicket(ticketId, newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
+    String result = AssetPlusFeatureSet4Controller.updateMaintenanceTicket(ticketId,
+        newRaisedOnDate, newDescription, newTicketRaiserEmail, newAssetNumber);
     if (result.equals("")) {
       loadPage("tickets/tickets.fxml");
-    } else{
-      showError(result);      
+    } else {
+      showError(result);
     }
 
   }
 
-    /**
-     * Returns to the ticket search page
-     *
-     * @author Julien Audet
-     */
+  /**
+   * Returns to the ticket search page
+   *
+   * @author Julien Audet
+   */
   @FXML
-  public void onBackToTicketsClicked(){
+  public void onBackToTicketsClicked() {
     loadPage("tickets/tickets.fxml");
   }
 
@@ -162,37 +150,48 @@ public class TicketUpdateController {
         setAssetDetails();
     }
 
-    /**
-     * Deletes the currently selected image
-     *
-     * @author Luke Freund
-     */
+  /**
+   * Keeps track of the id of the ticket to view
+   *
+   * @author Julien Audet
+   * @param newViewedTicketId The id of the ticket to view
+   */
+  public void setTicketId(int newViewedTicketId) {
+    ticketId = newViewedTicketId;
+  }
+
+  /**
+   * Deletes the currently selected image
+   *
+   * @author Luke Freund
+   */
   @FXML
   private void onDeleteImageButtonClicked() {
-      String selectedUrl = imageListView.getSelectionModel().getSelectedItem();
-      if (selectedUrl != null) {
-          AssetPlusFeatureSet5Controller.deleteImageFromMaintenanceTicket(selectedUrl, ticketId);
-          imageListView.getItems().remove(selectedUrl);
-      } else {
-          showError("Please select an image URL to delete.");
-      }
+    String selectedUrl = imageListView.getSelectionModel().getSelectedItem();
+    if (selectedUrl != null) {
+      AssetPlusFeatureSet5Controller.deleteImageFromMaintenanceTicket(selectedUrl, ticketId);
+      imageListView.getItems().remove(selectedUrl);
+    } else {
+      showError("Please select an image URL to delete.");
+    }
   }
 
-    /**
-     * Opens a view to see the ticket notes
-     *
-     * @author Luke Freund
-     */
+  /**
+   * Opens a view to see the ticket notes
+   *
+   * @author Luke Freund
+   */
   @FXML
-  private void onViewTicketNotesClicked(){
-      loadPage("tickets/view-ticket-notes.fxml");
+  private void onViewTicketNotesClicked() {
+    loadPage("tickets/view-ticket-notes.fxml");
   }
 
-    /**
-     * Opens a dialogue window prompting the user to add the necessary information to assign a user to the current ticket
-     *
-     * @author Luke Freund
-     */
+  /**
+   * Opens a dialogue window prompting the user to add the necessary information to assign a user to
+   * the current ticket
+   *
+   * @author Luke Freund
+   */
   @FXML
   private void onAssignStaffClicked() {
       showEmailDialog().ifPresent(email -> {
@@ -223,74 +222,70 @@ public class TicketUpdateController {
       });
   }
 
-    /**
-     * Opens a new view corresponding to the given fxml file
-     *
-     * @author Julien Audet
-     * @param fxmlFile path to the fxml file to open
-     * @return Returns an FXMLLoader object to access the view controller
-     */
-  private FXMLLoader loadPage(String fxmlFile) {
-      try {
-          FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
-          Node page = loader.load();
-          if (fxmlFile.equals("tickets/view-edit-status.fxml")) {
-              ViewAndEditStatusController updateController = loader.getController();
-              updateController.initialize(ticketId);
-          } else if (fxmlFile.equals("tickets/view-ticket-notes.fxml")) {
-              ViewTicketNotesController notesController = loader.getController();
-              notesController.setCurrentMaintenanceTicket(this.currentMaintenanceTicket);
-          }
-          mainContentArea.getChildren().setAll(page);
-          return loader;
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return null;
-  }
-
-    /**
-     * Prompts the user to add an image
-     *
-     * @author Luke Freund
-     */
   @FXML
   private void onAddImageButtonClicked() {
-      TextInputDialog dialog = new TextInputDialog();
-      dialog.setTitle("Add Image");
-      dialog.setHeaderText(null);
-      dialog.setContentText("Please enter the URL of the image:");
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("Add Image");
+    dialog.setHeaderText(null);
+    dialog.setContentText("Please enter the URL of the image:");
 
-      Optional<String> result = dialog.showAndWait();
-      result.ifPresent(url -> {
-          String errorMessage = AssetPlusFeatureSet5Controller.addImageToMaintenanceTicket(url, ticketId);
-          if (errorMessage.isEmpty()) {
-              imageListView.getItems().add(url);
-          } else {
-            showError(errorMessage);
-          }
-      });
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(url -> {
+      String errorMessage =
+          AssetPlusFeatureSet5Controller.addImageToMaintenanceTicket(url, ticketId);
+      if (errorMessage.isEmpty()) {
+        imageListView.getItems().add(url);
+      } else {
+        showError(errorMessage);
+      }
+    });
   }
 
-
-    /**
-     * Displays an error message
-     *
-     * @author Julien Audet
-     * @param content The error message to display
-     */
-  private void showError(String content) {
-    errorLabel.setText(content);
-  }
-
-    /**
-     * Clears the error message off the screen
-     *
-     * @author Julien Audet
-     */
+  /**
+   * Clears the error message off the screen
+   *
+   * @author Julien Audet
+   */
   @FXML
   private void onErrorClicked() {
     errorLabel.setText("");
+  }
+
+  /**
+   * Opens a new view corresponding to the given fxml file
+   *
+   * @author Julien Audet
+   * @param fxmlFile path to the fxml file to open
+   * @return Returns an FXMLLoader object to access the view controller
+   */
+  private FXMLLoader loadPage(String fxmlFile) {
+    try {
+      FXMLLoader loader = new FXMLLoader(Objects
+          .requireNonNull(getClass().getResource("/ca/mcgill/ecse/assetplus/view/" + fxmlFile)));
+      Node page = loader.load();
+      if (fxmlFile.equals("tickets/view-edit-status.fxml")) {
+        ViewAndEditStatusController updateController = loader.getController();
+        updateController.initialize(ticketId);
+      } else if (fxmlFile.equals("tickets/view-ticket-notes.fxml")) {
+        ViewTicketNotesController notesController = loader.getController();
+        notesController.setCurrentMaintenanceTicket(this.currentMaintenanceTicket);
+      }
+      mainContentArea.getChildren().setAll(page);
+      return loader;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  /**
+   * Displays an error message
+   *
+   * @author Julien Audet
+   * @param content The error message to display
+   */
+  private void showError(String content) {
+    errorLabel.setText(content);
   }
 
   private void setTicketDetails() {
@@ -366,5 +361,3 @@ public class TicketUpdateController {
       return approvalDialog.showAndWait();
   }
 }
-
-

@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view.AssetType;
+package ca.mcgill.ecse.assetplus.view.assetTypes;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class AddAssetTypeController {
+  
   @FXML
   private AnchorPane assetTypeContentArea;
 

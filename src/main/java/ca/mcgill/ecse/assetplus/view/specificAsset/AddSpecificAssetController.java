@@ -120,7 +120,7 @@ public class AddSpecificAssetController {
    * Loads the corresponding page of the inputted fxml file
    * 
    * @author Rehean Thillainathalingam
-   * @param String fxml file name string
+   * @param fxmlFile fxml file name string
    */
   private void loadPage(String fxmlFile) {
     try {

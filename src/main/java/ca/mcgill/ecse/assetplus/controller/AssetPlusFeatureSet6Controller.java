@@ -78,7 +78,6 @@ public class AssetPlusFeatureSet6Controller {
       List<TicketImage> ticketImages = maintenanceTicket.getTicketImages();
       List<String> imageURLs = extractImageURLs(ticketImages);
 
-
       List<MaintenanceNote> notes = maintenanceTicket.getTicketNotes();
       TOMaintenanceNote[] allNotes = extractMaintenanceNotes(notes);
 
@@ -100,18 +99,18 @@ public class AssetPlusFeatureSet6Controller {
    * 
    * @author Julien Audet
    * @param id The id of the maintenance ticket to view.
-   * @return Returns a Maintenance Ticket transfer object for the maintenance ticket with the corresponding ID.
+   * @return Returns a Maintenance Ticket transfer object for the maintenance ticket with the
+   *         corresponding ID.
    */
   public static TOMaintenanceTicket getTicketWithId(int id) {
     List<TOMaintenanceTicket> allMaintenanceTickets = getTickets();
-    for (TOMaintenanceTicket ticket: allMaintenanceTickets){
-      if (ticket.getId() == id){
+    for (TOMaintenanceTicket ticket : allMaintenanceTickets) {
+      if (ticket.getId() == id) {
         return ticket;
       }
     }
     return null;
   }
-
 
   /**
    * Gets the largest ticket id amongst all tickets.
@@ -122,14 +121,13 @@ public class AssetPlusFeatureSet6Controller {
   public static int getMaxTicketId() {
     int max = -1;
     List<TOMaintenanceTicket> allMaintenanceTickets = getTickets();
-    for (TOMaintenanceTicket ticket: allMaintenanceTickets){
-      if (ticket.getId() > max){
+    for (TOMaintenanceTicket ticket : allMaintenanceTickets) {
+      if (ticket.getId() > max) {
         max = ticket.getId();
       }
     }
     return max;
   }
-
 
   /**
    * Gets the asset number of the asset assigned to ticket with corresponding id (if any).
@@ -144,13 +142,12 @@ public class AssetPlusFeatureSet6Controller {
       return -1;
     }
     SpecificAsset asset = maintenanceTicket.getAsset();
-    if (asset == null){
+    if (asset == null) {
       return -1;
     } else {
       return asset.getAssetNumber();
     }
   }
-
 
   /**
    * Extracts a list of ticket image URLs from a maintenance ticket images.

@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view.AssetType;
+package ca.mcgill.ecse.assetplus.view.assetTypes;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -14,6 +14,29 @@ public class AssetTypeUpdateController {
   private String assetTypeUpdateName;
   private String assetTypeOldName;
   private String assetTypeOldLifespan;
+
+  @FXML
+  private AnchorPane assetTypeContentArea;
+
+  @FXML
+  private Label errorLabel;
+
+  @FXML
+  private TextField assetTypeName;
+
+  @FXML
+  private TextField assetTypeLifespan;
+
+  /**
+   * Initializes asset type name and lifespan
+   *
+   * @author Tiffany Miller
+   */
+  @FXML
+  public void initialize() {
+    assetTypeName.setFocusTraversable(false);
+    assetTypeLifespan.setFocusTraversable(false);
+  }
 
   /**
    * Sets assetTypeUpdateName variable to updated asset type name
@@ -45,17 +68,22 @@ public class AssetTypeUpdateController {
     this.assetTypeOldLifespan = lifespan;
   }
 
-  @FXML
-  private AnchorPane assetTypeContentArea;
-
-  @FXML
-  private Label errorLabel;
-
-  @FXML
-  private TextField assetTypeName;
-
-  @FXML
-  private TextField assetTypeLifespan;
+  /**
+   * Updates the UI with current asset type information
+   *
+   * @author Tiffany Miller
+   */
+  public void updateUIWithAssetTypeData() {
+    if (assetTypeOldName != null) {
+      assetTypeName.setPromptText("Old Name: " + assetTypeOldName);
+    }
+    if (assetTypeUpdateName != null) {
+      assetTypeName.setText("Name (cannot modify): " + assetTypeUpdateName);
+    }
+    if (assetTypeOldLifespan != null) {
+      assetTypeLifespan.setPromptText("Old Lifespan: " + assetTypeOldLifespan);
+    }
+  }
 
   /**
    * Returns to default asset type page once cancel button is clicked
@@ -93,33 +121,6 @@ public class AssetTypeUpdateController {
     }
   }
 
-  /**
-   * Initializes asset type name and lifespan
-   *
-   * @author Tiffany Miller
-   */
-  @FXML
-  public void initialize() {
-    assetTypeName.setFocusTraversable(false);
-    assetTypeLifespan.setFocusTraversable(false);
-  }
-
-  /**
-   * Updates the UI with current asset type information
-   *
-   * @author Tiffany Miller
-   */
-  public void updateUIWithAssetTypeData() {
-    if (assetTypeOldName != null) {
-      assetTypeName.setPromptText("Old Name: " + assetTypeOldName);
-    }
-    if (assetTypeUpdateName != null) {
-      assetTypeName.setText("Name (cannot modify): " + assetTypeUpdateName);
-    }
-    if (assetTypeOldLifespan != null) {
-      assetTypeLifespan.setPromptText("Old Lifespan: " + assetTypeOldLifespan);
-    }
-  }
 
   /**
    * Loads page of the given fxml file

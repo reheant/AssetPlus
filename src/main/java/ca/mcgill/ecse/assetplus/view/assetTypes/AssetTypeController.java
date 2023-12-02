@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.assetplus.view.AssetType;
+package ca.mcgill.ecse.assetplus.view.assetTypes;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,6 +19,8 @@ import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet2Controller;
 import ca.mcgill.ecse.assetplus.view.specificAsset.SpecificAssetController;
 
 public class AssetTypeController {
+  private String assetTypeString;
+
   @FXML
   private AnchorPane assetTypeContentArea;
 
@@ -34,16 +36,52 @@ public class AssetTypeController {
   @FXML
   private ListView<String> assetTypeList;
 
+  @FXML
+  private Button viewAllSpecificAssets;
+
+  /**
+   * Initializes asset type default page
+   *
+   * @author Tiffany Miller
+   */
+  @FXML
+  public void initialize() {
+    assetTypeSearchBar.setFocusTraversable(false);
+
+    String[] assetTypeNames = AssetPlusFeatureSet2Controller.getAssetTypes();
+    assetTypeList.setFixedCellSize(50.0);
+    assetTypeList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(item);
+          setStyle("-fx-font-size: 16pt;");
+        }
+      }
+    });
+    assetTypeList.setPrefHeight(10 * assetTypeList.getFixedCellSize());
+    assetTypeList.getItems().addAll(assetTypeNames);
+
+    assetTypeList.getSelectionModel().selectedItemProperty()
+        .addListener(new ChangeListener<String>() {
+
+          @Override
+          public void changed(ObservableValue<? extends String> observable, String oldValue,
+              String newValue) {
+            setInfo(newValue);
+            assetTypeString = newValue;
+          }
+        });
+  }
+
   /**
    * Loads add asset type page
    *
    * @author Tiffany Miller
    */
-  @FXML
-  private Button viewAllSpecificAssets;
-
-  private String assetTypeString;
-
   @FXML
   private void onAddAssetTypeClicked() {
     loadPage("add-asset-type.fxml");
@@ -63,6 +101,12 @@ public class AssetTypeController {
 
   }
 
+  /**
+   * Retrieves the currently selected asset type from a list in the UI. If a valid asset type is
+   * selected, it loads the corresponding page for updating the asset type.
+   * 
+   * @author Tiffany Miller
+   */
   @FXML
   private void onUpdateAssetTypeClicked() {
     String selectedAssetType = assetTypeList.getSelectionModel().getSelectedItem();
@@ -112,44 +156,6 @@ public class AssetTypeController {
     assetTypeSearchBar.setText("");
     resetAssetTypeList();
     resetCellFactory();
-  }
-
-  /**
-   * Initializes asset type default page
-   *
-   * @author Tiffany Miller
-   */
-  @FXML
-  public void initialize() {
-    assetTypeSearchBar.setFocusTraversable(false);
-
-    String[] assetTypeNames = AssetPlusFeatureSet2Controller.getAssetTypes();
-    assetTypeList.setFixedCellSize(50.0);
-    assetTypeList.setCellFactory(lv -> new ListCell<String>() {
-      @Override
-      public void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty) {
-          setText(null);
-        } else {
-          setText(item);
-          setStyle("-fx-font-size: 16pt;");
-        }
-      }
-    });
-    assetTypeList.setPrefHeight(10 * assetTypeList.getFixedCellSize());
-    assetTypeList.getItems().addAll(assetTypeNames);
-
-    assetTypeList.getSelectionModel().selectedItemProperty()
-        .addListener(new ChangeListener<String>() {
-
-          @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue,
-              String newValue) {
-            setInfo(newValue);
-            assetTypeString = newValue;
-          }
-        });
   }
 
   /**

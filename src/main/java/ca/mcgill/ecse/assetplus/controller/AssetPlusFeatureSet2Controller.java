@@ -99,7 +99,8 @@ public class AssetPlusFeatureSet2Controller {
         if (assetType != null) {
             List<MaintenanceTicket> maintenanceTickets = assetPlus.getMaintenanceTickets();
             for (MaintenanceTicket ticket : maintenanceTickets) {
-                if (ticket != null && ticket.getAsset() != null && ticket.getAsset().getAssetType().equals(assetType)){
+                if (ticket != null && ticket.getAsset() != null
+                        && ticket.getAsset().getAssetType().equals(assetType)) {
                     AssetPlusFeatureSet4Controller.deleteMaintenanceTicket(ticket.getId());
                 }
             }
@@ -107,42 +108,42 @@ public class AssetPlusFeatureSet2Controller {
             AssetPlusPersistence.save();
         }
     }
-    
+
     /**
-     * Gets asset type names from asset plus application 
+     * Gets asset type names from asset plus application
      * 
      * @author Tiffany Miller
      */
     public static String[] getAssetTypes() {
-    	List<AssetType> assetTypes = assetPlus.getAssetTypes();
-    	String[] typeNames = new String[assetTypes.size()];
-    	
-    	for (int i=0; i< assetTypes.size(); i++) {
-    		typeNames[i] = assetTypes.get(i).getName();
-    	}
-    	
-    	return typeNames;
+        List<AssetType> assetTypes = assetPlus.getAssetTypes();
+        String[] typeNames = new String[assetTypes.size()];
+
+        for (int i = 0; i < assetTypes.size(); i++) {
+            typeNames[i] = assetTypes.get(i).getName();
+        }
+
+        return typeNames;
     }
-    
+
     /**
-     * Gets asset type lifespan by name from asset plus application 
+     * Gets asset type lifespan by name from asset plus application
      * 
      * @author Tiffany Miller
      */
     public static int getLifespanByName(String name) {
-    	try {
-    	      AssetType assetType = AssetType.getWithName(name);
+        try {
+            AssetType assetType = AssetType.getWithName(name);
 
-    	      if (assetType == null) {
-    	        return 0;
-    	      }
-    	      
-    	      int specificLifespan;
-    	      specificLifespan = assetType.getExpectedLifeSpan();
-    	      return specificLifespan;
-    } catch (Exception e) {
-        return 0;
-      }
+            if (assetType == null) {
+                return 0;
+            }
+
+            int specificLifespan;
+            specificLifespan = assetType.getExpectedLifeSpan();
+            return specificLifespan;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     /**

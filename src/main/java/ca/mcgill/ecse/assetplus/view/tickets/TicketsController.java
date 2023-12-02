@@ -321,7 +321,8 @@ public class TicketsController {
 
         for (int i = 0; i < ticketList.size(); i++) {
             ticketDisplayList[i] = Integer.toString(ticketList.get(i).getId()) + " - "
-                    + ticketList.get(i).getDescription() + " (" + ticketList.get(i).getStatus() + ")";
+                    + ticketList.get(i).getDescription() + " (" + ticketList.get(i).getStatus()
+                    + ")";
         }
         return ticketDisplayList;
     }

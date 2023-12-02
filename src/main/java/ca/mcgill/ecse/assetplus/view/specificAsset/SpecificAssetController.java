@@ -16,28 +16,38 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class SpecificAssetController {
-  @FXML
-  private Button addSpecificAsset;
-  @FXML
-  private Button filterButton;
-  @FXML
-  private Button clearButton;
-  @FXML
-  private Button backButton;
-  @FXML
-  private AnchorPane specificAssetContentArea;
-  @FXML
-  private ListView<String> specificAssetList;
-  @FXML
-  private TextField purchaseDateFilter;
-  @FXML
-  private TextField assetNbFilter;
-  @FXML
-  private TextField floorNbFilter;
-  @FXML
-  private TextField roomNbFilter;
   private String specificAssetInfo;
   private String assetTypeString;
+
+  @FXML
+  private Button addSpecificAsset;
+
+  @FXML
+  private Button filterButton;
+
+  @FXML
+  private Button clearButton;
+
+  @FXML
+  private Button backButton;
+
+  @FXML
+  private AnchorPane specificAssetContentArea;
+
+  @FXML
+  private ListView<String> specificAssetList;
+
+  @FXML
+  private TextField purchaseDateFilter;
+
+  @FXML
+  private TextField assetNbFilter;
+
+  @FXML
+  private TextField floorNbFilter;
+
+  @FXML
+  private TextField roomNbFilter;
 
   /**
    * Filters specific assets based on user inputs
@@ -89,78 +99,6 @@ public class SpecificAssetController {
       specificAssetList.getItems().addAll(filteredDates);
       resetCellFactory();
     }
-  }
-
-  /**
-   * Clears filters once clear button is clicked.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  @FXML
-  private void clearButtonOnClick() {
-    purchaseDateFilter.setText("");
-    assetNbFilter.setText("");
-    roomNbFilter.setText("");
-    floorNbFilter.setText("");
-    resetSpecificAssetList();
-    resetCellFactory();
-  }
-
-  /**
-   * Resets specific asset list data.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  private void resetCellFactory() {
-    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
-      @Override
-      public void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty) {
-          setText(null);
-        } else {
-          setText(item);
-          setStyle("-fx-font-size: 16pt;");
-        }
-      }
-    });
-  }
-  /**
-   * Displays that no results were found in the specific asset list.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  private void displayNoSearchResults() {
-    specificAssetList.getItems().add("No search results");
-    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
-      @Override
-      protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null) {
-          setText(null);
-          setGraphic(null);
-        } else {
-          setText(item);
-          if (item.equals("No search results")) {
-            setDisable(true);
-            setStyle("-fx-font-style: italic;");
-            setStyle("-fx-font-size: 16pt;");
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Resets the specific asset list
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  private void resetSpecificAssetList() {
-    specificAssetList.getItems().clear();
-    String[] assetData =
-        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, true);
-    specificAssetList.getItems().addAll(assetData);
   }
 
   /**
@@ -225,10 +163,83 @@ public class SpecificAssetController {
   }
 
   /**
+   * Clears filters once clear button is clicked.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
+  private void clearButtonOnClick() {
+    purchaseDateFilter.setText("");
+    assetNbFilter.setText("");
+    roomNbFilter.setText("");
+    floorNbFilter.setText("");
+    resetSpecificAssetList();
+    resetCellFactory();
+  }
+
+  /**
+   * Resets specific asset list data.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  private void resetCellFactory() {
+    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(item);
+          setStyle("-fx-font-size: 16pt;");
+        }
+      }
+    });
+  }
+
+  /**
+   * Displays that no results were found in the specific asset list.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  private void displayNoSearchResults() {
+    specificAssetList.getItems().add("No search results");
+    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty || item == null) {
+          setText(null);
+          setGraphic(null);
+        } else {
+          setText(item);
+          if (item.equals("No search results")) {
+            setDisable(true);
+            setStyle("-fx-font-style: italic;");
+            setStyle("-fx-font-size: 16pt;");
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Resets the specific asset list
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  private void resetSpecificAssetList() {
+    specificAssetList.getItems().clear();
+    String[] assetData =
+        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetTypeString, true);
+    specificAssetList.getItems().addAll(assetData);
+  }
+
+  /**
    * Loads the corresponding page of the inputted fxml file
    * 
    * @author Rehean Thillainathalingam
-   * @param fxmlFile fxml file name 
+   * @param String fxml file name
    */
   private void loadPage(String fxmlFile) {
     try {

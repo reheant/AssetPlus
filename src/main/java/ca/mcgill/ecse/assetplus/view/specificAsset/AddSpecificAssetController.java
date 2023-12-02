@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
@@ -14,33 +15,41 @@ import javafx.scene.layout.AnchorPane;
 
 
 public class AddSpecificAssetController {
+  private String assetTypeString;
+  private Date sqlDate;
+
   @FXML
   private AnchorPane addSpecificAssetContentArea;
+
   @FXML
   private Button addSpecificAsset;
+
   @FXML
   private TextField assetNumber;
+
   @FXML
   private TextField purchasedDate;
+
   @FXML
   private Label assetType;
+
   @FXML
   private TextField floorNumber;
+
   @FXML
   private TextField roomNumber;
+
   @FXML
   private Button backButton;
+
   @FXML
   private Label errorLabel;
-
-  private String assetTypeString;
-  private java.sql.Date sqlDate;
 
   /**
    * Sets the assetType label string to the corresponding asset type
    * 
-   * @param string AssetType name string
    * @author Rehean Thillainathalingam
+   * @param string AssetType name string
    */
   public void setAssetTypeString(String string) {
     assetTypeString = string;
@@ -62,7 +71,6 @@ public class AddSpecificAssetController {
     int intAssetnb = -1;
     int intFloorNb = -1;
     int intRoomNb = -2;
-
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     java.util.Date utilDate;
@@ -110,8 +118,9 @@ public class AddSpecificAssetController {
 
   /**
    * Loads the corresponding page of the inputted fxml file
+   * 
    * @author Rehean Thillainathalingam
-   * @param fxmlFile fxml file name string
+   * @param String fxml file name string
    */
   private void loadPage(String fxmlFile) {
     try {

@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
@@ -13,29 +14,39 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class EditSpecificAssetController {
+  private Date sqlDate;
+
   @FXML
   private AnchorPane editSpecificAssetContentArea;
+
   @FXML
   private Label assetNumber;
+
   @FXML
   private TextField purchaseDate;
+
   @FXML
   private TextField assetType;
+
   @FXML
   private TextField floorNb;
+
   @FXML
   private TextField roomNb;
+
   @FXML
   private Button backButton;
+
   @FXML
   private Button confirmSpecificAsset;
+
   @FXML
   private Label titleLabel;
+
   @FXML
   private Label errorLabel;
-  private java.sql.Date sqlDate;
 
-   /**
+  /**
    * Loads specific asset page once back button is clicked
    * 
    * @author Rehean Thillainathalingam
@@ -43,26 +54,6 @@ public class EditSpecificAssetController {
   @FXML
   public void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
-  }
-   /**
-   * Sets the text fields accordign to the specific asset
-   * 
-   * @author Rehean Thillainathalingam
-   * @param originalAssetNb The asset number of the current specific asset
-   * @param originalPurchaseDate The purchase date of the current specific asset
-   * @param originalFloorNb The floor number of the current specific asset
-   * @param originalRoomNb The room number of the current specific asset
-   * @param originalAssetType The asset type of the current specific asset
-   * @param label The title label for the page
-   */
-  public void setTextFields(String originalAssetNb, String originalPurchaseDate,
-      String originalFloorNb, String originalRoomNb, String originalAssetType, String label) {
-    assetNumber.setText(originalAssetNb);
-    purchaseDate.setText(originalPurchaseDate);
-    floorNb.setText(originalFloorNb);
-    roomNb.setText(originalRoomNb);
-    assetType.setText(originalAssetType);
-    titleLabel.setText(label);
   }
 
   /**
@@ -108,11 +99,33 @@ public class EditSpecificAssetController {
       loadPage("SpecificAsset.fxml");
     }
   }
+
+  /**
+   * Sets the text fields accordign to the specific asset
+   * 
+   * @author Rehean Thillainathalingam
+   * @param originalAssetNb The asset number of the current specific asset
+   * @param originalPurchaseDate The purchase date of the current specific asset
+   * @param originalFloorNb The floor number of the current specific asset
+   * @param originalRoomNb The room number of the current specific asset
+   * @param originalAssetType The asset type of the current specific asset
+   * @param label The title label for the page
+   */
+  public void setTextFields(String originalAssetNb, String originalPurchaseDate,
+      String originalFloorNb, String originalRoomNb, String originalAssetType, String label) {
+    assetNumber.setText(originalAssetNb);
+    purchaseDate.setText(originalPurchaseDate);
+    floorNb.setText(originalFloorNb);
+    roomNb.setText(originalRoomNb);
+    assetType.setText(originalAssetType);
+    titleLabel.setText(label);
+  }
+
   /**
    * Loads the corresponding page of the inputted fxml file
    * 
    * @author Rehean Thillainathalingam
-   * @param fxmlFile fxml file name 
+   * @param String fxml file name
    */
   private void loadPage(String fxmlFile) {
     try {

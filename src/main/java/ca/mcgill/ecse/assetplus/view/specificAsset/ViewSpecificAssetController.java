@@ -10,44 +10,54 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 public class ViewSpecificAssetController {
-  @FXML
-  private Label assetNumber;
-  @FXML
-  private Label purchasedDate;
-  @FXML
-  private Label expectedLifespan;
-  @FXML
-  private Label floorNumber;
-  @FXML
-  private Label roomNumber;
-  @FXML
-  private Label titleLabel;
-  @FXML
-  private Label assetType;
-  @FXML
-  private Button backButton;
-  @FXML
-  private Button editSpecificAsset;
-  @FXML
-  private Button deleteSpecificAsset1;
-  @FXML
-  private AnchorPane viewSpecificAssetContentArea;
   private String[] specificData;
   private String titleLabelString;
 
+  @FXML
+  private Label assetNumber;
+
+  @FXML
+  private Label purchasedDate;
+
+  @FXML
+  private Label expectedLifespan;
+
+  @FXML
+  private Label floorNumber;
+
+  @FXML
+  private Label roomNumber;
+
+  @FXML
+  private Label titleLabel;
+
+  @FXML
+  private Label assetType;
+
+  @FXML
+  private Button backButton;
+
+  @FXML
+  private Button editSpecificAsset;
+
+  @FXML
+  private Button deleteSpecificAsset1;
+
+  @FXML
+  private AnchorPane viewSpecificAssetContentArea;
+
   /**
-   * Sets the text for the labels on the view page
+   * Initializes the view specific asset page
    * 
    * @author Rehean Thillainathalingam
-   * @param specificData String array of the date required.
+   * @param titleLabelString A string label for the title of the page
    */
-  public void displayTitle(String[] specificData) {
-    titleLabel.setText(specificData[0] + " #" + specificData[1]);
-    assetNumber.setText(specificData[1]);
-    purchasedDate.setText(specificData[4]);
-    floorNumber.setText(specificData[2]);
-    roomNumber.setText(specificData[3]);
-    assetType.setText(specificData[0]);
+  @FXML
+  public void initialize(String titleLabelString) {
+
+    this.titleLabelString = titleLabelString;
+    specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
+    displayTitle(specificData);
   }
 
   /**
@@ -79,25 +89,25 @@ public class ViewSpecificAssetController {
   }
 
   /**
-   * Initializes the view specific asset page
+   * Sets the text for the labels on the view page
    * 
    * @author Rehean Thillainathalingam
-   * @param titleLabelString A string label for the title of the page
+   * @param specificData String array of the date required.
    */
-  @FXML
-  public void initialize(String titleLabelString) {
-
-    this.titleLabelString = titleLabelString;
-    specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
-    displayTitle(specificData);
-
+  public void displayTitle(String[] specificData) {
+    titleLabel.setText(specificData[0] + " #" + specificData[1]);
+    assetNumber.setText(specificData[1]);
+    purchasedDate.setText(specificData[4]);
+    floorNumber.setText(specificData[2]);
+    roomNumber.setText(specificData[3]);
+    assetType.setText(specificData[0]);
   }
-  
+
   /**
    * Loads the corresponding page of the inputted fxml file
    * 
    * @author Rehean Thillainathalingam
-   * @param fxmlFile AssetType name string
+   * @param String AssetType name string
    */
   private void loadPage(String fxmlFile) {
     try {

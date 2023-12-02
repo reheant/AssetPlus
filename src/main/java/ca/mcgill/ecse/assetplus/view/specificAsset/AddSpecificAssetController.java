@@ -1,6 +1,7 @@
 package ca.mcgill.ecse.assetplus.view.specificAsset;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet3Controller;
@@ -14,35 +15,54 @@ import javafx.scene.layout.AnchorPane;
 
 
 public class AddSpecificAssetController {
+  private String assetTypeString;
+  private Date sqlDate;
+
   @FXML
   private AnchorPane addSpecificAssetContentArea;
+
   @FXML
   private Button addSpecificAsset;
+
   @FXML
   private TextField assetNumber;
+
   @FXML
   private TextField purchasedDate;
+
   @FXML
   private Label assetType;
+
   @FXML
   private TextField floorNumber;
+
   @FXML
   private TextField roomNumber;
+
   @FXML
   private Button backButton;
+
   @FXML
   private Label errorLabel;
 
-  private String assetTypeString;
-  private java.sql.Date sqlDate;
-
+  /**
+   * Sets the assetType label string to the corresponding asset type
+   * 
+   * @author Rehean Thillainathalingam
+   * @param string AssetType name string
+   */
   public void setAssetTypeString(String string) {
     assetTypeString = string;
     assetType.setText(assetTypeString);
   }
 
+  /**
+   * Adds a specific asset once the add specific asset button is clicked
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
-  public void addSpecificAssetOnClick() {
+  private void addSpecificAssetOnClick() {
     String assetNb = assetNumber.getText().strip();
     String purchased = purchasedDate.getText().strip();
     String floorNb = floorNumber.getText().strip();
@@ -51,7 +71,6 @@ public class AddSpecificAssetController {
     int intAssetnb = -1;
     int intFloorNb = -1;
     int intRoomNb = -2;
-
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     java.util.Date utilDate;
@@ -86,12 +105,23 @@ public class AddSpecificAssetController {
     }
   }
 
+  /**
+   * Loads specific asset page once back button is clicked
+   * 
+   * @author Rehean Thillainathalingam
+   */
   @FXML
-  public void backButtonOnClick() {
+  private void backButtonOnClick() {
     loadPage("SpecificAsset.fxml");
 
   }
 
+  /**
+   * Loads the corresponding page of the inputted fxml file
+   * 
+   * @author Rehean Thillainathalingam
+   * @param String fxml file name string
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(

@@ -18,6 +18,7 @@ import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet1Controller;
 import ca.mcgill.ecse.assetplus.controller.AssetPlusFeatureSet6Controller;
 
 public class GuestController {
+
   @FXML
   private AnchorPane guestContentArea;
 
@@ -39,47 +40,12 @@ public class GuestController {
   @FXML
   private ListView<String> guestList;
 
-  @FXML
-  private void onAddGuestClicked() {
-    loadPage("add-guest.fxml");
-  }
-
-  @FXML
-  private void onUpdateGuestClicked() {
-    String selectedGuestEmail = guestList.getSelectionModel().getSelectedItem();
-    if (selectedGuestEmail != null && !selectedGuestEmail.equals("No search results")) {
-      loadPage("update-guest.fxml");
-    }
-  }
-
-  @FXML
-  private void onDeleteGuestClicked() {
-    String email = guestEmailLabel.getText().strip();
-    AssetPlusFeatureSet6Controller.deleteEmployeeOrGuest(email);
-    loadPage("guests.fxml");
-  }
-
-  @FXML
-  private void onSearchButtonClicked() {
-    String searchedEmail = guestSearchBar.getText();
-    List<String> filteredEmails = filterGuestList(searchedEmail);
-
-    guestList.getItems().clear();
-    if (filteredEmails.isEmpty()) {
-      displayNoSearchResults();
-    } else {
-      guestList.getItems().addAll(filteredEmails);
-      resetCellFactory();
-    }
-  }
-
-  @FXML
-  private void onClearButtonClicked() {
-    guestSearchBar.setText("");
-    resetGuestList();
-    resetCellFactory();
-  }
-
+  /**
+   * Initializes the guest list and sets up the UI. Loads guest emails and sets up the list cell
+   * factory.
+   *
+   * @author Nicolas Bolouri
+   */
   @FXML
   public void initialize() {
     guestSearchBar.setFocusTraversable(false);
@@ -111,6 +77,81 @@ public class GuestController {
     });
   }
 
+  /**
+   * Loads the 'add-guest.fxml' page when Add Guest is clicked.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onAddGuestClicked() {
+    loadPage("add-guest.fxml");
+  }
+
+  /**
+   * Loads the 'update-guest.fxml' page for the selected guest. Does nothing if no guest is selected
+   * or the selection is invalid.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onUpdateGuestClicked() {
+    String selectedGuestEmail = guestList.getSelectionModel().getSelectedItem();
+    if (selectedGuestEmail != null && !selectedGuestEmail.equals("No search results")) {
+      loadPage("update-guest.fxml");
+    }
+  }
+
+  /**
+   * Deletes the guest with the displayed email and loads the 'guests.fxml' page.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onDeleteGuestClicked() {
+    String email = guestEmailLabel.getText().strip();
+    AssetPlusFeatureSet6Controller.deleteEmployeeOrGuest(email);
+    loadPage("guests.fxml");
+  }
+
+  /**
+   * Searches and displays guests matching the entered email. Shows 'No search results' if no match
+   * is found.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onSearchButtonClicked() {
+    String searchedEmail = guestSearchBar.getText();
+    List<String> filteredEmails = filterGuestList(searchedEmail);
+
+    guestList.getItems().clear();
+    if (filteredEmails.isEmpty()) {
+      displayNoSearchResults();
+    } else {
+      guestList.getItems().addAll(filteredEmails);
+      resetCellFactory();
+    }
+  }
+
+  /**
+   * Clears the search bar, resets the guest list and cell factory.
+   *
+   * @author Nicolas Bolouri
+   */
+  @FXML
+  private void onClearButtonClicked() {
+    guestSearchBar.setText("");
+    resetGuestList();
+    resetCellFactory();
+  }
+
+  /**
+   * Sets the guest information display for the given email. Shows 'Information not available' if
+   * the email is not found.
+   *
+   * @author Nicolas Bolouri
+   * @param email The email of the guest to display information for.
+   */
   private void setGuestInformation(String email) {
     String[] guestInfo = AssetPlusFeatureSet1Controller.getGuestInformationByEmail(email);
     if (guestInfo != null) {
@@ -126,12 +167,25 @@ public class GuestController {
     }
   }
 
+  /**
+   * Filters the guest list based on the searched email.
+   *
+   * @author Nicolas Bolouri
+   * @param searchedEmail The email to filter the guest list by.
+   * @return A list of emails matching the search criteria.
+   */
   private List<String> filterGuestList(String searchedEmail) {
     String[] guestEmails = AssetPlusFeatureSet1Controller.getGuestEmails();
     return Arrays.stream(guestEmails).filter(email -> email.equalsIgnoreCase(searchedEmail))
         .collect(Collectors.toList());
   }
 
+  /**
+   * Displays 'No search results' in the guest list. Adjusts the cell factory for this specific
+   * item.
+   *
+   * @author Nicolas Bolouri
+   */
   private void displayNoSearchResults() {
     guestList.getItems().add("No search results");
     guestList.setCellFactory(lv -> new ListCell<String>() {
@@ -153,6 +207,11 @@ public class GuestController {
     });
   }
 
+  /**
+   * Resets the cell factory of the guest list to its default state.
+   *
+   * @author Nicolas Bolouri
+   */
   private void resetCellFactory() {
     guestList.setCellFactory(lv -> new ListCell<String>() {
       @Override
@@ -168,12 +227,24 @@ public class GuestController {
     });
   }
 
+  /**
+   * Resets the guest list to show all guests.
+   *
+   * @author Nicolas Bolouri
+   */
   private void resetGuestList() {
     guestList.getItems().clear();
     String[] guestEmails = AssetPlusFeatureSet1Controller.getGuestEmails();
     guestList.getItems().addAll(guestEmails);
   }
 
+  /**
+   * Loads a specified FXML page into the guest content area. Sets up controller data for
+   * 'update-guest.fxml'. Catches and prints exceptions if the file cannot be loaded.
+   *
+   * @author Nicolas Bolouri
+   * @param String The FXML file to load, relative to '/ca/mcgill/ecse/assetplus/view/guests/'.
+   */
   private void loadPage(String fxmlFile) {
     try {
       FXMLLoader loader = new FXMLLoader(

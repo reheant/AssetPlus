@@ -221,6 +221,13 @@ public class MaintenanceTicketsStepDefinitions {
         "Low", requiresApproval);
   }
 
+  /**
+   * Marks a specified ticket with a given state.
+   *
+   * @author Nicolas Bolouri
+   * @param ticketIdString The ticket ID as a string. 
+   * @param stateString The new state to be assigned to the ticket. 
+   */
   @Given("ticket {string} is marked as {string}")
   public void ticket_is_marked_as(String ticketIdString, String stateString) {
     int ticketId = Integer.parseInt(ticketIdString);
@@ -452,32 +459,33 @@ public class MaintenanceTicketsStepDefinitions {
   @Then("the following maintenance tickets shall be presented")
   public void the_following_maintenance_tickets_shall_be_presented(
       io.cucumber.datatable.DataTable dataTable) {
-        
-        List<List<String>> rows = dataTable.asLists(String.class);
-        Map<String, List<String>> actualTicketsToMap = getMaintenanceTicketToMapAsStrings();   
-        
-        assertEquals(rows.size()-1, actualTicketsToMap.size());  // -1 since header row
+
+    List<List<String>> rows = dataTable.asLists(String.class);
+    Map<String, List<String>> actualTicketsToMap = getMaintenanceTicketToMapAsStrings();
+
+    assertEquals(rows.size() - 1, actualTicketsToMap.size()); // -1 since header row
 
     for (int i = 1; i < rows.size(); i++) {
       List<String> row = rows.get(i);
       String ticketIdString = row.get(0);
       String expectedRequiresManagerApprovalString = row.get(13);
-      if (expectedRequiresManagerApprovalString == null || expectedRequiresManagerApprovalString == "null") {
+      if (expectedRequiresManagerApprovalString == null
+          || expectedRequiresManagerApprovalString == "null") {
         expectedRequiresManagerApprovalString = "false";
       }
-      
-      for (int j = 0; j<row.size(); j++){
-        if (row.get(i) == null){
+
+      for (int j = 0; j < row.size(); j++) {
+        if (row.get(i) == null) {
           row.set(i, "null");
         }
       }
 
       List<String> actualTicketTo = actualTicketsToMap.get(ticketIdString);
 
-      for (int j = 0; j<row.size(); j++){
+      for (int j = 0; j < row.size(); j++) {
         assertEquals(row.get(i), actualTicketTo.get(i));
       }
-      
+
     }
   }
 
@@ -557,11 +565,11 @@ public class MaintenanceTicketsStepDefinitions {
     List<String> actualImageUrls = maintenanceTicketTo.getImageURLs();
 
     List<String> expectedImageUrls = dataTable.asList();
-    
-    assertEquals(expectedImageUrls.size() - 1, actualImageUrls.size());  // -1 for the header row
 
-    for (int i = 0; i<actualImageUrls.size(); i++){
-      assertEquals(expectedImageUrls.get(i+1), actualImageUrls.get(i));
+    assertEquals(expectedImageUrls.size() - 1, actualImageUrls.size()); // -1 for the header row
+
+    for (int i = 0; i < actualImageUrls.size(); i++) {
+      assertEquals(expectedImageUrls.get(i + 1), actualImageUrls.get(i));
     }
   }
 
@@ -699,7 +707,7 @@ public class MaintenanceTicketsStepDefinitions {
         break;
       case "Resolved":
         setMaintenanceTicketAsAssigned(maintenanceTicket, fixedByEmail, timeToResolveString,
-            priorityString, true);  // need approval required to go in resolved
+            priorityString, true); // need approval required to go in resolved
         setAssignedMaintenanceTicketAsInProgress(maintenanceTicket);
         setInProgressMaintenanceTicketAsResolved(maintenanceTicket, fixedByEmail);
         break;

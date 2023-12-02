@@ -8,7 +8,6 @@ import ca.mcgill.ecse.assetplus.persistence.AssetPlusPersistence;
 
 public class AssetPlusFeatureSet4Controller {
   private static AssetPlus assetPlus = AssetPlusApplication.getAssetPlus();
-
   private static final int UNSPECIFIED_ASSET_NUMBER = -1;
 
   /**
@@ -34,10 +33,9 @@ public class AssetPlusFeatureSet4Controller {
     error += assertValidAssetNumber(assetNumber);
 
     User aTicketRaiser = User.getWithEmail(email);
-    if (email.equals("manager@ap.com")){
+    if (email.equals("manager@ap.com")) {
       aTicketRaiser = assetPlus.getManager();
-    }
-    else if (aTicketRaiser == null) {
+    } else if (aTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
 
@@ -46,7 +44,6 @@ public class AssetPlusFeatureSet4Controller {
     }
 
     try {
-
       MaintenanceTicket maintenanceTicket =
           new MaintenanceTicket(id, raisedOnDate, description, assetPlus, aTicketRaiser);
 
@@ -91,10 +88,9 @@ public class AssetPlusFeatureSet4Controller {
 
 
     User newTicketRaiser = User.getWithEmail(newEmail);
-    if (newEmail.equals("manager@ap.com")){
+    if (newEmail.equals("manager@ap.com")) {
       newTicketRaiser = assetPlus.getManager();
-    }
-    else if (newTicketRaiser == null) {
+    } else if (newTicketRaiser == null) {
       error += "The ticket raiser does not exist ";
     }
 
@@ -113,7 +109,6 @@ public class AssetPlusFeatureSet4Controller {
     }
 
     try {
-
       existingMaintenanceTicket.setRaisedOnDate(newRaisedOnDate);
       existingMaintenanceTicket.setTicketRaiser(newTicketRaiser);
       existingMaintenanceTicket.setDescription(newDescription);
@@ -143,7 +138,6 @@ public class AssetPlusFeatureSet4Controller {
       AssetPlusPersistence.save();
     }
   }
-
 
   /**
    * Asserts that the AssetPlus app was initialized

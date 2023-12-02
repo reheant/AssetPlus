@@ -31,7 +31,7 @@ public class AssetPlusFeatureSet5Controller {
             }
 
             // Creates two-way association between image and maintenance ticket.
-            TicketImage image = new TicketImage(imageURL, ticket);
+            new TicketImage(imageURL, ticket);
 
             AssetPlusPersistence.save();
         } catch (Exception e) {

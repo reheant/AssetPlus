@@ -9,30 +9,44 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 
 
 public class ViewAndEditStatusController {
+  private int ticketID;
+  private TOMaintenanceTicket ticket;
 
   @FXML
-  private Label currentStatus, errorLabelLeft, errorLabelRight;
+  private Label currentStatus;
 
   @FXML
-  private Button startButton, completeButton;
+  private Label errorLabelLeft;
 
-  @FXML 
+  @FXML
+  private Label errorLabelRight;
+
+  @FXML
+  private Button startButton;
+
+  @FXML
+  private Button completeButton;
+
+  @FXML
   private AnchorPane viewEditStatusContentArea;
 
   @FXML
-  private Button approveButton, disapproveButton;
+  private Button approveButton;
 
-  private int ticketID;
+  @FXML
+  private Button disapproveButton;
 
-  private TOMaintenanceTicket ticket;
-
+  /**
+   * Initializes the view and edit status view.
+   *
+   * @author Rehean Thillainathalingam
+   * @param ticketID The ID of the maintenance ticket.
+   */
   @FXML
   public void initialize(int ticketID) {
     this.ticketID = ticketID;
@@ -40,40 +54,66 @@ public class ViewAndEditStatusController {
     currentStatus.setText(ticket.getStatus());
   }
 
+  /**
+   * Loads the update-ticket view when the back button is clicked.
+   *
+   * @author Luke Freund
+   */
+  @FXML
   public void backButtonOnClick() {
     loadPage("update-ticket.fxml");
   }
 
-  @FXML 
+  /**
+   * Starts the work on the ticket.
+   *
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
   private void startButtonOnClick() {
     String error = "";
     error += AssetPlusStateController.startTicket(ticket.getId());
     if (!error.equals("")) {
       errorLabelLeft.setText(error);
-    } 
+    }
     initialize(ticketID);
   }
 
-  @FXML 
+  /**
+   * Completes the work on a ticket.
+   *
+   * @author Luke Freund
+   */
+  @FXML
   private void completeButtonOnClick() {
     String error = "";
     error += AssetPlusStateController.resolveTicket(ticket.getId());
     if (!error.equals("")) {
       errorLabelLeft.setText(error);
-    } 
+    }
     initialize(ticketID);
   }
 
+  /**
+   * If manager approval required, approves the ticket.
+   *
+   * @author Rehean Thillainathalingam
+   */
   @FXML
   private void handleApproveButton() {
     String error = "";
     error += AssetPlusStateController.approveTicket(ticket.getId());
     if (!error.equals("")) {
       errorLabelRight.setText(error);
-    } 
+    }
     initialize(ticketID);
   }
 
+  /**
+   * Disapproves the ticket.
+   *
+   * @author Luke Freund
+   */
   @FXML
   private void handleDisapproveButton() {
     String[] error = {""};
@@ -119,19 +159,26 @@ public class ViewAndEditStatusController {
     initialize(ticketID);
   }
 
+  /**
+   * Loads the specified view.
+   *
+   * @author Rehean Thillainathalingam
+   * @param fxmlFile The file to be loaded.
+   */
   private void loadPage(String fxmlFile) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/ca/mcgill/ecse/assetplus/view/tickets/" + fxmlFile));
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/ca/mcgill/ecse/assetplus/view/tickets/" + fxmlFile));
       Node page = loader.load();
       if (fxmlFile.equals("update-ticket.fxml")) {
         TicketUpdateController ticketUpdateController = loader.getController();
         ticketUpdateController.setTicketId(ticketID);
         ticketUpdateController.reinitialize();
-    }
-      
+      }
+
       viewEditStatusContentArea.getChildren().setAll(page);
     } catch (IOException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
   }
 }

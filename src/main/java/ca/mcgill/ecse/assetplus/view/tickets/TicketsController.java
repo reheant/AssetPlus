@@ -328,7 +328,7 @@ public class TicketsController {
      * Loads an FXML page based on the specified file path.
      *
      * @author Liam Di Chiro
-     * @param String The file path of the FXML page to load.
+     * @param fxmlFile The file path of the FXML page to load.
      */
     private void loadPage(String fxmlFile) {
         try {
@@ -351,5 +351,3 @@ public class TicketsController {
         }
     }
 }
-
-

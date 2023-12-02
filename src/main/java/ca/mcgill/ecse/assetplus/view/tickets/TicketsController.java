@@ -64,7 +64,7 @@ public class TicketsController {
     @FXML
     public void initialize() {
         maintenanceTicketSearchBar.setFocusTraversable(false);
-        String[] ticketIdKs = getTicketIds();
+        String[] ticketDisplayList = getTicketDisplayList();
 
         maintenanceTicketList.setFixedCellSize(50.0);
         maintenanceTicketList.setCellFactory(lv -> new ListCell<String>() {
@@ -80,7 +80,7 @@ public class TicketsController {
             }
         });
         maintenanceTicketList.setPrefHeight(10 * maintenanceTicketList.getFixedCellSize());
-        maintenanceTicketList.getItems().addAll(ticketIdKs);
+        maintenanceTicketList.getItems().addAll(ticketDisplayList);
 
         maintenanceTicketList.getSelectionModel().selectedItemProperty()
                 .addListener(new ChangeListener<String>() {
@@ -88,7 +88,7 @@ public class TicketsController {
                     @Override
                     public void changed(ObservableValue<? extends String> observable,
                             String oldValue, String newValue) {
-                        newTicketId = Integer.parseInt(newValue);
+                        newTicketId = Integer.parseInt(newValue.split(" - ")[0]);
                         loadPage("tickets/update-ticket.fxml");
                     }
                 });
@@ -96,20 +96,20 @@ public class TicketsController {
 
     /**
      * Handles the event when the search button is clicked. Searches for maintenance tickets based
-     * on the entered email.
+     * on the entered id.
      *
      * @author Liam Di Chiro
      */
     @FXML
     private void onSearchButtonClicked() {
-        String searchedEmail = maintenanceTicketSearchBar.getText();
-        List<String> filteredTicketIds = filterTicketIdList(searchedEmail);
+        String searchedId = maintenanceTicketSearchBar.getText();
+        List<String> filteredTickets = filterTicketIdList(searchedId);
         maintenanceTicketList.getItems().clear();
 
-        if (filteredTicketIds.isEmpty()) {
+        if (filteredTickets.isEmpty()) {
             displayNoSearchResults();
         } else {
-            maintenanceTicketList.getItems().addAll(filteredTicketIds);
+            maintenanceTicketList.getItems().addAll(filteredTickets);
             resetCellFactory();
         }
     }
@@ -167,14 +167,16 @@ public class TicketsController {
             filteredTickets = filterByDate(filteredTickets, raisedOnDate);
         }
 
-        List<String> filteredTicketIds = filteredTickets.stream()
-                .map(ticket -> Integer.toString(ticket.getId())).collect(Collectors.toList());
-        maintenanceTicketList.getItems().clear();
+        List<String> filteredTicketsDisplay = filteredTickets
+                .stream().map(ticket -> Integer.toString(ticket.getId()) + " - "
+                        + ticket.getDescription() + " (" + ticket.getStatus() + ")")
+                .collect(Collectors.toList());
 
-        if (filteredTicketIds.isEmpty()) {
+        maintenanceTicketList.getItems().clear();
+        if (filteredTicketsDisplay.isEmpty()) {
             displayNoSearchResults();
         } else {
-            maintenanceTicketList.getItems().addAll(filteredTicketIds);
+            maintenanceTicketList.getItems().addAll(filteredTicketsDisplay);
             resetCellFactory();
         }
     }
@@ -199,8 +201,8 @@ public class TicketsController {
      */
     private void resetEmployeeList() {
         maintenanceTicketList.getItems().clear();
-        String[] ticketIds = getTicketIds();
-        maintenanceTicketList.getItems().addAll(ticketIds);
+        String[] ticketDisplayList = getTicketDisplayList();
+        maintenanceTicketList.getItems().addAll(ticketDisplayList);
     }
 
     /**
@@ -295,33 +297,33 @@ public class TicketsController {
     }
 
     /**
-     * Filters the list of maintenance ticket IDs based on the searched ticket ID.
+     * Filters the list of maintenance tickets based on the searched ticket ID.
      *
      * @author Liam Di Chiro
      * @param searchedTicketId The ticket ID to search for.
-     * @return A list of filtered ticket IDs.
+     * @return A list of filtered tickets.
      */
     private List<String> filterTicketIdList(String searchedTicketId) {
-        String[] ticketIdKs = getTicketIds();
-        return Arrays.stream(ticketIdKs)
-                .filter(ticketIdK -> ticketIdK.equalsIgnoreCase(searchedTicketId))
+        String[] ticketDisplayList = getTicketDisplayList();
+        return Arrays.stream(ticketDisplayList).filter(ticket -> ticket.contains(searchedTicketId))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Retrieves the ticket IDs from the current list of maintenance tickets.
+     * Retrieves the display ticket information from the current list of maintenance tickets.
      *
      * @author Liam Di Chiro
-     * @return An array of ticket IDs.
+     * @return An array of tickets display information.
      */
-    private String[] getTicketIds() {
+    private String[] getTicketDisplayList() {
         List<TOMaintenanceTicket> ticketList = AssetPlusFeatureSet6Controller.getTickets();
-        String[] ticketIdKs = new String[ticketList.size()];
+        String[] ticketDisplayList = new String[ticketList.size()];
 
         for (int i = 0; i < ticketList.size(); i++) {
-            ticketIdKs[i] = Integer.toString(ticketList.get(i).getId());
+            ticketDisplayList[i] = Integer.toString(ticketList.get(i).getId()) + " - "
+                    + ticketList.get(i).getDescription() + " (" + ticketList.get(i).getStatus() + ")";
         }
-        return ticketIdKs;
+        return ticketDisplayList;
     }
 
     /**

@@ -50,6 +50,46 @@ public class SpecificAssetController {
   private TextField roomNbFilter;
 
   /**
+   * Initializes the specific asset page.
+   * 
+   * @author Rehean Thillainathalingam
+   */
+  @FXML
+  public void initialize(String assetType) {
+    purchaseDateFilter.setPromptText("YYYY-MM-DD");
+    assetNbFilter.setPromptText("Asset Number");
+    floorNbFilter.setPromptText("Floor Number");
+    roomNbFilter.setPromptText("Room Number");
+    this.assetTypeString = assetType;
+    String[] assetData =
+        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType, true);
+    specificAssetList.setFixedCellSize(50.0);
+    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
+      @Override
+      public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(item);
+          setStyle("-fx-font-size: 16pt;");
+        }
+      }
+    });
+    specificAssetList.setPrefHeight(10 * specificAssetList.getFixedCellSize());
+    specificAssetList.getItems().addAll(assetData);
+    specificAssetList.getSelectionModel().selectedItemProperty()
+        .addListener(new ChangeListener<String>() {
+          @Override
+          public void changed(ObservableValue<? extends String> observable, String oldValue,
+              String newValue) {
+            specificAssetInfo = newValue;
+            loadPage("viewSpecificAsset.fxml");
+          }
+        });
+  }
+
+  /**
    * Filters specific assets once filter button is clicked
    * 
    * @author Rehean Thillainathalingam
@@ -106,46 +146,6 @@ public class SpecificAssetController {
     floorNbFilter.setText("");
     resetSpecificAssetList();
     resetCellFactory();
-  }
-
-  /**
-   * Initializes the specific asset page.
-   * 
-   * @author Rehean Thillainathalingam
-   */
-  @FXML
-  public void initialize(String assetType) {
-    purchaseDateFilter.setPromptText("YYYY-MM-DD");
-    assetNbFilter.setPromptText("Asset Number");
-    floorNbFilter.setPromptText("Floor Number");
-    roomNbFilter.setPromptText("Room Number");
-    this.assetTypeString = assetType;
-    String[] assetData =
-        AssetPlusFeatureSet3Controller.getSpecificAssetDataByAssetType(assetType, true);
-    specificAssetList.setFixedCellSize(50.0);
-    specificAssetList.setCellFactory(lv -> new ListCell<String>() {
-      @Override
-      public void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty) {
-          setText(null);
-        } else {
-          setText(item);
-          setStyle("-fx-font-size: 16pt;");
-        }
-      }
-    });
-    specificAssetList.setPrefHeight(10 * specificAssetList.getFixedCellSize());
-    specificAssetList.getItems().addAll(assetData);
-    specificAssetList.getSelectionModel().selectedItemProperty()
-        .addListener(new ChangeListener<String>() {
-          @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue,
-              String newValue) {
-            specificAssetInfo = newValue;
-            loadPage("viewSpecificAsset.fxml");
-          }
-        });
   }
 
   /**

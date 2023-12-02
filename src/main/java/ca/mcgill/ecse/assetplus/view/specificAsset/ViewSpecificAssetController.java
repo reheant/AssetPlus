@@ -47,6 +47,20 @@ public class ViewSpecificAssetController {
   private AnchorPane viewSpecificAssetContentArea;
 
   /**
+   * Initializes the view specific asset page
+   * 
+   * @author Rehean Thillainathalingam
+   * @param titleLabelString A string label for the title of the page
+   */
+  @FXML
+  public void initialize(String titleLabelString) {
+
+    this.titleLabelString = titleLabelString;
+    specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
+    displayTitle(specificData);
+  }
+
+  /**
    * Loads specific asset page once back button is clicked.
    * 
    * @author Rehean Thillainathalingam
@@ -90,20 +104,6 @@ public class ViewSpecificAssetController {
     floorNumber.setText(specificData[2]);
     roomNumber.setText(specificData[3]);
     assetType.setText(specificData[0]);
-  }
-  
-  /**
-   * Initializes the view specific asset page
-   * 
-   * @author Rehean Thillainathalingam
-   * @param titleLabelString A string label for the title of the page
-   */
-  @FXML
-  public void initialize(String titleLabelString) {
-
-    this.titleLabelString = titleLabelString;
-    specificData = AssetPlusFeatureSet3Controller.getSpecificAssetFromTitle(titleLabelString);
-    displayTitle(specificData);
   }
 
   /**

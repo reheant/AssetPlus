@@ -10,6 +10,11 @@ import java.util.Objects;
 
 public class Home extends Application {
 
+    /**
+     * Initializes and displays the primary stage of the JavaFX application.
+     * 
+     * @author Luke Freund
+     */
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -25,6 +30,11 @@ public class Home extends Application {
         }
     }
 
+    /**
+     * Launches the JavaFX application.
+     * 
+     * @author Luke Freund
+     */
     public static void main(String[] args) {
         launch(args);
     }

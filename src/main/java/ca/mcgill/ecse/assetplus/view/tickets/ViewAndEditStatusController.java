@@ -165,7 +165,8 @@ public class ViewAndEditStatusController {
     Optional<Pair<String, java.sql.Date>> result = dialog.showAndWait();
 
     result.ifPresent(reasonAndDate -> {
-      error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(), reasonAndDate.getValue(), reasonAndDate.getKey());
+      error[0] += AssetPlusStateController.disapproveTicket(ticket.getId(),
+          reasonAndDate.getValue(), reasonAndDate.getKey());
     });
 
     if (!error[0].equals("")) {

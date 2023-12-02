@@ -2,11 +2,8 @@ package ca.mcgill.ecse.assetplus.view.tickets;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import ca.mcgill.ecse.assetplus.controller.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -138,20 +135,18 @@ public class TicketUpdateController {
     loadPage("tickets/tickets.fxml");
   }
 
-    /**
-     * Reinitializes the information on the page
-     *
-     * @author Julien Audet
-     */
-    @FXML
-    public void reinitialize() {
-        errorLabel.setText("");
-        assignStaffButton.disableProperty().bind(
-                staffTextField.textProperty().isNotEmpty()
-        );
-        setTicketDetails();
-        setAssetDetails();
-    }
+  /**
+   * Reinitializes the information on the page
+   *
+   * @author Julien Audet
+   */
+  @FXML
+  public void reinitialize() {
+    errorLabel.setText("");
+    assignStaffButton.disableProperty().bind(staffTextField.textProperty().isNotEmpty());
+    setTicketDetails();
+    setAssetDetails();
+  }
 
   /**
    * Keeps track of the id of the ticket to view
@@ -197,61 +192,63 @@ public class TicketUpdateController {
    */
   @FXML
   private void onAssignStaffClicked() {
-      Dialog<Void> dialog = new Dialog<>();
-      dialog.setTitle("Assign Staff");
-      dialog.setHeaderText("Enter assignment details");
+    Dialog<Void> dialog = new Dialog<>();
+    dialog.setTitle("Assign Staff");
+    dialog.setHeaderText("Enter assignment details");
 
-      ButtonType assignButtonType = new ButtonType("Assign", ButtonBar.ButtonData.OK_DONE);
-      dialog.getDialogPane().getButtonTypes().addAll(assignButtonType, ButtonType.CANCEL);
+    ButtonType assignButtonType = new ButtonType("Assign", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(assignButtonType, ButtonType.CANCEL);
 
-      GridPane grid = new GridPane();
-      grid.setHgap(10);
-      grid.setVgap(10);
-      grid.setPadding(new Insets(20, 150, 10, 10));
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
+    grid.setPadding(new Insets(20, 150, 10, 10));
 
-      TextField emailTextField = new TextField();
-      emailTextField.setPromptText("Staff's Email");
-      ComboBox<String> priorityComboBox = new ComboBox<>(FXCollections.observableArrayList("Urgent", "Normal", "Low"));
-      priorityComboBox.setValue("Normal");
-      ComboBox<String> timeComboBox = new ComboBox<>(FXCollections.observableArrayList("LessThanADay", "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks"));
-      timeComboBox.setValue("OneToThreeDays");
-      ComboBox<String> approvalComboBox = new ComboBox<>(FXCollections.observableArrayList("Yes", "No"));
-      approvalComboBox.setValue("No");
+    TextField emailTextField = new TextField();
+    emailTextField.setPromptText("Staff's Email");
+    ComboBox<String> priorityComboBox =
+        new ComboBox<>(FXCollections.observableArrayList("Urgent", "Normal", "Low"));
+    priorityComboBox.setValue("Normal");
+    ComboBox<String> timeComboBox = new ComboBox<>(FXCollections.observableArrayList("LessThanADay",
+        "OneToThreeDays", "ThreeToSevenDays", "OneToThreeWeeks", "ThreeOrMoreWeeks"));
+    timeComboBox.setValue("OneToThreeDays");
+    ComboBox<String> approvalComboBox =
+        new ComboBox<>(FXCollections.observableArrayList("Yes", "No"));
+    approvalComboBox.setValue("No");
 
-      grid.add(new Label("Email:"), 0, 0);
-      grid.add(emailTextField, 1, 0);
-      grid.add(new Label("Priority:"), 0, 1);
-      grid.add(priorityComboBox, 1, 1);
-      grid.add(new Label("Time Estimate:"), 0, 2);
-      grid.add(timeComboBox, 1, 2);
-      grid.add(new Label("Manager Approval Required:"), 0, 3);
-      grid.add(approvalComboBox, 1, 3);
+    grid.add(new Label("Email:"), 0, 0);
+    grid.add(emailTextField, 1, 0);
+    grid.add(new Label("Priority:"), 0, 1);
+    grid.add(priorityComboBox, 1, 1);
+    grid.add(new Label("Time Estimate:"), 0, 2);
+    grid.add(timeComboBox, 1, 2);
+    grid.add(new Label("Manager Approval Required:"), 0, 3);
+    grid.add(approvalComboBox, 1, 3);
 
-      dialog.getDialogPane().setContent(grid);
+    dialog.getDialogPane().setContent(grid);
 
-      dialog.setResultConverter(dialogButton -> {
-          if (dialogButton == assignButtonType) {
-              String email = emailTextField.getText();
-              String priorityLevelStr = priorityComboBox.getValue();
-              String timeEstimateStr = timeComboBox.getValue();
-              boolean requiresManagerApproval = approvalComboBox.getValue().equals("Yes");
+    dialog.setResultConverter(dialogButton -> {
+      if (dialogButton == assignButtonType) {
+        String email = emailTextField.getText();
+        String priorityLevelStr = priorityComboBox.getValue();
+        String timeEstimateStr = timeComboBox.getValue();
+        boolean requiresManagerApproval = approvalComboBox.getValue().equals("Yes");
 
-              String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(
-                      ticketId, email, timeEstimateStr, priorityLevelStr, requiresManagerApproval
-              );
+        String errorMessage = AssetPlusStateController.assignTicketWithStringEnums(ticketId, email,
+            timeEstimateStr, priorityLevelStr, requiresManagerApproval);
 
-              if (errorMessage.isEmpty()) {
-                  errorLabel.setText("");
-                  staffTextField.setText(email);
-              } else {
-                  errorLabel.setText(errorMessage);
-              }
-          }
-          return null;
-      });
+        if (errorMessage.isEmpty()) {
+          errorLabel.setText("");
+          staffTextField.setText(email);
+        } else {
+          errorLabel.setText(errorMessage);
+        }
+      }
+      return null;
+    });
 
-      dialog.showAndWait();
-      setAssetDetails();
+    dialog.showAndWait();
+    setAssetDetails();
   }
 
   /**
@@ -331,14 +328,15 @@ public class TicketUpdateController {
    * @author Luke Freund
    */
   private void setTicketDetails() {
-      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
+    this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
 
-      this.ticketIdLabel.setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
-      this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
-      this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
-      this.raisedOnDateDatePicker.setValue(currentMaintenanceTicket.getRaisedOnDate().toLocalDate());
-      this.staffTextField.setText(this.currentMaintenanceTicket.getFixedByEmail());
-      this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
+    this.ticketIdLabel
+        .setText("Ticket ID: #" + String.format("%05d", currentMaintenanceTicket.getId()));
+    this.descriptionTextArea.setText(currentMaintenanceTicket.getDescription());
+    this.ticketRaiserTextField.setText(currentMaintenanceTicket.getRaisedByEmail());
+    this.raisedOnDateDatePicker.setValue(currentMaintenanceTicket.getRaisedOnDate().toLocalDate());
+    this.staffTextField.setText(this.currentMaintenanceTicket.getFixedByEmail());
+    this.imageListView.getItems().setAll(currentMaintenanceTicket.getImageURLs());
   }
 
   /**
@@ -347,32 +345,35 @@ public class TicketUpdateController {
    * @author Luke Freund
    */
   private void setAssetDetails() {
-      this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
+    this.currentMaintenanceTicket = AssetPlusFeatureSet6Controller.getTicketWithId(ticketId);
 
-      String currentAssetName = currentMaintenanceTicket.getAssetName();
-      if (currentAssetName == null) {
-            currentAssetName = "None";
-      }
-      this.assetNameLabel.setText("Current Asset Name: " + currentAssetName);
+    String currentAssetName = currentMaintenanceTicket.getAssetName();
+    if (currentAssetName == null) {
+      currentAssetName = "None";
+    }
+    this.assetNameLabel.setText("Current Asset Name: " + currentAssetName);
 
-      int expectedLifespanInDays = this.currentMaintenanceTicket.getExpectLifeSpanInDays();
-      this.expectedLifespan.setText("Expected lifespan (days): " + (expectedLifespanInDays != -1 ? expectedLifespanInDays : "N/A"));
-      Date purchaseDate = this.currentMaintenanceTicket.getPurchaseDate();
-      this.purchaseDate.setText("Purchase date: " + (purchaseDate != null ? String.valueOf(purchaseDate) : "N/A"));
-      int floorNumber = this.currentMaintenanceTicket.getFloorNumber();
-      this.floorNumber.setText("Floor Number: " + (floorNumber != -1 ? floorNumber : "N/A"));
-      int roomNumber = this.currentMaintenanceTicket.getRoomNumber();
-      this.roomNumber.setText("Room Number: " + (roomNumber != -1 ? roomNumber : "N/A"));
-      boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
-      this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
-      String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
-      this.resolveTimeLabel.setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
-      String priority = this.currentMaintenanceTicket.getPriority();
-      this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
+    int expectedLifespanInDays = this.currentMaintenanceTicket.getExpectLifeSpanInDays();
+    this.expectedLifespan.setText("Expected lifespan (days): "
+        + (expectedLifespanInDays != -1 ? expectedLifespanInDays : "N/A"));
+    Date purchaseDate = this.currentMaintenanceTicket.getPurchaseDate();
+    this.purchaseDate
+        .setText("Purchase date: " + (purchaseDate != null ? String.valueOf(purchaseDate) : "N/A"));
+    int floorNumber = this.currentMaintenanceTicket.getFloorNumber();
+    this.floorNumber.setText("Floor Number: " + (floorNumber != -1 ? floorNumber : "N/A"));
+    int roomNumber = this.currentMaintenanceTicket.getRoomNumber();
+    this.roomNumber.setText("Room Number: " + (roomNumber != -1 ? roomNumber : "N/A"));
+    boolean approvalRequired = this.currentMaintenanceTicket.getApprovalRequired();
+    this.approvalRequiredLabel.setText("Approval Required: " + (approvalRequired ? "Yes" : "No"));
+    String timeToResolve = this.currentMaintenanceTicket.getTimeToResolve();
+    this.resolveTimeLabel
+        .setText("Time to resolve: " + (timeToResolve != null ? timeToResolve : "Not set"));
+    String priority = this.currentMaintenanceTicket.getPriority();
+    this.priorityLabel.setText("Priority: " + (priority != null ? priority : "Not set"));
 
-      assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
-      if (assetNumber != -1) {
-          this.assetNumberTextField.setText(String.valueOf(assetNumber));
-      }
+    assetNumber = AssetPlusFeatureSet6Controller.getAssetNumber(ticketId);
+    if (assetNumber != -1) {
+      this.assetNumberTextField.setText(String.valueOf(assetNumber));
+    }
   }
 }
